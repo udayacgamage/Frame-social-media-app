@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame — New Creation</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-high min-h-screen flex justify-center text-on-surface antialiased font-body-md text-body-md select-none">
+<!-- Mobile Viewport Shell (390px fixed mobile container) -->
+<div class="relative w-full max-w-[390px] min-h-screen bg-surface-container-lowest flex flex-col shadow-2xl overflow-x-hidden pb-[60px]">
+<!-- Top App Bar (56px) - Strict execution from Shared Component & Specs -->
+<header class="sticky top-0 left-0 w-full h-[56px] z-40 flex items-center justify-between px-gutter bg-surface-container-lowest border-b border-surface-variant">
+<button class="text-secondary hover:text-on-surface transition-colors font-body-md text-body-md focus:outline-none active:opacity-70">
+        Cancel
+      </button>
+<h1 class="font-headline-sm text-headline-sm tracking-tight text-on-surface">
+        New creation
+      </h1>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-space-md py-[7px] rounded-lg active:opacity-90 transition-opacity">
+        Share
+      </button>
+</header>
+<!-- Main Composer Scrollable Canvas -->
+<main class="flex-1 flex flex-col px-gutter pt-space-sm space-y-space-md">
+<!-- Segmented Mode Selector -->
+<section class="w-full bg-surface-container-low p-[3px] rounded-lg flex items-center">
+<button class="flex-1 py-[6px] text-center font-label-md text-label-md rounded-lg bg-surface-container-lowest text-on-surface shadow-sm transition-all">
+          Share a Moment
+        </button>
+<button class="flex-1 py-[6px] text-center font-label-md text-label-md rounded-lg text-secondary hover:text-on-surface transition-all">
+          Shared Story
+        </button>
+<button class="flex-1 py-[6px] text-center font-label-md text-label-md rounded-lg text-secondary hover:text-on-surface transition-all">
+          Challenge
+        </button>
+</section>
+<!-- Media Preview Viewport (4:5 Aspect Ratio) -->
+<section class="relative w-full aspect-[4/5] bg-surface-container-low rounded-lg overflow-hidden border border-surface-variant group">
+<img class="w-full h-full object-cover select-none" data-alt="A sunlit artisan pottery studio filled with unglazed terracotta vessels and minimalist ceramic mugs neatly resting on an organic wooden workbench. Natural high-key daylight streams gently through tall industrial steel-framed windows, highlighting rich clay textures, artisanal sculpting tools, and subtle grey studio walls in a disciplined editorial composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgmbS-WDJ6-KlEG2kXug36EBXmITXn4QGCrd949WFqA1407pfC9fxm0KTRjHuaSJ2sYFIkdc4QZEMADZWa7o3DwKexwwQO7tvVetfEeZYye4cRcPQFItRIme2k0yBtoFsdEFyDljYYFvda-1rGNWrBctGq5Dv4CYn9r_wmS6L7JzAuKftSfiD4T-egwoHCOLMOule_guPkHTclrWGfRrEzwYPz5Sl67LnO11gEJ8j6KGWWIgqAbgTG7_MFpB7QgYxLTg-QBzD7PA"/>
+<!-- Subtle Top Grid Guide Marker -->
+<div class="absolute top-space-sm left-space-sm bg-inverse-surface/60 backdrop-blur-sm text-on-primary text-[11px] font-label-sm tracking-wider px-[6px] py-[2px] rounded">
+          RAW 48MP
+        </div>
+<!-- Media Viewport Bottom Floating Badges -->
+<div class="absolute bottom-space-sm inset-x-space-sm flex items-center justify-between pointer-events-auto">
+<!-- Crop ratio selector pill -->
+<div class="flex items-center space-x-[4px] bg-surface-container-lowest/90 backdrop-blur-sm border border-surface-variant px-[8px] py-[4px] rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-[15px] text-secondary">aspect_ratio</span>
+<span class="font-label-sm-bold text-label-sm-bold text-on-surface">4:5</span>
+</div>
+<!-- Replace Photo action button -->
+<button class="flex items-center space-x-[4px] bg-surface-container-lowest/90 backdrop-blur-sm border border-surface-variant px-[10px] py-[4px] rounded-lg shadow-sm hover:bg-surface-container-lowest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[15px] text-secondary">autorenew</span>
+<span class="font-label-sm-bold text-label-sm-bold text-on-surface">Replace photo</span>
+</button>
+</div>
+</section>
+<!-- Caption and Process Breakdown Section -->
+<section class="w-full space-y-space-xs">
+<div class="w-full rounded-lg border border-surface-variant p-space-sm focus-within:border-on-surface transition-colors bg-surface-container-lowest">
+<textarea class="w-full bg-transparent border-0 resize-none p-0 focus:ring-0 text-body-md font-body-md text-on-surface placeholder:text-secondary placeholder:font-body-md focus:outline-none" placeholder="Write a caption or process breakdown..." rows="3">Exploring wheel balance and raw earthy clay forms during the early morning studio study session.</textarea>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/60">
+<!-- Annotation / Metadata Icon Controls -->
+<div class="flex items-center space-x-space-sm text-secondary">
+<button class="hover:text-on-surface transition-colors flex items-center active:opacity-60" title="Tag room topic">
+<span class="material-symbols-outlined text-[19px]">tag</span>
+</button>
+<button class="hover:text-on-surface transition-colors flex items-center active:opacity-60" title="Add location">
+<span class="material-symbols-outlined text-[19px]">location_on</span>
+</button>
+<button class="hover:text-on-surface transition-colors flex items-center active:opacity-60" title="Voice audio memo">
+<span class="material-symbols-outlined text-[19px]">mic</span>
+</button>
+</div>
+<!-- Precision Character Count -->
+<span class="font-label-sm text-label-sm text-secondary">
+              148/500
+            </span>
+</div>
+</div>
+</section>
+<!-- Meta Configuration Rows -->
+<section class="w-full divide-y divide-surface-variant border-y border-surface-variant text-body-md">
+<!-- Destination Room Selector Row -->
+<div class="py-space-md flex items-center justify-between">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">Destination Room</span>
+<div class="flex items-center space-x-[6px] text-secondary cursor-pointer hover:text-on-surface transition-colors">
+<span class="text-on-surface font-body-md text-body-md">Street Photography</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Audience & Visibility Row -->
+<div class="py-space-md space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">Visibility</span>
+<span class="font-label-sm text-label-sm text-secondary">Who can see this</span>
+</div>
+<!-- Modern Pill Filter Group -->
+<div class="flex items-center space-x-space-xs pt-[2px]">
+<button class="px-[12px] h-[32px] rounded-lg bg-on-surface text-surface-container-lowest font-label-md text-label-md transition-all">
+              Public Room
+            </button>
+<button class="px-[12px] h-[32px] rounded-lg bg-surface-container-low text-secondary font-label-md text-label-md hover:text-on-surface transition-all">
+              Contributors
+            </button>
+<button class="px-[12px] h-[32px] rounded-lg bg-surface-container-low text-secondary font-label-md text-label-md hover:text-on-surface transition-all">
+              Followers
+            </button>
+</div>
+</div>
+<!-- Secondary Quiet Mode Row -->
+<div class="py-space-md flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">Quiet mode</span>
+<span class="font-label-sm text-label-sm text-secondary">Hide public like and impression metrics</span>
+</div>
+<!-- Minimalist Toggle Control -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</section>
+<!-- Editorial Spacing -->
+<div class="h-space-md"></div>
+</main>
+<!-- Bottom Navigation Bar (49px fixed height) - Active item locked to 'Create' (#E64B38 coral) -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] h-[49px] z-50 flex justify-around items-center px-space-xs bg-surface-container-lowest border-t border-surface-variant">
+<!-- Tab 1: Home -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<!-- Tab 2: Rooms -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[22px]">bubble_chart</span>
+<span class="font-label-sm text-label-sm">Rooms</span>
+</button>
+<!-- Tab 3: Create (ACTIVE TAB) -->
+<button class="flex flex-col items-center justify-center text-primary-container font-label-sm-bold text-label-sm-bold active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">add_box</span>
+<span class="font-label-sm-bold text-label-sm-bold text-primary-container">Create</span>
+</button>
+<!-- Tab 4: Challenges -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[22px]">emoji_events</span>
+<span class="font-label-sm text-label-sm">Challenges</span>
+</button>
+<!-- Tab 5: You -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="font-label-sm text-label-sm">You</span>
+</button>
+</nav>
+</div>
+</body></html>

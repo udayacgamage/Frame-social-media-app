@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame — Home Feed</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased selection:bg-primary-fixed flex justify-center min-h-screen">
+<!-- Device Shell / Viewport Frame -->
+<div class="w-full max-w-[390px] min-h-screen bg-surface-container-lowest relative flex flex-col border-x border-surface-variant">
+<!-- TopAppBar Component (from JSON anchor) -->
+<header class="fixed top-0 left-0 w-full max-w-[390px] h-[56px] z-50 flex items-center justify-between px-gutter bg-surface-container-lowest border-b border-surface-variant">
+<div class="flex items-center gap-space-sm">
+<span class="text-headline-md font-headline-md font-semibold tracking-tight text-on-surface">Frame</span>
+</div>
+<div class="flex items-center gap-space-md text-secondary">
+<button aria-label="Activity" class="relative flex items-center justify-center p-space-xs hover:text-on-surface transition-colors active:opacity-70 duration-150">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<button aria-label="Messages" class="relative flex items-center justify-center p-space-xs hover:text-on-surface transition-colors active:opacity-70 duration-150">
+<span class="material-symbols-outlined text-[24px]">chat_bubble_outline</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[56px] pb-[60px] flex-1 flex flex-col">
+<!-- Shared Stories Avatar Strip -->
+<section class="py-space-md border-b border-surface-variant overflow-hidden">
+<div class="flex items-start gap-space-md px-gutter overflow-x-auto no-scrollbar">
+<!-- Add/Your Story -->
+<div class="flex flex-col items-center gap-space-xs flex-shrink-0 w-[64px] cursor-pointer group">
+<div class="relative w-[60px] h-[60px] rounded-full p-[2px] bg-surface-container border border-surface-variant flex items-center justify-center">
+<img class="w-full h-full rounded-full object-cover grayscale-[20%]" data-alt="Close up editorial portrait photo of a young female photographer looking thoughtful in natural warm sunlight. Clean minimalist studio environment with soft neutral tones and fine grain." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0Qz1GLJbhEpQ9Mz-HsmeIErScUdwGu3GG89M3A5Gw0lceDLNiMNppnLRem5c6cfpdKoGoD_RfA124nIZT_pEjsDKpi2gysANDOnMZfcc-2SIkFJp196jpjewwROND_bGyK-XRcwAkKSMM0mXXjQNKY2KQJCOm7-l_tJqo0bAosjUxXvGPyiR-MC7aJUu27RKwPLby9VcVlBqp5C-vjOLUrnm3TiGqebB1BdVhbl_7tcvsDBb8rnnE_NKNPEO8NTe7dj6C1ro-qw"/>
+<div class="absolute bottom-0 right-0 w-[20px] h-[20px] bg-on-surface text-surface-container-lowest rounded-full flex items-center justify-center border-2 border-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-secondary truncate max-w-[64px] text-center">Your Story</span>
+</div>
+<!-- Story 1: Weekend in Ella -->
+<div class="flex flex-col items-center gap-space-xs flex-shrink-0 w-[64px] cursor-pointer group">
+<div class="w-[60px] h-[60px] rounded-full p-[2px] ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest flex items-center justify-center">
+<img class="w-full h-full rounded-full object-cover" data-alt="Lush misty mountain landscape of green tea plantations during sunrise in Ella, Sri Lanka. The scene shows high contrast natural lighting, rolling soft morning fog, and deep vibrant greens with subtle earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4rv1v-fOKpc5HWu_sGckuzoQJo489M9Gk7oRG8ZhCfO8G8CKf5xIpOQnlfJY2hMbW1dYMquuM7Qai7SKTlafLw-G3iiI6MjhR7Ng1AUQZ62QVgSUhT7ZBTMpeNGvqEZ7s5OSdURunThiWDyHeDf9_EFGviZvOd282VlUEdfRqCofiYMJfjigfYoLZPNPVh-z_H4oSNfntmLKzKKApvo94DTU6BeAzPxg4R4lteyKOE-sX1ViGdLLv6gi-BwDsYRfelIlzCUfm1w"/>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface truncate max-w-[64px] text-center">Weekend in Ella</span>
+</div>
+<!-- Story 2: Nordic Pottery -->
+<div class="flex flex-col items-center gap-space-xs flex-shrink-0 w-[64px] cursor-pointer group">
+<div class="w-[60px] h-[60px] rounded-full p-[2px] ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest flex items-center justify-center">
+<img class="w-full h-full rounded-full object-cover" data-alt="Artisan ceramic vase shaped with organic stoneware texture sitting on raw concrete tabletop. Elegant architectural gallery lighting creates quiet sculptural shadows and understated luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMPgCDBQq3pP82BnHev0Vbx39riw0Dvp9ZG93Ql0B354lspPlD2vzqF7vkhtJQRukjc9Ntypz44QsRdN__7_3qOfZEkIztSF2tqxPqE_la9vh1fxHj5qGPYTbQTCIoPKLYhnm2_ws4KO_7nqjVn043H2KAYbEF1cPRX2vzAm3OBV9FVGeJ4yjVHfgJV5HLtUHELvb3QjpcA0ZiO8NLCv8mSfAabXgvkgPFpqdTUspq-kXkZyFpMSsBne_VrlrAQ7N1M9VmWFThpw"/>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface truncate max-w-[64px] text-center">Nordic Pottery</span>
+</div>
+<!-- Story 3: Tokyo Nights -->
+<div class="flex flex-col items-center gap-space-xs flex-shrink-0 w-[64px] cursor-pointer group">
+<div class="w-[60px] h-[60px] rounded-full p-[2px] ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest flex items-center justify-center">
+<img class="w-full h-full rounded-full object-cover" data-alt="Cinematic night street scene in Shinjuku Tokyo reflecting wet asphalt, gentle neon red and amber reflections, sharp telephoto depth of field capturing a quiet poetic solitary urban moment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNlLPGxPQ24wQmDnEdXmntTUYvazyKvO3YfEQ0WYw8be89Dxzy0mmiyH1aq97ZM7OE-F21v3CXhQD1WkpDgYJv5oebg6pYKKZd3U-G4swhWxJITyRrIBUEQQtq9PlnIv48BrqYf8hzvR1MxZzYWN7_w6-cB1thZdmhacmB_tNBlc5SRFcLxUnPS7bpM8W3c18ItoB0NnOHFWYNWPQXGIKyOyA0_H8RLdhHJVMkfljvwQQjO4eINz75J0gbcoTh_Ye8V43QqqtgSw"/>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface truncate max-w-[64px] text-center">Tokyo Nights</span>
+</div>
+<!-- Story 4: Film Journal -->
+<div class="flex flex-col items-center gap-space-xs flex-shrink-0 w-[64px] cursor-pointer group">
+<div class="w-[60px] h-[60px] rounded-full p-[2px] ring-2 ring-outline-variant ring-offset-2 ring-offset-surface-container-lowest flex items-center justify-center">
+<img class="w-full h-full rounded-full object-cover" data-alt="Vintage 35mm rangefinder camera lying next to developed contact sheets on an oak wooden workbench. Soft warm diffuse window illumination, nostalgic authentic artistic workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6sypg6hqpVBI9wBzUlpjipgPWJw5xNnA2726mgggl1KsL72S-B6Kj0zXlCCPCvHPkJZxw2m66kP3m8oOVOeZ_Wn0ptUdQr-69jXHuJ8W_MHxgT2gFSKRWcIV43WO8FQOz6LD-G8nGGabwkABYnIpnz_W-VytnHSzVp5ET34oas4zBT13HrFag9qaDRc6YTBr7BrdH-3Qxvhw2yiI1MfqArtoH9bAUimfoeXqioKcWUdHOChwIbr0t6WhJ0_7sGTK4iup6qTFyIw"/>
+</div>
+<span class="text-label-sm font-label-sm text-secondary truncate max-w-[64px] text-center">Film Journal</span>
+</div>
+</div>
+</section>
+<!-- Inline Draft Banner -->
+<section class="px-gutter py-space-sm bg-surface-container-low border-b border-surface-variant">
+<div class="flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm min-w-0 flex-1">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0">edit_note</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<p class="text-label-sm-bold font-label-sm-bold text-on-surface truncate">Continue draft</p>
+<span class="text-label-sm font-label-sm text-secondary">in Street Photography</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-2/3"></div>
+</div>
+</div>
+</div>
+<button class="px-space-sm py-1 bg-surface-container-lowest border border-surface-variant text-on-surface text-label-sm-bold font-label-sm-bold rounded-lg hover:border-on-surface transition-colors">
+            Resume
+          </button>
+</div>
+</section>
+<!-- Feed Container -->
+<div class="flex flex-col divide-y divide-surface-variant">
+<!-- Feed Item 1: milo_lens & clara_art -->
+<article class="flex flex-col pt-space-md pb-space-lg">
+<!-- Author Bar -->
+<div class="flex items-center justify-between px-gutter pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="relative w-8 h-8">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Moody candid profile headshot of a photographer wearing dark clothing and glasses, shot in monochrome with soft directional natural light against a raw plaster wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDobuu7cvuIdyUsa3diPmHeOsydIsme19Fd9nmC4dM0H6PJ4gYWdMqvL9X101TTBF5TTzyW-UWGWELh3FoJMHb2KPBDs5r8--P9djcUTDn8HzxD2eXbPSqflky4CBG0ReDWM4lEHRq_UCz5Ch5kFpOVljbzo04DF6ZcdjxTrSMX3pqsdBuU7yYBRvfQsPpNtdYN2DSH2PaSVFQVV0Ios1fv85duWCeQ-lZxOVrQf2g3BrgiDLb3XopwB7aCK3wmK785aDZGpMJcWQ"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="text-body-md-medium font-body-md-medium text-on-surface">milo_lens</span>
+<span class="text-label-sm font-label-sm text-secondary">&amp;</span>
+<span class="text-body-md-medium font-body-md-medium text-on-surface">clara_art</span>
+</div>
+<span class="text-label-sm font-label-sm text-secondary">in Street Photography</span>
+</div>
+</div>
+<button aria-label="More options" class="text-secondary hover:text-on-surface p-1">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<!-- Full Bleed Photo (390px, 4:5 ratio) -->
+<div class="w-full aspect-[4/5] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="High contrast black and white street photography capturing shadows slicing diagonally across architectural brutalist concrete steps in Berlin. A lone silhouetted figure walks carrying a briefcase, bathed in intense late afternoon sunlight. Pure clean gallery aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQVMMzKwDq_hIbX61uJ8xPaDKmx9KR885KCV9cs3ufIxXXUmXOO0fCxDcqDtRlPKz-Iw4_C1JkmR73ahRtzsFncOYiMt5lvwm_dEQwFbrSJ6PaZHFx9wfEa9uL65ZgrgucUs2a3QZTZQ0snr9ZkHQs76sSgmLEAY0M-H4l0BhhSpEYOZiMtd7hjhQap86FJg27A3mZcIZPF2UVp2T_QibuE7hmJSqkHqskCBVlx3MwlGcyePavitRj3XTEIfyfYFbKTzJpQ8tNIg"/>
+</div>
+<!-- Post Interactions & Actions -->
+<div class="px-gutter pt-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-space-md">
+<button class="text-primary flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+</button>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">send</span>
+</button>
+</div>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">bookmark_border</span>
+</button>
+</div>
+<!-- Meta & Caption -->
+<p class="text-label-sm-bold font-label-sm-bold text-on-surface">482 likes</p>
+<p class="text-body-md font-body-md text-on-surface leading-snug">
+<span class="font-body-md-medium">milo_lens</span> Geometric intersections at noon. Developed in Room #4 with Clara's grading preset.
+            </p>
+<button class="text-left text-label-sm font-label-sm text-secondary mt-0.5 hover:text-on-surface transition-colors">
+              View all 24 comments
+            </button>
+</div>
+</article>
+<!-- Feed Item 2: sarah_bakes -->
+<article class="flex flex-col pt-space-md pb-space-lg">
+<!-- Author Bar -->
+<div class="flex items-center justify-between px-gutter pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="relative w-8 h-8">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Warm atmospheric portrait of a baker smiling gently with flour-dusted apron in a rustic sunlit kitchen studio. Soft organic tones, neutral linen backgrounds, and artisanal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpdU8n27tIk0IuRYGCnaATqolu_b9RHKvOr2if26Z8qy6SA74KlFvdLPgnvr5KzkXBD43Bbnqtnlt5ZOrCeyVe5CWaU5BLJPM2esdcuqFDd9umMlD6xfquMpMJMUyhvQ_YNlJcyWyhydqdiMd-mHOcOQEa8LPjUV1DVIHfwE6ZxeN4w3zOENwqbWD83TkG4a9HkQsBqEOTJlV7VWEVH0rjLh6ZIAXlzzCLHCNYPYkk6_08-QZEC7UTXfyKYuT4lIKDSela2pFErQ"/>
+</div>
+<div class="flex flex-col">
+<span class="text-body-md-medium font-body-md-medium text-on-surface">sarah_bakes</span>
+<span class="text-label-sm font-label-sm text-secondary">in Home Cooking</span>
+</div>
+</div>
+<button aria-label="More options" class="text-secondary hover:text-on-surface p-1">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<!-- Full Bleed Photo (390px, 4:5 ratio) -->
+<div class="w-full aspect-[4/5] bg-surface-container overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Artisan sourdough loaf with blistered golden-brown crust and intricate leaf-scored pattern resting on dark slate surface. Dusting of rye flour and rising gentle steam under soft side directional daylight. High-end food editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZqIt8MuWtG9iPU2I-IbAp0BNrx80p1xtukIveJ8jMxKSJnvhflxg4pG8vzzQidLnljvjmvVqWNG2t22soJmlTVD4YkAsZv6tzev6xarqfKF7Y2t2jAVKxIc1rUV5084pb-s3OVhqo1GtC8Sb-iBB-r0pfzlk1MVdRkGYE6s7HpgOuSI2QWum6I2sYqLDj-P2gNnzNJncOikPVVs0PI12CmE-ZIbUAhaiOLPpOtixWRghCD683-8uWEy4K-JLn_tjbM7W4as_EjQ"/>
+<!-- Process Badge Hint -->
+<div class="absolute bottom-3 left-3 bg-on-surface/80 backdrop-blur-md px-2.5 py-1 rounded-md text-surface-container-lowest flex items-center gap-1.5 border border-white/20">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+<span class="text-label-sm font-label-sm tracking-wide">3 Process Stages</span>
+</div>
+</div>
+<!-- Post Interactions & Actions -->
+<div class="px-gutter pt-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-space-md">
+<button class="text-on-surface flex items-center justify-center hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">favorite_border</span>
+</button>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+</button>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">send</span>
+</button>
+</div>
+<button class="text-on-surface flex items-center justify-center hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">bookmark_border</span>
+</button>
+</div>
+<!-- Meta & Caption -->
+<p class="text-label-sm-bold font-label-sm-bold text-on-surface">319 likes</p>
+<p class="text-body-md font-body-md text-on-surface leading-snug">
+<span class="font-body-md-medium">sarah_bakes</span> 82% hydration country loaf after a 24h cold ferment. Swipe through process stages for crumb structure notes.
+            </p>
+<button class="text-left text-label-sm font-label-sm text-secondary mt-0.5 hover:text-on-surface transition-colors">
+              View all 18 comments
+            </button>
+</div>
+</article>
+</div>
+<!-- Quiet Feed Ending -->
+<section class="py-space-xl px-gutter flex flex-col items-center justify-center text-center bg-surface-container-low border-t border-surface-variant">
+<span class="material-symbols-outlined text-outline text-[28px] mb-space-sm">check_circle</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-1">You're caught up</h3>
+<p class="text-body-md font-body-md text-secondary max-w-[240px] mb-space-md">
+          Go make something and share the process with your room.
+        </p>
+<button class="flex items-center gap-1.5 text-primary text-label-md font-label-md hover:underline font-semibold">
+<span>Start a creation</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar Component (Exact mapping from JSON & Style guidance) -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[390px] h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface-container-lowest border-t border-surface-variant">
+<!-- Home (Active) -->
+<button aria-label="Home" class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface transition-colors active:scale-95 duration-150 flex-1 py-1">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-label-sm-bold font-label-sm-bold leading-none mt-0.5">Home</span>
+</button>
+<!-- Rooms (Inactive) -->
+<button aria-label="Rooms" class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150 flex-1 py-1">
+<span class="material-symbols-outlined text-[22px]">bubble_chart</span>
+<span class="text-label-sm font-label-sm leading-none mt-0.5">Rooms</span>
+</button>
+<!-- Create (Inactive) -->
+<button aria-label="Create" class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150 flex-1 py-1">
+<span class="material-symbols-outlined text-[22px]">add_box</span>
+<span class="text-label-sm font-label-sm leading-none mt-0.5">Create</span>
+</button>
+<!-- Challenges (Inactive) -->
+<button aria-label="Challenges" class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150 flex-1 py-1">
+<span class="material-symbols-outlined text-[22px]">emoji_events</span>
+<span class="text-label-sm font-label-sm leading-none mt-0.5">Challenges</span>
+</button>
+<!-- You (Inactive) -->
+<button aria-label="You" class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150 flex-1 py-1">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-label-sm font-label-sm leading-none mt-0.5">You</span>
+</button>
+</nav>
+</div>
+</body></html>

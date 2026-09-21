@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame — Challenge Hub</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Wrapper (390px targeted layout) -->
+<div class="max-w-[390px] mx-auto min-h-screen bg-surface-container-lowest relative flex flex-col pb-[74px]">
+<!-- TopAppBar Component (from Shared Components JSON) -->
+<header class="fixed top-0 left-0 w-full max-w-[390px] mx-auto left-1/2 -translate-x-1/2 h-[56px] z-50 flex items-center justify-between px-gutter bg-surface-container-lowest border-b border-surface-variant">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[24px] text-on-surface" data-icon="camera">camera</span>
+<h1 class="text-headline-sm font-headline-sm font-semibold tracking-tight text-on-surface">Challenges</h1>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Search challenges" class="p-1 hover:text-on-surface transition-colors active:opacity-70" type="button">
+<span class="material-symbols-outlined text-[22px] text-secondary" data-icon="search">search</span>
+</button>
+<button aria-label="Notifications" class="p-1 hover:text-on-surface transition-colors active:opacity-70 relative" type="button">
+<span class="material-symbols-outlined text-[22px] text-secondary" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 mt-[56px] px-gutter pt-space-md">
+<!-- Header Subtitle & Ethos -->
+<section class="mb-space-md">
+<p class="text-body-md font-body-md text-secondary">
+          Shared creative invitations to spark observation, not competition.
+        </p>
+</section>
+<!-- Category / Filter Chips -->
+<nav aria-label="Challenge categories" class="flex items-center gap-space-xs overflow-x-auto hide-scrollbar pb-space-sm mb-space-md -mx-gutter px-gutter">
+<button class="h-[32px] px-space-md rounded-lg bg-on-surface text-surface-container-lowest text-label-md font-label-md whitespace-nowrap active:scale-95 transition-transform duration-150" type="button">
+          All
+        </button>
+<button class="h-[32px] px-space-md rounded-lg bg-surface-container-low text-secondary text-label-md font-label-md whitespace-nowrap hover:text-on-surface active:scale-95 transition-all duration-150" type="button">
+          Photography
+        </button>
+<button class="h-[32px] px-space-md rounded-lg bg-surface-container-low text-secondary text-label-md font-label-md whitespace-nowrap hover:text-on-surface active:scale-95 transition-all duration-150" type="button">
+          Culinary
+        </button>
+<button class="h-[32px] px-space-md rounded-lg bg-surface-container-low text-secondary text-label-md font-label-md whitespace-nowrap hover:text-on-surface active:scale-95 transition-all duration-150" type="button">
+          Art
+        </button>
+<button class="h-[32px] px-space-md rounded-lg bg-surface-container-low text-secondary text-label-md font-label-md whitespace-nowrap hover:text-on-surface active:scale-95 transition-all duration-150" type="button">
+          Writing
+        </button>
+</nav>
+<!-- Active Challenges Stream -->
+<div class="space-y-space-md">
+<!-- Card 1: Your city after dark (Active/Joined) -->
+<article class="bg-surface-container-low rounded-xl border border-surface-variant overflow-hidden">
+<div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container">
+<img alt="Your city after dark cover" class="w-full h-full object-cover" data-alt="Moody cinematic street photography of a glistening rainy city boulevard late at night, with neon reflections glowing on wet asphalt, deep charcoal shadows, high contrast light-mode editorial gallery aesthetics, and crisp architectural silhouettes under soft streetlamp lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAm4H2_o_Tb95w40en9zcJ7TehQavWMU-zWjytN0EvBEr-7xxqFIBmIFevbqUf1ALTin7mNP3RBpZW5gfrPeGbOParILYu7v07AbiyfZ2kbMPF2M5726DqZ1DH5CD1A9MPvUc6LGThxnAa3Zyvzn92LQNeu4t7SpHls_GdyqFq2HONaAP5ZT9tZzjuZpMwrw1WDJsIjNTy-Pgq8BJGznhreQcxWzMOxpUBcnRbxTohUQ9hylYnLOcDLXNVFwwnPYJgn9Spki12nA"/>
+<div class="absolute top-space-sm left-space-sm flex items-center gap-space-xs">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm border border-surface-variant text-label-sm font-label-sm-bold text-on-surface">
+                Street Photography Room
+              </span>
+</div>
+<div class="absolute bottom-space-sm right-space-sm">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-on-surface/85 backdrop-blur-sm text-surface-container-lowest text-label-sm font-label-sm-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span>
+                4 days remaining
+              </span>
+</div>
+</div>
+<div class="p-space-md flex flex-col justify-between">
+<div class="mb-space-md">
+<div class="flex items-baseline justify-between mb-1">
+<h2 class="text-headline-md font-headline-md text-on-surface">Your city after dark</h2>
+</div>
+<div class="flex items-center gap-space-sm text-secondary text-label-sm font-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="group">group</span>
+                  342 joined
+                </span>
+<span>•</span>
+<span>Prompt: Nocturnal textures &amp; ambient reflections</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container flex items-center justify-center text-[10px] font-label-sm-bold text-secondary">
+                  JD
+                </div>
+<div class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high flex items-center justify-center text-[10px] font-label-sm-bold text-secondary">
+                  ML
+                </div>
+<div class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-dim flex items-center justify-center text-[10px] font-label-sm-bold text-secondary">
+                  +3
+                </div>
+</div>
+<button class="h-[36px] px-space-md rounded-lg bg-surface-container-lowest border border-surface-variant text-primary text-label-md font-label-md flex items-center gap-1 hover:border-outline-variant active:opacity-70 transition-all" type="button">
+<span>Joined</span>
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="check">check</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2: Cook with 5 ingredients -->
+<article class="bg-surface-container-low rounded-xl border border-surface-variant overflow-hidden">
+<div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container">
+<img alt="Cook with 5 ingredients cover" class="w-full h-full object-cover" data-alt="Minimalist overhead editorial photograph of rustic culinary ingredients laid on light limestone surface, featuring heirloom vine-ripened red tomatoes, a crushed garlic clove, handcrafted pasta ribbons, and cold pressed golden olive oil under soft natural daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2kn57F3Yr0-8PvR7vJNiXdtdKJj1kxdi_jR6Doxes4Oe1alulLwksyDpd8xDP0miJ2whga-Oz3sY3h6H664YUhFjpbtajPbxU0D5km4yUJfdYM9UspU2yEZjhwakOIbLcUZ2xT75wN0jvmyJHsKM9FE1xDRJbR3qaVdrtuGWne8sF_FJUJSUTDAqe-rYgvKYCO13sAGRUFwe85kcAAN5PWiUxsPuVVE2Il0L6JXJMKpDo3jzKoHbpmUOnR0_QQncN4ZsY8a5Y8g"/>
+<div class="absolute top-space-sm left-space-sm flex items-center gap-space-xs">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm border border-surface-variant text-label-sm font-label-sm-bold text-on-surface">
+                Home Cooking Room
+              </span>
+</div>
+<div class="absolute bottom-space-sm right-space-sm">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-on-surface/85 backdrop-blur-sm text-surface-container-lowest text-label-sm font-label-sm-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span>
+                6 days remaining
+              </span>
+</div>
+</div>
+<div class="p-space-md flex flex-col justify-between">
+<div class="mb-space-md">
+<div class="flex items-baseline justify-between mb-1">
+<h2 class="text-headline-md font-headline-md text-on-surface">Cook with 5 ingredients</h2>
+</div>
+<div class="flex items-center gap-space-sm text-secondary text-label-sm font-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="group">group</span>
+                  189 joined
+                </span>
+<span>•</span>
+<span>Prompt: Honest simplicity on the plate</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant">
+<span class="text-label-sm font-label-sm text-secondary">Curated by Chef Soren</span>
+<button class="h-[36px] px-space-md rounded-lg bg-primary text-on-primary text-label-md font-label-md hover:bg-primary-container active:scale-95 transition-all" type="button">
+                + Join Challenge
+              </button>
+</div>
+</div>
+</article>
+<!-- Card 3: Find beauty in ordinary things -->
+<article class="bg-surface-container-low rounded-xl border border-surface-variant overflow-hidden">
+<div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container">
+<img alt="Find beauty in ordinary things cover" class="w-full h-full object-cover" data-alt="Intimate morning still life of an earthy hand-thrown ceramic teacup resting on a raw bleached ash wood table, washed in gentle diagonal morning sunlight, delicate steam rising, minimalist high-key art photography with serene neutral tones and fine tactile textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7YjP9HSMN4L6qteE_yeSf6_oDeFyXCOaJ87zbatzL96cJdayJGrscMoeIyT7BKD1k1t9kat3hJeDFMEc3AvQogHollI_XH3_PYvIcXJbB5bAH1WM3mGyLdESx16-b4DkOlGuH-xplyXY7BqM9UNEWx80d7GLgym0VkRdcEHgJjOfmOalI6Dbqs7P0Tn_9bun49qLs3R2wJgToWMZ0XDYBT5IXFOz8r8iVxYwmGWvhqsMU1sC6gE-pO289WbjmUety4kO8uMG-Dg"/>
+<div class="absolute top-space-sm left-space-sm flex items-center gap-space-xs">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm border border-surface-variant text-label-sm font-label-sm-bold text-on-surface">
+                Mindful Making
+              </span>
+</div>
+<div class="absolute bottom-space-sm right-space-sm">
+<span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-on-surface/85 backdrop-blur-sm text-surface-container-lowest text-label-sm font-label-sm-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span>
+                12 days remaining
+              </span>
+</div>
+</div>
+<div class="p-space-md flex flex-col justify-between">
+<div class="mb-space-md">
+<div class="flex items-baseline justify-between mb-1">
+<h2 class="text-headline-md font-headline-md text-on-surface">Find beauty in ordinary things</h2>
+</div>
+<div class="flex items-center gap-space-sm text-secondary text-label-sm font-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="group">group</span>
+                  512 joined
+                </span>
+<span>•</span>
+<span>Prompt: Fleeting light on daily objects</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant">
+<span class="text-label-sm font-label-sm text-secondary">Weekly community open</span>
+<button class="h-[36px] px-space-md rounded-lg bg-primary text-on-primary text-label-md font-label-md hover:bg-primary-container active:scale-95 transition-all" type="button">
+                + Join Challenge
+              </button>
+</div>
+</div>
+</article>
+</div>
+<!-- Recent Community Perspectives Carousel -->
+<section class="mt-space-xl mb-space-lg">
+<div class="flex items-center justify-between mb-space-sm">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Recent community perspectives</h3>
+<p class="text-label-sm font-label-sm text-secondary">Unranked submissions from live challenges</p>
+</div>
+<button class="text-label-md font-label-md text-primary hover:underline" type="button">
+            View all
+          </button>
+</div>
+<div class="flex gap-space-sm overflow-x-auto hide-scrollbar -mx-gutter px-gutter py-space-xs">
+<!-- Perspective Item 1 -->
+<div class="w-[140px] flex-shrink-0 flex flex-col group">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container mb-space-xs border border-surface-variant">
+<img alt="Tokyo reflection by @elena_v" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Moody architectural detail showing rain cascades down glass panes reflecting glowing red traffic signals in Tokyo at night, minimalist graphic composition, delicate water droplet textures, editorial light-mode magazine style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhgruWp07dHbRx3v_Nl7a33Ag8-15q5beqk-W5fYL5J-uIIr0C4XJn0AQqqYrNbsLb8iKxIgjq_KUriUyG2_YNOydBO4A6zRxpbWcCyUVuoX-JjWU6K_Z76-weP8DVWo3Bf_uvrDT22n4qQ5mWRbfPDiV4X7gevWKU-5cVnKGZqlWxrQ6yPtamTBh2SBtpWwMLwfPCtq3b1ExZ6xlkAV5b4Do5AlJgroOssYHN7eT75m-zoFbMfm1MirLQi1kYpSd-XP0wy4V8gg"/>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface truncate">@elena_v</span>
+<span class="text-label-sm font-label-sm text-secondary">4m</span>
+</div>
+<span class="text-[11px] text-secondary truncate">City after dark</span>
+</div>
+<!-- Perspective Item 2 -->
+<div class="w-[140px] flex-shrink-0 flex flex-col group">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container mb-space-xs border border-surface-variant">
+<img alt="Sage mortar by @marcus_cooks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Handcrafted ceramic pestle grinding coarse sea salt and fresh sage leaves inside a stone mortar, fine grain detail, clean neutral light background, authentic artisanal process photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUvxcFkorlBAqROXJnwLgYfTZIAmWuhDBDFcbiMWhYBbfNF6XJopVlwNc0s-7D7Rn3LEQZANlBjfZYiQlSx9ku89iRBgIuzkY0su84VqUWKTaKpn-E_ArIrLgE_8eh-cYgcAC0--YLLhI2MWRrZqFonxQy9_L1WJ3omd_esMRNJJXc9C-X5KOGsjw0PU6yBBi0Q8k-N5zEfrfu50hBWZVkCOoizvWWOhuf-UTYsjvc-NOVHO3vi0WkYAEHLMSYbFRZgcdTPK63lg"/>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface truncate">@marcus_cooks</span>
+<span class="text-label-sm font-label-sm text-secondary">22m</span>
+</div>
+<span class="text-[11px] text-secondary truncate">5 ingredients</span>
+</div>
+<!-- Perspective Item 3 -->
+<div class="w-[140px] flex-shrink-0 flex flex-col group">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container mb-space-xs border border-surface-variant">
+<img alt="Morning linen shadows by @charlotte.b" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Minimalist composition of shadow lines cast by window blinds across an unmade white linen bedsheet, high-key soft dawn illumination, subtle serene beauty in routine morning quietness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-o99LOHsxW0NYjnW2fV54I3SAYI0MBS8DHGFwnNcGu-8fyTPFs37aPUARou1KVorMtG0rUgkkuU8XX_2Kyzmr0u6Nvs8XSZF62abl4kGL85lSwUfUnFNiTzh2TTQ7_9W665WyIgD2Ld3uZwV7v1uDooFtHHEeeD7haLlLPxnAqlJXSDFLwa6FHZwNiF1vjh580ND0GS-Hq6P__g9iAyD8gBzB1idorpXKSSs4kHCA09tAK26zKvdyFdTrDbcxrDtC44U3gB49Cw"/>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface truncate">@charlotte.b</span>
+<span class="text-label-sm font-label-sm text-secondary">1h</span>
+</div>
+<span class="text-[11px] text-secondary truncate">Ordinary things</span>
+</div>
+<!-- Perspective Item 4 -->
+<div class="w-[140px] flex-shrink-0 flex flex-col group">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container mb-space-xs border border-surface-variant">
+<img alt="Seoul umbrella by @t_park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="An umbrella silhouette crossing an empty wet crosswalk with vivid reflections of red and amber traffic lights in Seoul, high contrast minimalist street photo with crisp edge definition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsPBPBelXaexpk9gVCWE2q-L7dsvO34Tr8qK52W9tcQc53NAoPa9bKMXtCxH0vH3PAku0Qg1KFkSCdD3A2q9Qxii-bojO1bc1E2InFmBiHi7hBrxAGFrMRXBgpen_-UPVDKn8aWgQczxhY5_IFKgOCBdMv20fgKsbUDM4cC7ssiGseZxodYU8YFcKDWjtAdnyoMWaFBbvl888M0adxOmjaUIW4-O-lMvUXFgaM3MrxdW_iEAmd9wYWe99mk_q-bsK0hrivqIfMeA"/>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface truncate">@t_park</span>
+<span class="text-label-sm font-label-sm text-secondary">2h</span>
+</div>
+<span class="text-[11px] text-secondary truncate">City after dark</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Component (from Shared Components JSON) -->
+<!-- Active Navigation Tab: 'Challenges' based on page intent -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[390px] mx-auto left-1/2 -translate-x-1/2 h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface-container-lowest border-t border-surface-variant">
+<!-- Slot 1: Home -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150" href="#home">
+<span class="material-symbols-outlined text-[22px]" data-icon="home">home</span>
+<span class="mt-0.5">Home</span>
+</a>
+<!-- Slot 2: Rooms -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150" href="#rooms">
+<span class="material-symbols-outlined text-[22px]" data-icon="bubble_chart">bubble_chart</span>
+<span class="mt-0.5">Rooms</span>
+</a>
+<!-- Slot 3: Create -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150" href="#create">
+<span class="material-symbols-outlined text-[22px]" data-icon="add_box">add_box</span>
+<span class="mt-0.5">Create</span>
+</a>
+<!-- Slot 4: Challenges (ACTIVE TAB: Coral / primary accent) -->
+<a class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold active:scale-95 transition-transform duration-150" href="#challenges">
+<span class="material-symbols-outlined text-[22px]" data-icon="emoji_events" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="mt-0.5">Challenges</span>
+</a>
+<!-- Slot 5: You -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 duration-150" href="#you">
+<span class="material-symbols-outlined text-[22px]" data-icon="person">person</span>
+<span class="mt-0.5">You</span>
+</a>
+</nav>
+</div>
+</body></html>

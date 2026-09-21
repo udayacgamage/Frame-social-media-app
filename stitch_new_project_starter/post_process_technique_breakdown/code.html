@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame — Technique Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #f0edec;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    /* Draggable compare slider styling */
+    .compare-container {
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      touch-action: pan-y;
+    }
+    .compare-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow: hidden;
+      width: 50%;
+      will-change: width;
+    }
+    .compare-slider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1.5px;
+      background: #ffffff;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 20;
+    }
+    .compare-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 9999px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      cursor: ew-resize;
+      pointer-events: auto;
+      z-index: 25;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex justify-center min-h-screen text-on-surface">
+<!-- Mobile Viewport Frame (390px) -->
+<main class="w-full max-w-[390px] bg-surface-container-lowest min-h-screen relative flex flex-col shadow-xl pb-[110px]">
+<!-- App Header (56px) - Sticky gallery standard -->
+<header class="sticky top-0 left-0 w-full h-[56px] z-40 bg-surface-container-lowest flex items-center justify-between px-gutter border-b border-surface-container">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go back" class="w-8 h-8 -ml-1.5 flex items-center justify-center text-on-surface active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Post &amp; Process</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button aria-label="Bookmark technique" class="w-8 h-8 flex items-center justify-center text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="bookmark_border">bookmark_border</span>
+</button>
+<button aria-label="Share post" class="w-8 h-8 flex items-center justify-center text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+</header>
+<!-- Post Details Header -->
+<article class="flex-1 flex flex-col">
+<!-- Creator Metadata Row -->
+<section class="px-gutter pt-space-md pb-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<img class="w-9 h-9 rounded-full object-cover border border-surface-container" data-alt="Editorial portrait photograph of a female minimalist photographer Elena Vance in natural diffused studio light with muted tones, dark hair, composed gaze, high fashion editorial aesthetic matching gallery restraint" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoHxbAxMax8M47qEMnZLNNH-T8OpkT0zVA471vkqcOiF5SjfBSnDslwBOZCGs2WCrIEX9IFIlpB0aHGnS-tBDQSNx6uWIiHPQCkFCBeVLzCP2dzJUEsgl5nU2Gt-MPF4otdr6Y_XSiaCteFyKplCwJxcRANd9f-d-iSww_j3HABJjNkA5m1UsXpVtvRrS2oCQ2qswMp_Dvbv3h1EfzWJBmfxzIi5IoyHmT6ofW69hkx822gTLfsmxc7Cqzp6aIvCBm8ruhxsM7JQ"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">Elena Vance</span>
+<span class="font-label-sm text-label-sm text-secondary">@elena_v</span>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="font-label-sm text-label-sm text-primary">Street Photography Room</span>
+<span class="text-[10px] leading-none">•</span>
+<span class="font-label-sm text-label-sm">2h ago</span>
+</div>
+</div>
+</div>
+<button class="text-secondary hover:text-on-surface p-1">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</section>
+<!-- Post Title -->
+<section class="px-gutter pt-1 pb-space-sm">
+<h1 class="font-headline-md text-headline-md text-on-surface leading-snug">
+          Dappled Brutalism: Exposing for Highlights
+        </h1>
+</section>
+<!-- Draggable Split Photo Comparison (Aspect 4:5) -->
+<section class="w-full relative">
+<div class="compare-container w-full h-[460px] bg-surface-container" id="compareWrapper">
+<!-- Background: Final Edit (Right side reveal) -->
+<div class="absolute inset-0 w-full h-full">
+<img class="w-full h-full object-cover" data-alt="Finished high dynamic range architectural photograph of a monumental raw concrete brutalist courtyard during late afternoon golden hour. Crisp geometric shadows cast across textured stone pavers, rich warm highlights on fluted concrete pillars, atmospheric depth, editorial camera grade, clean fine art photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJCd9W8asKFGdlU462f97KLir0O9_qKaScStYmPSO8PgdsVz_g1TDiTb14p26BTVAPHv3gf_KFHGUgbQbHo7Hp7iR0TY_f1EmL51HR1aHzp68cYA6nzobXhwWmvOl34IG7UU0gwAR6RKfudm7ljIq2ctItZLW9dzd1Agpv3PZbABFJuenK8KxC-eAGmjrbFygDhraMXd5Dcg9HZVMaDyh7eTHR6GdS4ZaB_PzgW-KI7PjiFOQ1KJy8jbmTlDFmy1AGxkLUsXh9mw"/>
+<!-- Right Label Badge -->
+<div class="absolute top-3 right-3 z-10 px-2 py-0.5 rounded bg-on-surface/80 backdrop-blur-sm text-surface-container-lowest font-label-sm-bold text-label-sm-bold uppercase tracking-wider">
+              Final Edit
+            </div>
+</div>
+<!-- Foreground: RAW Unedited (Left side overlay clipped) -->
+<div class="compare-overlay" id="compareOverlay">
+<div class="w-[390px] h-[460px] relative">
+<img class="w-full h-full object-cover" data-alt="Raw flat unedited camera file capture of brutalist concrete building exterior with steep contrast, deep underexposed shadows in the corridors, clinical neutral grey balance, unprocessed sensor output demonstrating exposure latitude preservation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr3guoVmV99k1a30wsI4AMDT6EHEIkBnZrKBzbG7_9dQFxHj4UPnti9PhFB3ar-zGp-L69FPvKyNwkQb-mvfQLN9o2oZy99HDtHOluuriG4hGiJ0zlWTD6w-0Pkh4GVHOYjgvbwq_ZgUHugdXiejN5t0MZR9UrIbfTfUYhF4vHDzBr5okeuci4hvNOlzC_AE21fly4_lbl8aogKIe_3_T2JvQ2tp5yCSeMrGsv4WhP5ld10g_FUUb67jwlpB2ryVCU-C6L_h9VbA"/>
+<!-- Left Label Badge -->
+<div class="absolute top-3 left-3 z-10 px-2 py-0.5 rounded bg-surface-container-lowest/85 backdrop-blur-sm text-on-surface font-label-sm-bold text-label-sm-bold uppercase tracking-wider">
+                RAW
+              </div>
+</div>
+</div>
+<!-- Vertical Divider Line & Draggable Handle -->
+<div class="compare-slider-line" id="sliderLine">
+<div aria-label="Slide to compare raw and edited versions" class="compare-handle" id="dragHandle">
+<span class="material-symbols-outlined text-[16px] text-on-surface" data-icon="sync_alt">sync_alt</span>
+</div>
+</div>
+</div>
+<!-- Subtle guide hint -->
+<div class="flex items-center justify-between px-gutter py-2 border-b border-surface-container bg-surface-bright text-secondary">
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[15px]" data-icon="touch_app">touch_app</span>
+<span>Drag handle horizontally to compare stages</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Leica Q2 • DNG</span>
+</div>
+</section>
+<!-- Action Row (Restrained, gallery minimalism) -->
+<section class="px-gutter py-space-sm flex items-center justify-between border-b border-surface-container bg-surface-container-lowest">
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-3 rounded-lg border border-surface-container flex items-center gap-1.5 font-label-md text-label-md text-on-surface active:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_stories">auto_stories</span>
+<span>Save Recipe</span>
+</button>
+<button class="h-8 px-3 rounded-lg border border-surface-container flex items-center gap-1.5 font-label-md text-label-md text-on-surface active:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="forum">forum</span>
+<span>Ask Question <span class="text-secondary">(12)</span></span>
+</button>
+</div>
+<button class="h-8 px-3 rounded-lg bg-primary-container text-on-primary-container flex items-center gap-1 font-label-md text-label-md font-medium active:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[16px]" data-icon="add_a_photo">add_a_photo</span>
+<span>Try This <span class="opacity-90 font-normal">(8)</span></span>
+</button>
+</section>
+<!-- Numbered Process Steps (No bloated cards, pure editorial layout) -->
+<section class="px-gutter pt-space-lg pb-space-sm">
+<div class="flex items-center justify-between mb-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Process Breakdown</h2>
+<span class="font-label-sm text-label-sm text-secondary">3 Steps Documented</span>
+</div>
+<div class="relative pl-6 space-y-7 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-3 before:w-[1px] before:bg-surface-container">
+<!-- Step 1 -->
+<div class="relative">
+<div class="absolute -left-6 top-0.5 w-[23px] h-[23px] rounded-full bg-surface-container-lowest border border-on-surface text-on-surface flex items-center justify-center font-label-sm-bold text-label-sm-bold">
+              1
+            </div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<h3 class="font-body-md-medium text-body-md-medium text-on-surface">Gear &amp; Setup</h3>
+<span class="font-label-sm text-label-sm text-secondary">In-Camera</span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                Leica Q2, 28mm Summilux at f/5.6. ISO 200, 1/500s. Underexposed by 1 stop to protect highlight detail on polished stone.
+              </p>
+<!-- Clean Technical Metadata Pills -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="h-6 px-2 rounded bg-surface-container-low border border-surface-container font-label-sm text-label-sm text-on-surface flex items-center">
+                  28mm Summilux
+                </span>
+<span class="h-6 px-2 rounded bg-surface-container-low border border-surface-container font-label-sm text-label-sm text-on-surface flex items-center">
+                  f/5.6
+                </span>
+<span class="h-6 px-2 rounded bg-surface-container-low border border-surface-container font-label-sm text-label-sm text-on-surface flex items-center">
+                  1/500s
+                </span>
+<span class="h-6 px-2 rounded bg-surface-container-low border border-surface-container font-label-sm text-label-sm text-on-surface flex items-center">
+                  ISO 200
+                </span>
+<span class="h-6 px-2 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm flex items-center font-medium">
+                  -1.0 EV
+                </span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<div class="absolute -left-6 top-0.5 w-[23px] h-[23px] rounded-full bg-surface-container-lowest border border-on-surface text-on-surface flex items-center justify-center font-label-sm-bold text-label-sm-bold">
+              2
+            </div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<h3 class="font-body-md-medium text-body-md-medium text-on-surface">Light Observation</h3>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[13px]" data-icon="schedule">schedule</span>
+                  16:42 Golden Hour
+                </span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                Waited 25 minutes for the sun to drop below the overhang to cast sharp diagonal shadows across the terrace corridor.
+              </p>
+<!-- Environmental micro-card -->
+<div class="mt-2 p-2.5 rounded-lg bg-surface-container-low border border-surface-container flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-on-surface shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="wb_sunny">wb_sunny</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm-bold text-label-sm-bold text-on-surface">Raking Light Angle</span>
+<span class="font-label-sm text-label-sm text-secondary">34° Azimuth, direct beam through colonnade</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<div class="absolute -left-6 top-0.5 w-[23px] h-[23px] rounded-full bg-surface-container-lowest border border-on-surface text-on-surface flex items-center justify-center font-label-sm-bold text-label-sm-bold">
+              3
+            </div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<h3 class="font-body-md-medium text-body-md-medium text-on-surface">Color &amp; Tonal Crafting</h3>
+<span class="font-label-sm text-label-sm text-secondary">Lightroom</span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                Lifted deep shadows by 15%, introduced subtle warm split-toning to midtones, and kept grain organic to preserve concrete authenticity.
+              </p>
+<!-- Color Tone Strip Visualizer -->
+<div class="pt-1.5 grid grid-cols-4 gap-1.5 text-center">
+<div class="p-1.5 rounded bg-surface-container-low border border-surface-container">
+<div class="h-1.5 w-full rounded-full bg-[#3e3b38] mb-1"></div>
+<span class="font-label-sm text-label-sm text-secondary">Shadows +15</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low border border-surface-container">
+<div class="h-1.5 w-full rounded-full bg-[#d68c45] mb-1"></div>
+<span class="font-label-sm text-label-sm text-secondary">Warm Mid</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low border border-surface-container">
+<div class="h-1.5 w-full rounded-full bg-[#f2e6d8] mb-1"></div>
+<span class="font-label-sm text-label-sm text-secondary">HL -8</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low border border-surface-container">
+<div class="h-1.5 w-full rounded-full bg-[#8f8881] mb-1"></div>
+<span class="font-label-sm text-label-sm text-secondary">Grain 12</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Community Responses / Questions Header -->
+<section class="px-gutter pt-space-lg pb-space-sm border-t border-surface-container mt-space-md">
+<div class="flex items-center justify-between mb-3">
+<span class="font-headline-sm text-headline-sm text-on-surface">Community Responses</span>
+<span class="font-label-sm text-label-sm text-secondary">12 thoughts</span>
+</div>
+<!-- Sample question thread -->
+<div class="py-2.5 border-b border-surface-container/60 space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">Marcus Ray</span>
+<span class="font-label-sm text-label-sm text-secondary">42m ago</span>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+            Did you spot-meter on the right-hand pillar or matrix-meter across the courtyard?
+          </p>
+<div class="pt-1 flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary font-medium">1 author reply</span>
+<span class="text-[10px] text-secondary">•</span>
+<button class="font-label-sm text-label-sm text-secondary hover:text-on-surface">Reply</button>
+</div>
+</div>
+</section>
+<!-- Comment Prompt Input (Sticky directly above bottom bar) -->
+<div class="p-gutter bg-surface-container-lowest border-t border-surface-container sticky bottom-[49px] z-30 flex items-center gap-2">
+<img class="w-7 h-7 rounded-full object-cover shrink-0" data-alt="Close-up creative portrait avatar of user with warm natural lighting, subtle expression, neutral gray clothing, artistic photography aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClUqaAqLoXSgI7NUZw7XwMcMrmBBufEJVTn_CmtZ0e87e61NIyNQj2RJsI6w4vue5oEiZw6bmx5wv5ifPxW9g2a7eAV3N6gxOHomFiyE3cw4a_xgNv67yyGSoWv1nd_lsXsuhmy6weuDkaMwZnwHatA8TaLayplYrW7WNnOLIIq20DlXOS5nnyRXBXJkHs5a7Djf1xzYckoAgPUAL1wpGDG6N_fYvQBr1_Hea79obB1czoxbrkAzkRZ9wRRsH0Qwu__Dcz7W-xhg"/>
+<div class="relative flex-1">
+<input class="w-full h-9 pl-3 pr-9 rounded-lg bg-surface-container-low border border-surface-container font-body-md text-body-md text-on-surface placeholder:text-secondary focus:outline-none focus:border-on-surface" placeholder="Ask Elena about settings, light, or grade..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</article>
+<!-- BottomNavBar (Derived from JSON blueprint: 49px fixed dock, 5 tabs: Home, Rooms, Create, Challenges, You) -->
+<!-- Screen represents a sub-flow technique breakdown under "Rooms" / Community post context -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface border-t border-surface-variant">
+<!-- Tab 1: Home -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<!-- Tab 2: Rooms (Active Context: Street Photography Room) -->
+<a class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="bubble_chart" style="font-variation-settings: 'FILL' 1;">bubble_chart</span>
+<span>Rooms</span>
+</a>
+<!-- Tab 3: Create -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_box">add_box</span>
+<span>Create</span>
+</a>
+<!-- Tab 4: Challenges -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="emoji_events">emoji_events</span>
+<span>Challenges</span>
+</a>
+<!-- Tab 5: You -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span>You</span>
+</a>
+</nav>
+</main>
+<!-- Interactive Draggable Slider Script -->
+<script>
+    (function initSlider() {
+      const container = document.getElementById('compareWrapper');
+      const overlay = document.getElementById('compareOverlay');
+      const sliderLine = document.getElementById('sliderLine');
+      let isDragging = false;
+
+      function updateSplit(clientX) {
+        const rect = container.getBoundingClientRect();
+        let offsetX = clientX - rect.left;
+        if (offsetX < 0) offsetX = 0;
+        if (offsetX > rect.width) offsetX = rect.width;
+        
+        const percentage = (offsetX / rect.width) * 100;
+        overlay.style.width = percentage + '%';
+        sliderLine.style.left = percentage + '%';
+      }
+
+      function onPointerDown(e) {
+        isDragging = true;
+        updateSplit(e.clientX || (e.touches && e.touches[0].clientX));
+      }
+
+      function onPointerMove(e) {
+        if (!isDragging) return;
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
+        if (clientX !== undefined) {
+          updateSplit(clientX);
+        }
+      }
+
+      function onPointerUp() {
+        isDragging = false;
+      }
+
+      // Mouse Events
+      container.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+
+      // Touch Events
+      container.addEventListener('touchstart', onPointerDown, { passive: true });
+      window.addEventListener('touchmove', onPointerMove, { passive: true });
+      window.addEventListener('touchend', onPointerUp);
+    })();
+  </script>
+</body></html>

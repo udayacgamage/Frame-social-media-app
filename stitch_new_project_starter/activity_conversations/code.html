@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame - Activity &amp; Conversations</title>
+<!-- Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-high flex justify-center min-h-screen font-body-md text-on-surface antialiased select-none">
+<!-- Mobile Viewport Container (390px) -->
+<div class="w-full max-w-[390px] bg-surface-container-lowest min-h-screen relative flex flex-col pb-[74px]">
+<!-- TopAppBar from Shared Components Specification -->
+<!-- Fixed top, docked full-width, h-[56px], flat, hairline border-b -->
+<header class="sticky top-0 left-0 w-full h-[56px] z-40 bg-surface-container-lowest border-b border-surface-variant flex items-center justify-between px-gutter">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-semibold">Activity</h1>
+</div>
+<div class="flex items-center gap-space-xs">
+<button aria-label="Search activities" class="w-9 h-9 flex items-center justify-center text-secondary hover:text-on-surface transition-colors active:opacity-70" type="button">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</button>
+<button aria-label="Activity settings" class="w-9 h-9 flex items-center justify-center text-secondary hover:text-on-surface transition-colors active:opacity-70" type="button">
+<span class="material-symbols-outlined text-[22px]">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col">
+<!-- Segmented Control Tabs (Activity vs Messages) -->
+<section class="px-gutter pt-space-sm pb-space-xs bg-surface-container-lowest">
+<div class="grid grid-cols-2 p-1 bg-surface-container-low rounded-lg">
+<!-- Active Tab: Activity -->
+<button class="flex items-center justify-center py-2 px-space-sm bg-surface-container-lowest text-on-surface rounded-lg font-label-md text-label-md font-semibold transition-all duration-150" type="button">
+<span>Activity</span>
+</button>
+<!-- Secondary Tab: Messages (3 unread) -->
+<button class="flex items-center justify-center gap-1.5 py-2 px-space-sm text-secondary hover:text-on-surface rounded-lg font-label-md text-label-md transition-all duration-150" type="button">
+<span>Messages</span>
+<span class="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full bg-primary text-on-primary text-[10px] font-semibold leading-none">3</span>
+</button>
+</div>
+</section>
+<!-- Priority Section: Shared Story Invitation Card -->
+<section class="px-gutter py-space-sm">
+<div class="bg-surface-container-low border border-surface-variant rounded-xl p-space-md flex flex-col gap-space-md">
+<!-- Card Header & Meta -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of Chloe Lens, a female photographer with subtle rim lighting and natural cinematic grain, against a soft neutral studio backdrop. Captured with high fidelity, clean light mode editorial aesthetic, muted tonal harmony, and artistic poise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtFr2F16t8bmDA9IeR9gQFk2DQexgKYgMZUQ9e4U3wR7zPy9px_CKKHKUAQ9XIVYldFHt0-TXIyNIxH37ArgJWwNSjJG9jK_xFUliNXqxtyHtOKKQyLuITA2_CES8ViAByJqdLrN6g6UxfgtpS8uE52IP4_5z7i4Q1OqgheILHadBLsBtY53-RKUYAakcq8QYfLgQYR5sdomBsYe7Tc_zSRXKdkBEviIfKMO2XOb8eC4Jik2kE8gzeWSWWOEksbPq5dhKv9YXOCA"/>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-tertiary-container rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-body-md-medium text-body-md-medium text-on-surface font-semibold">Chloe Lens</span>
+<span class="font-label-sm text-label-sm text-secondary">@chloe.lens</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Invited you to collaborate</span>
+</div>
+</div>
+<!-- Story Fork Tag -->
+<span class="px-2 py-0.5 bg-surface-container border border-surface-variant rounded-full text-secondary font-label-sm text-[11px] shrink-0 font-medium">Fork v2.4</span>
+</div>
+<!-- Story Prompt Details -->
+<div class="flex flex-col gap-1.5">
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+              ‘A Weekend in Ella’
+            </div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+              Join the curated 3-contributor editorial narrative tracking dawn mist, tea trail elevations, and railway architecture.
+            </p>
+</div>
+<!-- Contributor Previews & Live Status -->
+<div class="flex items-center justify-between pt-1 border-t border-surface-variant/80">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full overflow-hidden ring-2 ring-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Portrait of an urban photographer looking into distance with neutral natural illumination and refined soft shadows, in a light mode editorial style with high dynamic range." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5W4TAlDi2HVUU0ukUSSJB-UrhJShD1S92jc0ZGDZhYv4U_ZEzqlXDCzCJ7N0Wx4E6IUgV02NM8NrcVhkYjAdI_zClNOcTl6XZSDfYxL8QQ_My37GbMFR0DNSU8uHMABHBCe-IrQ1wLUAgAwErx5WTea6J_8EBBRcwkwLooGzCucbBDmrMusl0kSnOdNdsh2AtXOcftvsgBe3EnMLCcKDhIc4pn_I8fa9P_-IgLeNKO5Wko9C72rJlo9vxmA1MotdemzFrhe2nNg"/>
+</div>
+<div class="w-7 h-7 rounded-full overflow-hidden ring-2 ring-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Artistic profile portrait of a woman creative with soft daylight falling across her face, editorial color palette with warm neutral tones and subtle fine art grain." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAlwDiqrDPU_I65iKC7b9f0sOhWcFrMl3HLI9zJACiNeHRYhfWMjaQQN_4doog5zo_SdBLMXSl4a55OjZZonA8L4yXwG_I-MZURfZoXUG2k-cJODb00vUb7HsCQC3R-ASrDtyy0OqSxIbM0V_gVrmBRJHanvRjhoA9l8R7Lw9Sc5JFTUuesfATKV75q9JL8mDqjBpvjTYc8np13_W-9JzloYjuWMlQPdhe_Ok5Zk_fmde4B1-nqnOdh4yKRhToOgo11Wdi6Rmjqg"/>
+</div>
+<div class="w-7 h-7 rounded-full overflow-hidden ring-2 ring-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Close up view of a landscape photographer framed in ambient daylight, minimalist light aesthetic with crisp highlights and editorial finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbgPbFcERz1bbJ-JVri3TEq7RsWwiG5cCQHt97PWm-BixOSTBYHeKcKuL73OlMVuKMO4HIKi-zeimQ13PyfwknVKUxVd4-LS8vsGnum2nuug3sgSTvJpB0Qy06NJXuDySXd-vevHxrVmUDHPBORdFXlF81VpKbOreNQE4d_RAeB-VRyYM15OKulVKxwFMB3OtK7jGRuAKukcMqvlOtu9pH0Jt0eJH3ki_n8kDyhKfwZZ0Un0xTBcgIZDQ1l-HREEL5iXWXfNXgfw"/>
+</div>
+<div class="w-7 h-7 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center text-[10px] font-label-sm-bold text-secondary ring-2 ring-surface-container-low">
+                +4
+              </div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Awaiting 1 slot</span>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-space-sm pt-0.5">
+<button class="h-10 px-space-md rounded-lg border border-surface-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors flex items-center justify-center font-medium" type="button">
+              Decline
+            </button>
+<button class="h-10 px-space-md rounded-lg bg-primary font-label-md text-label-md text-on-primary hover:bg-primary-container transition-colors flex items-center justify-center font-semibold" type="button">
+              Accept &amp; Add Moment
+            </button>
+</div>
+</div>
+</section>
+<!-- Activity Feed Section -->
+<section class="flex flex-col mt-space-xs">
+<div class="px-gutter py-space-xs flex items-center justify-between">
+<h2 class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider">Earlier &amp; Active</h2>
+<span class="font-label-sm text-label-sm text-secondary">Mark all read</span>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col divide-y divide-surface-variant">
+<!-- Activity Item 1: Active Challenge Reminder -->
+<div class="px-gutter py-space-md flex items-start gap-space-md hover:bg-surface-container-low/50 transition-colors">
+<!-- Icon/Indicator Avatar -->
+<div class="relative shrink-0 mt-0.5">
+<div class="w-10 h-10 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-container-lowest"></span>
+</div>
+<!-- Notification Body -->
+<div class="flex-1 flex flex-col gap-0.5">
+<p class="font-body-md text-body-md text-on-surface leading-snug">
+                Active challenge <span class="font-semibold text-on-surface">‘Your city after dark’</span> closes in <span class="text-primary font-semibold">4 days</span>.
+              </p>
+<div class="flex items-center gap-space-sm mt-1">
+<span class="font-label-sm text-label-sm text-secondary">Challenge Room</span>
+<span class="text-secondary text-[10px]">•</span>
+<span class="font-label-sm text-label-sm text-secondary">2h ago</span>
+</div>
+</div>
+<!-- Challenge Thumbnail -->
+<div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="High-contrast architectural photograph capturing glowing night reflections on modern glass facades in Tokyo. Deep midnight blues juxtaposed with warm editorial amber neon strips, crisp spatial geometry, and minimal art direction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEWYuWwVK9EtI5xeLcS5Lq5IMsztenCByB-nr4e7K8lISM4GjREWbVFHlanx2EUjvOWHaFvI0hj0BQTt_NIr9cUL9RPCDslOAjXPZYjAnnTcklEf4aNJwc9pAfvlVbPkJclc3fRH68f1CHqoxX4-7ajAaWL3qfL4avhTGGXrItos_RKQFjB8-vdmkJXFtAaB4JG11W8ikoY4O3EQXzYbgAOyRCllBhpvxKpzZblidwe8A97gALUy6PamkSk27KogirbB_fKmEF7Q"/>
+</div>
+</div>
+<!-- Activity Item 2: Comment in Room -->
+<div class="px-gutter py-space-md flex items-start gap-space-md hover:bg-surface-container-low/50 transition-colors">
+<div class="relative shrink-0 mt-0.5">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Candid portrait of Kenji, a documentary street photographer in natural daylight. Clean, modern aesthetic with soft off-white background and sharp focus on eyes, reflecting editorial minimalist art direction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA49YMLIh19DCj4wO1kGwCklnBGe9B12uzGMQ915jZrlWL4fPe8ftskHRTmdNLWf8hrR8f8uTqa6J8G3OxgJhk1pkUdHpONlD4guQYLwHQt20epQ1yULJlmTeToIpJoUPNHH3bfexSGI35-pIiJEYS-zg9i8XmqfwECojhHSFboOk-w3FumsAfC78xvA3Lk38C1Jml_CK9tynICNcSPcxN8l_6JwvQSTUQMRjDcBHT09cu_f_ewFlGqFCvE866h-5bNUZAnRhOuRA"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[13px]">mode_comment</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<p class="font-body-md text-body-md text-on-surface leading-snug">
+<span class="font-semibold text-on-surface">@kenji_film</span> in <span class="font-semibold text-on-surface">Home Cooking</span> commented:
+                <span class="text-secondary block mt-0.5 font-normal">“The 72h cold ferment made a massive difference! Crumb structure is insane.”</span>
+</p>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">Room Activity</span>
+<span class="text-secondary text-[10px]">•</span>
+<span class="font-label-sm text-label-sm text-secondary">4h ago</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Artisanal sourdough loaf cut open revealing an airy, translucent honeycomb crumb structure on a light stone countertop. Beautiful soft morning cross-light, warm golden tones, and clean gallery composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBOqnfXDf6yeAlQy2qO75gjkXsACQhk_2egAsJN96jU-igKdjAgRh5lxQA0a-0Sb9L5SW22hTP5D1hqouPdP6BnMpAMBju16o-DRl1cmZzv-Baa5tF7kbdTt1Or7IIMOoNDCdlVAgiE79BQi7nzomg618H1wMl0JN6uzsCcXcD63qqn-tPW6iA6JvSpFNbJR0QUe5xG3ElnIBDqGc6lsD8-wGyISe3llrdqmdQVcfeYDfCg0JhuG835YWMxIjCr_vJJ301s76wKQ"/>
+</div>
+</div>
+<!-- Activity Item 3: Tagged in Collaborative Draft -->
+<div class="px-gutter py-space-md flex items-start gap-space-md hover:bg-surface-container-low/50 transition-colors">
+<div class="relative shrink-0 mt-0.5">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Atmospheric studio portrait of Mateo, a visual artist wearing a crisp black collar, illuminated by soft directional gallery lighting against an immaculate white wall. Editorial, modern, and polished." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWF1w1KUJYyd3CY9Qfk9J1Y5Yv527o86l99MxoREiZfo57XAT0B4rQT9wTDyn_MoIcuvO1YXZfur4C2rpnjuWR7B8-w3_60CrGHF_DfnqLUdwv8GQLIRd_oSbxysQndU4MYSCZxlLuatZGAzTYeLKbJsSp6-hQ41-mAA23XIkbTmprQm6yLz79YPL5UoyK5VyZUWjnPTeKrPCYyHT4NICK381i-6JAW0oqSSe5mbI51C3nu44ApRALpZfil4iJe4cOJf0uxuvF6w"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">alternate_email</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<p class="font-body-md text-body-md text-on-surface leading-snug">
+<span class="font-semibold text-on-surface">@mateo_visuals</span> tagged you in a draft process:
+                <span class="text-secondary block mt-0.5 font-normal">“Color grade version 3 — added split-toning to the midtone curves.”</span>
+</p>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">Process Board</span>
+<span class="text-secondary text-[10px]">•</span>
+<span class="font-label-sm text-label-sm text-secondary">Yesterday</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-surface-variant relative">
+<img class="w-full h-full object-cover" data-alt="Minimalist landscape photo study showing rolling volcanic sand dunes under a pale silver sky, treated with precise color grading and balanced film grain. Gallery presentation, subtle light-mode tone balance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfMXZN5K8KYeoVRbDV3Hu7P38p8WL-HOHK7Y_5IDWZvBtpoE8KykwA7zjicn_HnYfejV8e-DvkRCyBhMjhMaFXg7UJSZGO7l7p52YtICARc-K5RigqNNSKsxDRx0zrTW9oaG9WEOXsV9Y6AJc_xglFpHnV6_TFJSAS44pEL5IiTr53YzU-OW-V4oyV5cG7AK9reuWLwQ5ZwMwATkjEnMDs6isrJZowryoE8-Y1K1cvG-G5ZVUFgwalcEIsy9-hTnakKsotbGOOmg"/>
+<span class="absolute top-0.5 right-0.5 bg-inverse-surface/80 text-inverse-on-surface text-[9px] px-1 rounded font-semibold font-label-sm">RAW</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Direct Messages Quick Access Preview Row -->
+<section class="mt-space-md pt-space-sm pb-space-lg bg-surface-container-lowest border-t border-surface-variant">
+<div class="px-gutter pb-space-xs flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider">Direct Messages</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<a class="font-label-sm text-label-sm text-primary font-medium hover:underline flex items-center" href="#">
+            See all (5)
+            <span class="material-symbols-outlined text-[14px] ml-0.5">chevron_right</span>
+</a>
+</div>
+<div class="flex flex-col divide-y divide-surface-variant/60">
+<!-- DM 1: Street Photography Curators (Group) -->
+<div class="px-gutter py-space-sm flex items-center gap-space-sm hover:bg-surface-container-low/40 transition-colors cursor-pointer">
+<div class="relative shrink-0">
+<div class="w-11 h-11 rounded-full bg-surface-container border border-surface-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-secondary text-[22px]">hub</span>
+</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="font-body-md-medium text-body-md-medium text-on-surface font-semibold truncate">Street Photography Curators</h3>
+<span class="font-label-sm text-[11px] text-primary font-medium shrink-0">12m</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface truncate font-normal">
+<span class="font-medium text-on-surface">Sara:</span> Final selection for the Berlin zine is ready for review.
+              </p>
+</div>
+</div>
+<!-- DM 2: Chloe Lens -->
+<div class="px-gutter py-space-sm flex items-center gap-space-sm hover:bg-surface-container-low/40 transition-colors cursor-pointer">
+<div class="relative shrink-0">
+<div class="w-11 h-11 rounded-full overflow-hidden border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Portrait of Chloe Lens with camera gear in an art studio, natural soft shadows, crisp clean daylight, minimalist editorial framing, light aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc0-_M3O9p3EQngJh-QPjr7gItUqrBEEiwNcHkEK538jkLZQPj4Ao-W6ggorKNuFXJhXVLBbIkCm7z8JZQv89apMELI5h-oQmg7OX8cJQ97XZjxFIAWC1s43a6YzHX1ynzOOSAv_wdbR1f6GpzrzBItheUkj8HXy5ajBG89Jf-xD2UeSFEn39vR1d1xzZpYfmh4d194R4vBxwM2qsXczymw443pygBDiRpc0anXsdMMM2yr-nngIaSYo_pEJ8hfmMExmBhkJWUvQ"/>
+</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<h3 class="font-body-md-medium text-body-md-medium text-on-surface font-semibold truncate">Chloe Lens</h3>
+<span class="font-label-sm text-[11px] text-primary font-medium shrink-0">1h</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface truncate font-normal">
+                Let me know what you think of the focal stack shots!
+              </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar from Shared Components Specification -->
+<!-- Fixed bottom, docked full-width, h-[49px], flat, hairline border-t, 5 destinations: Home, Rooms, Create, Challenges, You -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[390px] mx-auto h-[49px] z-50 bg-surface-container-lowest border-t border-surface-variant flex justify-around items-center px-space-xs pb-safe">
+<!-- Home Tab -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Rooms Tab -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]">bubble_chart</span>
+<span class="font-label-sm text-label-sm">Rooms</span>
+</a>
+<!-- Create Tab -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]">add_box</span>
+<span class="font-label-sm text-label-sm">Create</span>
+</a>
+<!-- Challenges Tab -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]">emoji_events</span>
+<span class="font-label-sm text-label-sm">Challenges</span>
+</a>
+<!-- You Tab (Active destination for notifications / activity profile stream) -->
+<a class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold active:scale-95 transition-transform duration-150 py-1" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm-bold text-label-sm-bold">You</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame - Your Creative Profile</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Google Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-full flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Container (Fixed 390px Max for high-fidelity mobile canvas) -->
+<div class="w-full max-w-[390px] min-h-screen bg-surface-container-lowest flex flex-col relative pb-[60px] shadow-sm">
+<!-- TopAppBar (from Shared Components JSON: docked full-width top-0, 56px, border-b border-surface-variant) -->
+<header class="fixed top-0 left-0 w-full max-w-[390px] mx-auto right-0 h-[56px] z-50 flex items-center justify-between px-gutter bg-surface-container-lowest border-b border-surface-variant">
+<!-- Username Switcher / Dropdown Trigger -->
+<button class="flex items-center space-x-1 py-1 text-on-surface active:opacity-70 transition-opacity">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">elena_v</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">expand_more</span>
+</button>
+<!-- Right Utility Actions -->
+<div class="flex items-center space-x-3">
+<button aria-label="Share Profile" class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-secondary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[20px]">ios_share</span>
+</button>
+<button aria-label="Settings" class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-secondary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Scrollable Canvas (Leaves room for 56px TopAppBar) -->
+<main class="flex-1 w-full pt-[56px]">
+<!-- Profile Overview Section -->
+<section class="px-margin pt-space-md pb-space-sm">
+<div class="flex items-start gap-space-md">
+<!-- 72px Circular Avatar with Micro Edit Badge -->
+<div class="relative flex-shrink-0">
+<div class="w-[72px] h-[72px] rounded-full overflow-hidden p-[2px] border border-surface-variant">
+<img class="w-full h-full object-cover rounded-full" data-alt="Intimate portrait of Elena Vance, a thoughtful visual designer in soft daylight. The composition follows high-key gallery minimalism with gentle shadows, pristine whites, deep charcoal tones, and an authentic editorial art direction matching modern studio photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMDM3WhU5E2Z1-Ux2CRIYd-ey3Ico5eQ9qt4fS-6s5qWv5GakNTGovYosNS4fPhWCxL2XJ6s1aFZEtLHEPHeT-g0fx6pRkuz8YtflhKYQV12eOjK5f9M3aae-0YVr44dgYSCTVgIJ-nRLNMpdvRF7Os1PneaeYIK-uhryO3EJCRfw0eWpjGbE397obMv4U-VsRL0Lg6oDSSI-ZWLMe8ICPeEaGfu4PSDNDw0g7KZ9gGQf0RjxYllqFFnKRkVmXyntY7LHajDWQKg"/>
+</div>
+<!-- Edit Badge Overlay -->
+<button aria-label="Edit photo" class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-on-surface text-surface flex items-center justify-center border-2 border-surface-container-lowest shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[13px]">photo_camera</span>
+</button>
+</div>
+<!-- Identity & Room Context -->
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<div class="flex items-baseline gap-1.5 flex-wrap">
+<h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Elena Vance</h1>
+<span class="font-label-sm text-label-sm text-secondary">(she/her)</span>
+</div>
+<p class="font-body-md-medium text-body-md-medium text-on-surface-variant truncate mt-0.5">Circle Creator &amp; Story Architect</p>
+<!-- Context Room Tag -->
+<div class="inline-flex items-center gap-1 mt-1 text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+<span class="font-label-sm text-label-sm truncate font-medium">Active in Kyoto Field Notes</span>
+</div>
+</div>
+</div>
+<!-- Bio Content -->
+<p class="mt-space-sm font-body-md text-body-md text-secondary leading-relaxed">
+          Visual designer &amp; light observer. Exploring brutalist shadows, tactile ceramics, and collaborative travel journals.
+        </p>
+<!-- Contribution Metrics Row (Clean, compact, no card containers) -->
+<div class="grid grid-cols-3 py-space-sm mt-space-sm border-y border-surface-variant divide-x divide-surface-variant text-center">
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">5</span>
+<span class="font-label-sm text-label-sm text-secondary mt-0.5">Challenges</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">8</span>
+<span class="font-label-sm text-label-sm text-secondary mt-0.5">Shared Stories</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">34</span>
+<span class="font-label-sm text-label-sm text-secondary mt-0.5">Process Guides</span>
+</div>
+</div>
+<!-- Secondary Action Buttons (36px height, clean outline, 8px radius) -->
+<div class="grid grid-cols-2 gap-space-sm mt-space-md">
+<button class="h-[36px] px-3 bg-surface-container-lowest border border-surface-variant text-on-surface rounded-lg font-label-md text-label-md flex items-center justify-center hover:bg-surface-container active:opacity-70 transition-colors">
+            Edit Profile
+          </button>
+<button class="h-[36px] px-3 bg-surface-container-lowest border border-surface-variant text-on-surface rounded-lg font-label-md text-label-md flex items-center justify-center hover:bg-surface-container active:opacity-70 transition-colors">
+            Quiet Preferences
+          </button>
+</div>
+<!-- Joined Rooms Horizontal Chip Strip -->
+<div class="mt-space-md">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm-bold text-label-sm-bold text-secondary tracking-wider uppercase">Active Rooms</span>
+<span class="font-label-sm text-label-sm text-secondary">3 joined</span>
+</div>
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+<button class="flex items-center gap-1.5 h-[32px] px-3 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg font-label-sm text-label-sm flex-shrink-0 transition-colors border border-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-secondary">lens</span>
+<span>Street Photography</span>
+</button>
+<button class="flex items-center gap-1.5 h-[32px] px-3 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg font-label-sm text-label-sm flex-shrink-0 transition-colors border border-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-secondary">skillet</span>
+<span>Home Cooking</span>
+</button>
+<button class="flex items-center gap-1.5 h-[32px] px-3 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg font-label-sm text-label-sm flex-shrink-0 transition-colors border border-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-secondary">explore</span>
+<span>Weekend Explorers</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Segmented Tab Navigation -->
+<section class="mt-space-sm border-t border-surface-variant bg-surface-container-lowest sticky top-[56px] z-40">
+<div class="flex items-center justify-around">
+<!-- Tab 1: Creations (Active) -->
+<button class="flex-1 py-3 flex items-center justify-center gap-1.5 border-b-2 border-primary text-primary transition-all">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-sm-bold text-label-sm-bold">Creations <span class="font-normal opacity-80">14</span></span>
+</button>
+<!-- Tab 2: Shared Stories -->
+<button class="flex-1 py-3 flex items-center justify-center gap-1.5 border-b-2 border-transparent text-secondary hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[18px]">auto_stories</span>
+<span class="font-label-sm text-label-sm">Stories <span class="opacity-70">8</span></span>
+</button>
+<!-- Tab 3: Saved Process -->
+<button class="flex-1 py-3 flex items-center justify-center gap-1.5 border-b-2 border-transparent text-secondary hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span class="font-label-sm text-label-sm">Saved <span class="opacity-70">23</span></span>
+</button>
+</div>
+</section>
+<!-- Clean 3-Column Media Grid (High-resolution photography tiles) -->
+<section class="grid grid-cols-3 gap-[1.5px] bg-surface-variant mt-0">
+<!-- Grid Item 1: Brutalist architecture with Process Indicator -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Minimalist architectural photograph of brutalist concrete columns and sharp angular overhangs under strong natural sunlight. The image exhibits clean monochromatic gray tones, deep tactile shadows, pristine white reflections, and a precise architectural composition embodying austere gallery aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvTTrllJSdhH59lhi1OH3jnO3utByZDzzPPLFb_3__JsOs68ETyYhAjJXOPG4PSVElnsVrWuqlHU1zI6FzGEU8C_ad0zCdZKCcjyAwEOEXbJ7vu2eP1USiT7Lh-YddxcwbQpfe9itbb3hcSb_vifoHkUjWud9Y1uciHR0G_HLHVySC7LM3zOVugmyhWcem2yGnrRgoSt9z6iYc8_vUE-wsxPj8PxuXK7YgQ_BaQGJphe5lnfgKd7keDvkW2Byg56q6EgEJC8DBEA"/>
+<div class="absolute top-1.5 right-1.5 bg-on-surface/75 text-surface rounded px-1 py-0.5 flex items-center backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]">tune</span>
+</div>
+</div>
+<!-- Grid Item 2: Tactile ceramics multi-photo -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Artisanal ceramic studio view featuring handcrafted stoneware bowls and raw earth pottery resting on an unvarnished oak workbench. Soft diffuse light reveals delicate tactile clay textures and earth-toned glaze, grounded in neutral ivory and deep charcoal accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGBk8dtj76PmgHo0i92qewR7_9qFsO789tsMiHmUVB2j62w9z0QiT2cdRvoPnILGUk-_brET-aXFxfMKZ81JoMcA2FnivW6bxvXfaKF-eZhcZOi6f7s-gQ_ziOpMQumkeI_G68yZL32k_WnNAXbOHd628vEN6uy3A0DKT9vOjfMkFJUVrEQdDhuRqZNUpF7JoLHKpu-jC6pcEcx3EWGs8VKySLYq0tzcmPGm7TSOHSYJHc59SbIJPAC4m28dyFhnUjXAhSe7ctjw"/>
+<div class="absolute top-1.5 right-1.5 bg-on-surface/75 text-surface rounded px-1 py-0.5 flex items-center backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]">filter_none</span>
+</div>
+</div>
+<!-- Grid Item 3: Travel Journal Kyoto -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Overhead flatlay of a traveler's open linen sketchbook, fountain pen, and dried cedar needles placed on dark tatami matting in Kyoto. Serene natural light illuminates clean off-white paper and precise ink sketches, adhering strictly to editorial minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWdA8lSmb7_JYkVrFlyNM3S_3XDHXmNrsQOOkiWn3j_MFB1L9ctArDwhES6CyMnKnqJnPlN7JGCdC7PJ4FafRMd7h9gAPN79QxKWRqniOxDvxLQPpSJKmK1mXouG0KUJGXhESvHazpCtWA-Tah1AfYIlgGySvdI4KViGGkyCqKQt-7QvZLVfmL7WgVQPusVI575_ROAmeNyKQSuqcAmS2hapIhQbHmr9sIkX2_DaZdR0ZdGHEZXmgdCYiej-jfWzBMrQddcs_l-Q"/>
+</div>
+<!-- Grid Item 4: Shadow Studies (Single shot) -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Experimental abstract shadow study casting crisp diagonal geometric silhouettes across an off-white gallery wall. High-contrast monochromatic black and white tones capture the quiet rhythm of late afternoon light with high precision and deliberate spatial restraint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbiAxmfmUnjc0fGnVK5QN7gT0cuxtLeYGrSrfqecvMD0j5R9vqvnX14dFTSbSEjz0VLIZ08URZ0keE16FQRSHSD2p5pX45XCKbvlVQJ6AnDDBlD44gsgfCOIvTMFsLFEhohbLyp2F1W0okedoxAS-A4IHSrzXCdL6tJxWnrPAYCREyaaZO3_6vg9APt8xA4NxZuKBl5sOvJGk1-E1IbmKTXHShv5aveDWUS2I-AeGGr5pDKYnlA1QoDtaZkg6E1Zih91KU0ZRKrg"/>
+</div>
+<!-- Grid Item 5: Concrete Stairwell Process guide -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Monolithic spiral staircase built of raw cast concrete viewed from a steep downward perspective. Cool daylight filters through a skylight overhead, highlighting crisp step edges, delicate tonal gray gradations, and deep textural shadows in an artistic modernist space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgvDTLJ40Kxdgdf0d-3JOJPoZlPIL_I7scXRIkCC-WOoPkKn_WlRUzEGB8oRWqU6_xI-Zd-zEWhSF6VBKWf1XsUeDA3WMWfzLELzdS2oLgNrTXGmJuRNiaPEWD3hDekS-hgCY7F3xFgGCTp1_7cNPlGld7OauLkDNe-do-_FJ6IIe0Ew4yCJPbic52UUN9P-7qaKdKTXAafIDfPyQ7mrhal44dqh5S-oO_NlKiomc_KvnRBodckssf6X9HSIWhtyNyPXGnb4TIyQ"/>
+<div class="absolute top-1.5 right-1.5 bg-on-surface/75 text-surface rounded px-1 py-0.5 flex items-center backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]">tune</span>
+</div>
+</div>
+<!-- Grid Item 6: Tactile Clay Sculpting Multi-photo -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Close-up photograph of an artist's hands shaping damp terracotta on a turning pottery wheel. Splatters of natural clay and refined water drops gleam softly in studio morning light, with muted neutral backgrounds and clean focus on tactile movement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYGVSPumhcy_5nTFH1GXI7ApjXDlh5kS-9OOOmYfl5ng4B58G4NgQ_BvBdhNFTpuQb9i9G6e8xYm6-BeYB903sKmub0Gl8BMbqXmS01AJu7yXtEhJpsPszB5SPQ8Ju3wu2ZfbbWHnEMbkz1sEop_phJKPliiT5N13sXaBxgLcCDtqHAWG0-9ztFX1-5_7bLcHbBPF6ip_tDeWH87TDN1rsL_ifzEG3JEiFxMIp_Va4XA3LflgPffrBTiudAaLJqWPyzvDjrWznlw"/>
+<div class="absolute top-1.5 right-1.5 bg-on-surface/75 text-surface rounded px-1 py-0.5 flex items-center backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]">filter_none</span>
+</div>
+</div>
+<!-- Grid Item 7: Morning Light & Linen -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Subtle still-life composition of washed white linen curtains billowing softly beside a textured plaster window frame. Pale morning rays filter across the floorboards creating an atmosphere of deliberate contemplative calm in a minimalist interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf0T08c4cyW-dxFdJLV7GC_fQaXG5XSt7scUmYMDqI6ECJ47MjmX6752gwjCLnzwJAOLsArWMGUvfm46db3nWLWd0zTir3-_nGCbB45n965MWIS4oZwcRRLLhMZFtuZFafPSP3U0OjzZ-PkEuxro2KEM-YMBIM9oz63JsZzKfrJHQ0vRlekKdN6Df57scGylAlSGJjj55sgi1_4vOMr7R0MHu6Ol_19MgTw_VvUWaqzE0-Rv7JS3Y7bcspY6GxI-4tGIjrDKN9zQ"/>
+</div>
+<!-- Grid Item 8: Street Geometry Kyoto -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Candid street photograph of a quiet Kyoto alleyway in early dawn. A solitary pedestrian with a black umbrella traverses wet asphalt bordered by dark cedar facades and glowing warm paper lanterns, rendered with high artistic restraint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3hHmNmLiYjk37n8fIZY0barzKF6NiMCbDi7Mmr-uJwbtzvYsOxOZLNm5zbz571ztB0PQVV0SRIqCz69lmawWGPUQigwYoSn2Bj-qIcudT-R4EN79N5LdUBZahSlN8KDcQ424_HrHkudY5jkOUCSTEnjU5gHKne8OAYZsvdffLcdGjliO3w40RwknfDB2uaVwsD2lzbTq_WLfUC8B3H6PxF02Kz4upIlEVhjWI0n4yZ9NIAI34PavWcY1cqbeXQCcBRbCgN1J51w"/>
+<div class="absolute top-1.5 right-1.5 bg-on-surface/75 text-surface rounded px-1 py-0.5 flex items-center backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]">tune</span>
+</div>
+</div>
+<!-- Grid Item 9: Brutalist Facade study -->
+<div class="relative aspect-square bg-surface-container group overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Telephoto framing of modular concrete balconies on a modernist housing block. Uniform geometric patterns and rhythmic window frames stand stark against a crisp pale overcast sky, evoking clean modernist design principles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtbz_PuS-FtAV9fXWNGmNGOfOqEZThpVrkHWKIVjqSaLuUL8Zto6EJp7Xq1UIUEJefulzeZTQlZ13xhFbZOEg9rfeKl4bbIhsgwi_we5hSrQINUkuG2X1tctDe_ibJHQpu8X32MJ7MjelGrUQ0jA49HTyP8TG5bOB2Wf9w_xyHM7XVNiDVn-5tiHZOPnrlaJuW5ynzyq9xoXintF6-DDx522o1I8ukjWaTTxORO-9ERUh3I3CbJuPepM7kNrpXhTt9M58N3N4bhQ"/>
+</div>
+</section>
+<!-- Subtle end-of-canvas space -->
+<div class="py-6 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-variant"></span>
+</div>
+</main>
+<!-- BottomNavBar (from Shared Components JSON: docked full-width bottom-0, 49px, border-t border-surface-variant) -->
+<!-- Active State Logic: Screen is "Your Creative Profile", hence label "You" is active with style_active_navigation -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[390px] mx-auto right-0 h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface-container-lowest border-t border-surface-variant">
+<!-- Home (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]">home</span>
+<span>Home</span>
+</button>
+<!-- Rooms (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]">bubble_chart</span>
+<span>Rooms</span>
+</button>
+<!-- Create (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]">add_box</span>
+<span>Create</span>
+</button>
+<!-- Challenges (Inactive) -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]">emoji_events</span>
+<span>Challenges</span>
+</button>
+<!-- You (ACTIVE - Mapped to User Profile) -->
+<button class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span>You</span>
+</button>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frame — Street Photography Room</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    body {
+      background-color: #f0edec;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex justify-center min-h-screen text-on-surface">
+<!-- Mobile Viewport Wrapper (390px phone container) -->
+<div class="w-full max-w-[390px] min-h-screen bg-surface-container-lowest relative flex flex-col shadow-2xl border-x border-surface-variant">
+<!-- Top App Bar (56px) - Custom Room Context with back chevron & actions -->
+<header class="sticky top-0 z-40 w-full h-[56px] bg-surface-container-lowest border-b border-surface-variant flex items-center justify-between px-gutter">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go back" class="text-on-surface hover:text-secondary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[24px]">chevron_left</span>
+</button>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Street Photography</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Share room" class="text-on-surface hover:text-secondary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">ios_share</span>
+</button>
+<button aria-label="More options" class="text-on-surface hover:text-secondary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Main Content Scroll Canvas -->
+<main class="flex-1 pb-[64px] bg-surface-container-lowest">
+<!-- Room Cover / Hero Header -->
+<section class="w-full">
+<!-- Compact Cover Visual -->
+<div class="w-full h-32 relative bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A striking minimalist architectural photograph capturing sharp geometrical street shadows slanting across an urban concrete brutalist facade in Berlin. High-contrast monochromatic black and white tones emphasize clean geometric precision, deliberate negative space, and deep rich blacks juxtaposed with pristine highlights. The lighting is harsh afternoon sun carving crisp rhythmic lines across textured pavement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBciLOWFL5ZYR_89o0WU85NqPe75G6DBnAkC4kbU5qxsTHILVOjaejxSKBSkRvhnRij1NfizdFntL94sRpJ8v-4iPHgaYDNCWn4BHRH1IhEY-rdMb2Y8vmLjKrqgSyg-ZGSHuvRfYxlRS3BvieUgqPcPnthZkx0dzauIQmIrntrrSBXZguW0y_dXV96p-4NJCynjnKIn7CDX9EtxOfN9ubvGxeazNsa5pPrTjvM81adJZU2qvR8R8sl-a0dbi3MFzdZPG_UPWy6Aw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+</div>
+<!-- Room Meta Info -->
+<div class="px-gutter pt-space-md pb-space-sm">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Street Photography</h1>
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-label-md text-label-md text-secondary mt-0.5">14.2k members • Public Room</p>
+</div>
+<!-- Restrained Joined State CTA -->
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-surface-variant bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-md text-label-md transition-colors active:scale-95">
+<span>Joined</span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span class="material-symbols-outlined text-[14px] text-secondary">expand_more</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-secondary mt-space-sm leading-relaxed">
+            Curated visual forum for geometric framing, candid light studies, and everyday human movement. Strictly original 35mm &amp; digital work.
+          </p>
+</div>
+</section>
+<!-- Active Challenge Module (Compact, Single-Tier) -->
+<section class="px-gutter my-space-sm">
+<div class="p-space-sm bg-surface-container-low border border-surface-variant rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-sm overflow-hidden">
+<!-- Split Challenge Thumbnail Stack -->
+<div class="relative w-11 h-11 flex-shrink-0 rounded-lg overflow-hidden border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="An atmospheric night street photograph showcasing reflections on rain-slicked asphalt under pale amber street lamps. A lone pedestrian with a transparent umbrella silhouettes sharply against neon shop windows in soft cinematic mist. High-precision editorial framing with deep blacks and vibrant warm specular highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5huA2pqOXel7xI6NryDlWuaWtwN72z2-nhAwrsT_hViifgCSbAhn5gJotGG9WNI6pr0_NR4CVCOA7mMEWvSszzQeScOVNq1dqOlOdFmhht-BYev9M61wg_S4gemnOeobrsKPpcO3bACE0n77GeKxUQKKZSoOJcOJIJMZwfEREGlIAETwNpAlq3w4ilmadA2HiGmLSI6dfYSU_ro8EkKa3wlklcKMOMGlpLO6jlWT8cqabSrDSye7zSEvhNwzw3Wp_KSDrmSwnRw"/>
+<div class="absolute bottom-0 right-0 bg-primary w-2.5 h-2.5 rounded-full border border-surface-container-lowest"></div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-label-sm-bold text-label-sm-bold text-primary tracking-wide">ACTIVE CHALLENGE</span>
+<span class="text-secondary text-[10px]">•</span>
+<span class="font-label-sm text-label-sm text-secondary">4d left</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Your city after dark</span>
+</div>
+</div>
+<button class="flex-shrink-0 ml-2 font-label-md text-label-md text-primary hover:text-primary-container active:opacity-70 transition-colors">
+            Enter
+          </button>
+</div>
+</section>
+<!-- Segmented Tab Navigation -->
+<nav class="flex border-b border-surface-variant px-gutter mt-space-md bg-surface-container-lowest">
+<button class="relative pb-2.5 pt-1 font-headline-sm text-headline-sm text-on-surface mr-6">
+          Feed
+          <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-full"></div>
+</button>
+<button class="pb-2.5 pt-1 font-headline-sm text-headline-sm text-secondary hover:text-on-surface mr-6 transition-colors">
+          Challenges <span class="font-label-sm text-label-sm text-secondary">(3)</span>
+</button>
+<button class="pb-2.5 pt-1 font-headline-sm text-headline-sm text-secondary hover:text-on-surface transition-colors">
+          Stories <span class="font-label-sm text-label-sm text-secondary">(12)</span>
+</button>
+</nav>
+<!-- Feed Stream Content: Matching Photo-First Editorial Standards -->
+<article class="w-full mt-space-sm border-b border-surface-variant pb-space-md">
+<!-- Post Header -->
+<div class="px-gutter py-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A close portrait of Mateo Reyes, a professional editorial photographer with introspective expression in natural overcast lighting. Shot on medium format camera with soft contrast, neutral skin tones, and modern minimalist urban aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoQff03LnhNJNRFrR0pYw8gRQKYev9j5RkDocyJtfIUqXLAkAwKOMshFHVs6SdYGh63IOWwRuGycG8S-df3BKKTMJBXByFi0BE8bTyErwliII1ycXi79h9ZIC7fiNFB_aMX_-iFIJIuCWtdsdcQXYzHM96fW87_eLf36fVCrGxe9DGltkCuqitEadK0DyXgF-Orpif70L_BDwmSfu1-YHDysGoBYxAb0oS228-MNhpl0k1SNfYphwiOUxdYSHOBN0Zt-lX3uIopQ"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-body-md-medium text-body-md-medium text-on-surface leading-tight">Mateo Reyes</span>
+<span class="font-body-md text-body-md text-secondary leading-tight">@mateo_visuals</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Berlin, Germany</span>
+</div>
+</div>
+<button class="text-secondary hover:text-on-surface active:opacity-70">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Full Bleed 4:5 Photo Submission -->
+<div class="w-full bg-surface-container aspect-[4/5] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A masterfully composed 4:5 aspect ratio street photograph in Kreuzberg, Berlin during sunrise. Golden, atmospheric dust-filled light beams pierce through steel bridge girders onto a lone morning cyclist pedaling across empty wet cobblestones. Delicate lens flare, cinematic dynamic range, sharp silhouetted textures, and deep editorial shadows create a meditative gallery-grade photograph." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEQldQ5nJZ2psZC4m2NHtn70o308oTnYPPiUr1jmptYIp7LXGw4ePstj0UVgHlCSWHHsw3VtEW2Rki8Xr-_xcfYnrlUwjic_f0CsVDgWqFyghHKkjB6rVJDHIHNtqjlr_Xvcege9VYLM9Q-F6graoMmv2LJQzVkQ7-q9z8EqYygZURna5pl1twfsQD6wBG-qONLWnl_M3Lt1vvR16c4hzXSiHecssKOKEuCxdfKeJ7RPsoDjwdZtNByUQhdY2_0OQXDWMsKCiQYw"/>
+</div>
+<!-- Post Action Row -->
+<div class="px-gutter pt-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<button aria-label="Like photo" class="flex items-center gap-1.5 text-on-surface hover:text-primary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[22px]">favorite</span>
+<span class="font-label-md text-label-md">348</span>
+</button>
+<button aria-label="Comment" class="flex items-center gap-1.5 text-on-surface hover:text-primary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[22px]">chat_bubble_outline</span>
+<span class="font-label-md text-label-md">24</span>
+</button>
+<button aria-label="Share" class="text-on-surface hover:text-primary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[22px]">send</span>
+</button>
+</div>
+<button aria-label="Bookmark" class="text-on-surface hover:text-primary active:opacity-70 transition-colors">
+<span class="material-symbols-outlined text-[22px]">bookmark_border</span>
+</button>
+</div>
+<!-- Technical Metadata Strip -->
+<div class="px-gutter mt-2">
+<div class="inline-flex items-center gap-1.5 py-0.5 px-2 rounded bg-surface-container-low border border-surface-variant font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[13px]">camera</span>
+<span>Shot at 28mm f/8 • 1/500s • ISO 400</span>
+</div>
+</div>
+<!-- Caption & Comment Preview -->
+<div class="px-gutter mt-space-sm">
+<p class="font-body-md text-body-md text-on-surface">
+<span class="font-body-md-medium text-body-md-medium mr-1.5">mateo_visuals</span>
+            First light slicing through the U-Bahn overpass. The fog cleared just as the commute started.
+          </p>
+<button class="font-label-md text-label-md text-secondary mt-1 hover:text-on-surface transition-colors">
+            View all 24 comments
+          </button>
+<div class="mt-1 flex items-start gap-1 font-body-md text-body-md">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">clara.noir</span>
+<span class="text-secondary truncate">The highlight roll-off on the cobblestone is unreal.</span>
+</div>
+</div>
+</article>
+</main>
+<!-- BottomNavBar (Persistent Shared Component, exactly mapped to JSON) -->
+<nav class="fixed bottom-0 left-0 w-full h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface border-t border-surface-variant">
+<!-- Slot 1: Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span>Home</span>
+</a>
+<!-- Slot 2: Rooms (Active Context Lock) -->
+<a class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">bubble_chart</span>
+<span>Rooms</span>
+</a>
+<!-- Slot 3: Create (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">add_box</span>
+<span>Create</span>
+</a>
+<!-- Slot 4: Challenges (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">emoji_events</span>
+<span>Challenges</span>
+</a>
+<!-- Slot 5: You (Inactive) -->
+<a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface transition-colors active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span>You</span>
+</a>
+</nav>
+</div>
+</body></html>

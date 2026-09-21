@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Discover Rooms - Frame</title>
+<!-- Inter Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md antialiased selection:bg-primary selection:text-on-primary min-h-screen flex justify-center">
+<!-- Mobile Viewport Container (390px constrained canvas) -->
+<div class="w-full max-w-[390px] min-h-screen bg-surface-container-lowest flex flex-col relative pb-16">
+<!-- Top App Bar (56px) - Anchor Component Execution -->
+<header class="fixed top-0 left-0 right-0 max-w-[390px] mx-auto w-full h-[56px] z-50 flex items-center justify-between px-gutter bg-surface-container-lowest border-b border-surface-container-highest">
+<div class="flex items-center space-x-2">
+<h1 class="font-headline-md text-headline-md tracking-tight text-on-surface">Discover Rooms</h1>
+</div>
+<div class="flex items-center space-x-1">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg text-secondary hover:text-on-surface transition-colors active:opacity-70">
+<span class="material-symbols-outlined text-[22px]" data-icon="tune">tune</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg text-secondary hover:text-on-surface transition-colors active:opacity-70">
+<span class="material-symbols-outlined text-[22px]" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Content Body with header clearance -->
+<main class="flex-1 mt-[56px] px-gutter py-space-sm space-y-space-md">
+<!-- Search Section -->
+<section class="pt-space-xs">
+<div class="relative flex items-center w-full">
+<span class="material-symbols-outlined absolute left-3 text-secondary text-[18px]" data-icon="search">search</span>
+<input class="w-full h-10 pl-9 pr-4 bg-surface-container-low text-on-surface placeholder:text-secondary font-body-md text-body-md rounded-lg border-0 focus:ring-1 focus:ring-on-surface transition-all" placeholder="Search rooms, topics, tags..." type="text"/>
+</div>
+</section>
+<!-- Category Filter Chips (Single horizontal scroll row) -->
+<section class="overflow-x-auto no-scrollbar -mx-gutter px-gutter py-1">
+<div class="flex items-center space-x-2 whitespace-nowrap">
+<button class="h-8 px-3.5 rounded-lg bg-on-surface text-surface-container-lowest font-label-md text-label-md transition-colors">
+            All
+          </button>
+<button class="h-8 px-3.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors">
+            Photography
+          </button>
+<button class="h-8 px-3.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors">
+            Culinary
+          </button>
+<button class="h-8 px-3.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors">
+            Visual Arts
+          </button>
+<button class="h-8 px-3.5 rounded-lg bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors">
+            Writing
+          </button>
+</div>
+</section>
+<!-- Clean Editorial Room Listings (Hairline boundaries, 16:9 ratio, no heavy card nesting) -->
+<section class="space-y-space-lg pt-space-xs">
+<!-- Room 1: Street Photography -->
+<article class="group pb-space-md border-b border-surface-container-highest">
+<div class="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-300" data-alt="A striking urban black and white street photograph capturing geometric building shadows cutting across an empty sunlit sidewalk. A solitary walker in a dark coat passes through high-contrast architectural beams. The atmosphere evokes classical gallery minimalism with pure natural daylight, sharp spatial precision, and a modern editorial photographic tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnnohW5fN-0o7VL2mbKDF8UCIjt1aR-vavS86uwV1OCfozPL95sU7ZtSoe1Y25VGHE7ly0fJUhYiaQE-E5lv9fEyi3seUlsY2JqpGlfc1mW5UqNRhz784x-pzaseVm8szxrZHjFU_XSw_9oDiR23p7ssVijeMeeLkgA2qLfYDCTc7-UOEuHHzPF_bsqf4CubFRzSiyAUS9ygXOQd1PFnWpEqt9uAU2fPGH6LWOohFG72kJC2C7qMc6eQZMcABbW-S3YwfkVh2yDg"/>
+<span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded bg-surface-container-lowest/90 backdrop-blur-sm text-primary font-label-sm-bold text-label-sm-bold">
+              Featured
+            </span>
+</div>
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Street Photography
+              </h2>
+<p class="font-body-md text-body-md text-secondary line-clamp-2">
+                Chasing fleeting moments, urban geometry, and shadows across global streets.
+              </p>
+<div class="flex items-center space-x-2 pt-1 font-label-sm text-label-sm text-secondary">
+<span class="flex items-center gap-1 font-label-sm-bold text-label-sm-bold text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                  82 active
+                </span>
+<span>•</span>
+<span>14.2k members</span>
+</div>
+</div>
+<button class="shrink-0 h-9 px-4 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container active:scale-95 transition-all">
+              Join
+            </button>
+</div>
+</article>
+<!-- Room 2: Home Cooking -->
+<article class="group pb-space-md border-b border-surface-container-highest">
+<div class="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-300" data-alt="An artisanal artisan sourdough loaf cut open on a rustic flour-dusted marble counter displaying open interior crumb structure. Soft morning window light bathes the crust in warm amber reflections against crisp white stoneware ceramics. High-precision clean culinary composition capturing process craftsmanship and quiet contemplation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-s_FMLrPkkyJa1qO39uedKD1W1YmXOBv4UqAo3_nQVy7T56O4tV9feYTKaokpvgl67mCZnUFzqzFt1whQogeFVZIW6smVtCSEjE0DH2NgpIVZnXJaV9S_sjnMgm97qoSaxjkdI2LC5nd1XBYnl3DiA692AO_Lrr8eYorYxySxvhiX4G5jK9lh1ekQqeUgKsev-afHQjQ3nUifHO5DMGmFtLbSg0p4DhyO5yZaS8vZ7B0YXZkQE2pge8Yo8C9ON5k--gdcWWQzcw"/>
+</div>
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Home Cooking
+              </h2>
+<p class="font-body-md text-body-md text-secondary line-clamp-2">
+                From beginner doughs to regional fermentation. Share process, fails, and feast notes.
+              </p>
+<div class="flex items-center space-x-2 pt-1 font-label-sm text-label-sm text-secondary">
+<span class="flex items-center gap-1 font-label-sm-bold text-label-sm-bold text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                  45 active
+                </span>
+<span>•</span>
+<span>9.8k members</span>
+</div>
+</div>
+<button class="shrink-0 h-9 px-3.5 rounded-lg border border-surface-container-highest bg-surface-container-low text-secondary font-label-md text-label-md flex items-center space-x-1 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="check">check</span>
+<span>Joined</span>
+</button>
+</div>
+</article>
+<!-- Room 3: Weekend Explorers -->
+<article class="group pb-space-md border-b border-surface-container-highest">
+<div class="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-300" data-alt="A tranquil pine forest hiking trail blanketed in atmospheric morning fog with towering evergreen trees. Diffuse cold sunlight pierces through mist particles illuminating wet granite stones and damp ferns. The aesthetic is ultra-clean, serene, and grounded in raw natural geometry and thoughtful exploration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx1BWrPmnqTndZZ_RXu6CqyR4kmgjRyxvIpFXolh_dQkK6aEjZHK9-OS4FwBxqzidCTr22YA1wKSU_lfP5PZPDBEmXXwieb7H6Bobr9810ZmnQyY_f_QmZudqtPaoE_An542b11g5zZV9a9-Uv0uM64ZPOm6apd-L9bLBy1eNitG4EltFO1N_VZ3dw9cSAaOBFHkWIXPWVePHuMKjtm0tkRPOLbJVnpziZqPQYtnvxnCgZrS9mhn9MSpL7N7eO6l_3ig1PmxdBHg"/>
+</div>
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Weekend Explorers
+              </h2>
+<p class="font-body-md text-body-md text-secondary line-clamp-2">
+                Local hikes, weekend roadtrips, and collaborative trail journals.
+              </p>
+<div class="flex items-center space-x-2 pt-1 font-label-sm text-label-sm text-secondary">
+<span>18.5k members</span>
+</div>
+</div>
+<button class="shrink-0 h-9 px-4 rounded-lg bg-surface-container-lowest border border-surface-container-highest text-on-surface font-label-md text-label-md hover:border-on-surface active:scale-95 transition-all">
+              Join
+            </button>
+</div>
+</article>
+<!-- Room 4: Digital Art & Shaders -->
+<article class="group pb-space-md">
+<div class="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-300" data-alt="A modern 3D generative sculptural knot suspended in a stark white architectural gallery space. The digital sculpture displays iridescent translucent glass and polished chrome finishes reflecting subtle crimson light ribbons. High-precision contemporary render embodying creative coding and pristine computational aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3l9fxVdZ7L-pfY9GeQFooX33jkNVBJ-uDtKZ_0SPPGxQKAmt38bJUXUEuqiWpIDHWDbs-Uw_ta6Brx_nknp_PjFpwseX0nk51IwQg7xZHxbZw8lR467k8-W-ZjRyMJQnGej-RaOpf8o6XOd_5ZFJQDLVK6a9WNMlqIyMdtVj3TxSJgLLU8d8A2zC-4qnIPeCZZi-LjP665y8V_q_riiqbebwGYc8BvnxBOYGRr_rUg-fWspzTHqN-k0z84zMLiQOSHX5VCEut_g"/>
+</div>
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Digital Art &amp; Shaders
+              </h2>
+<p class="font-body-md text-body-md text-secondary line-clamp-2">
+                Generative art, 3D modeling, and creative coding experiments.
+              </p>
+<div class="flex items-center space-x-2 pt-1 font-label-sm text-label-sm text-secondary">
+<span>6.4k members</span>
+</div>
+</div>
+<button class="shrink-0 h-9 px-4 rounded-lg bg-surface-container-lowest border border-surface-container-highest text-on-surface font-label-md text-label-md hover:border-on-surface active:scale-95 transition-all">
+              Join
+            </button>
+</div>
+</article>
+</section>
+</main>
+<!-- BottomNavBar (49px) - Shared Component JSON Blueprint Execution -->
+<!-- Active state: 'Rooms' destination matches primary screen context -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto w-full h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface-container-lowest border-t border-surface-container-highest">
+<!-- Item 1: Home -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+<span>Home</span>
+</button>
+<!-- Item 2: Rooms (ACTIVE DESTINATION) -->
+<button class="flex flex-col items-center justify-center text-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="bubble_chart" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bubble_chart</span>
+<span>Rooms</span>
+</button>
+<!-- Item 3: Create -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_box">add_box</span>
+<span>Create</span>
+</button>
+<!-- Item 4: Challenges -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="emoji_events">emoji_events</span>
+<span>Challenges</span>
+</button>
+<!-- Item 5: You -->
+<button class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-on-surface active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span>You</span>
+</button>
+</nav>
+</div>
+</body></html>

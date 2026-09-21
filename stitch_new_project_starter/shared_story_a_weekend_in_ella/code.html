@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shared Story — A Weekend in Ella | Frame</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed-variant": "#464747",
+            "on-surface": "#1c1b1b",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#f9fdff",
+            "surface-variant": "#e5e2e1",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-tertiary-fixed": "#001f26",
+            "surface-tint": "#b42719",
+            "on-primary": "#ffffff",
+            "primary": "#b12417",
+            "outline-variant": "#e3beb8",
+            "outline": "#8e706b",
+            "on-secondary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "primary-container": "#d43e2d",
+            "on-surface-variant": "#5a403c",
+            "inverse-primary": "#ffb4a8",
+            "on-secondary-container": "#626262",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "surface-container": "#f0edec",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "secondary-container": "#e1dfdf",
+            "secondary-fixed": "#e4e2e2",
+            "surface-container-highest": "#e5e2e1",
+            "secondary": "#5e5e5e",
+            "on-primary-fixed-variant": "#910803",
+            "on-secondary-fixed": "#1b1c1c",
+            "tertiary-container": "#008096",
+            "background": "#fcf9f8",
+            "on-background": "#1c1b1b",
+            "error-container": "#ffdad6",
+            "tertiary": "#006577",
+            "primary-fixed": "#ffdad4",
+            "surface-container-low": "#f6f3f2",
+            "tertiary-fixed-dim": "#6dd4ee",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#ebe7e7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "inverse-on-surface": "#f3f0ef",
+            "on-error": "#ffffff",
+            "inverse-surface": "#313030"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "label-sm-bold": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md-medium": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md-medium": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-block;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Hide scrollbars for clean gallery horizontal view */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen flex justify-center">
+<!-- Mobile Screen Shell Container (390px fixed preview canvas) -->
+<div class="w-full max-w-[390px] min-h-screen bg-surface-container-lowest flex flex-col relative border-x border-surface-container shadow-sm pb-[110px]">
+<!-- Top App Bar (Shared Components standard 56px, flat minimal gallery chrome) -->
+<header class="fixed top-0 w-full max-w-[390px] h-[56px] z-50 bg-surface-container-lowest/95 backdrop-blur-md flex items-center justify-between px-gutter border-b border-surface-variant">
+<!-- Back Chevron & Title cluster -->
+<div class="flex items-center space-x-2.5 overflow-hidden">
+<button aria-label="Navigate back" class="p-1 -ml-1.5 text-on-surface hover:text-secondary active:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col truncate">
+<h1 class="font-headline-sm text-headline-sm text-on-surface truncate tracking-tight">A Weekend in Ella</h1>
+<div class="flex items-center space-x-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+<span class="font-label-sm text-label-sm text-secondary truncate">Shared Story • 4 contributors</span>
+</div>
+</div>
+</div>
+<!-- Action Trailing Controls -->
+<div class="flex items-center space-x-1 flex-shrink-0">
+<button aria-label="Share story" class="p-1.5 text-on-surface hover:text-secondary active:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button aria-label="More options" class="p-1.5 text-on-surface hover:text-secondary active:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Content Stream -->
+<main class="pt-[68px] px-gutter flex-1 flex flex-col">
+<!-- Story Metadata & Contributors Strip -->
+<section class="mb-5 pb-4 border-b border-surface-container-high">
+<div class="flex items-center justify-between">
+<!-- Avatars & Invite -->
+<div class="flex items-center space-x-1.5">
+<div class="flex -space-x-2 overflow-hidden items-center py-1">
+<img class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Editorial close portrait profile photograph of young woman photographer Chloe in natural golden hour light, wearing linen and smiling softly. Shot in clean daylight gallery style with soft shadows, minimalist aesthetics, and neutral muted tones matching photo community design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfQOlqbYCJwTQuKaH9pCqXyZk_Aiyi7AxCGl877_LpQ5tNAPIVpPMx-1whBwF172E8lPF_Dq8h27nF1Kzlc8OXr-OK1Rjwg1CyBdZCiPqGdGQWTkoOk0xNLuUr9VZyfKBtTSDb76fnK1094q27791EAoyjKxyfxajfsVt0kphyWiJJzvoyTwQUmzM3I9nBT6Swl0fGu7QjHf7kaT2glj16zPbwUW6nXqC7QWDPDx1VeFp9RSkAGOID6eJJnSuCZGW7JpDQe6sURw"/>
+<img class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Editorial portrait photo of Marcus, a male documentary photographer in a sage field jacket outdoors under diffused cloudy mountain sky. High key, minimalist aesthetic with crisp focus on warm eyes, representing authentic visual artists in creative collective." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB22aVdnEFpmuHdn1iI2MeuXcB_puv8Hh_AFzBRm4M0mIUo5g_oKfibjqgj1nkcrPbkdCLufPTLVzDigfB63Y72_PKl_qYtQeXdDx124GP8-MaRhnNFF8b4hbhl5df6e2Zs1bavEhcmgRM6aBkq6lsMrILHWENKgHsF01O5I4YNUnLJvDvxPoLEBOTIK35Wmt2UBldB7mDJ9n2n8iqpb80SXOgqHiGdCaOD3D2v5PWNyxVl4MtnnPYAZ14AaeafYecrQGIRpwoPsg"/>
+<img class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Artistic profile portrait of Elena wearing round horn-rimmed eyeglasses in front of a white studio wall with soft window light. Clean editorial look, monochromatic tone with subtle warm highlights, conveying thoughtful creative photographer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkVvzYifPwFTC0MlEWW582ICRuq2Tos_WgWLAz56fhVF_0Vhwm4ZHkS6CLHjwuZtLn4leG2J959nJxUpnVJPoh4YpzlqAW-rkack3e8tIh8Dcj1wO8f-KpUB3beFVV9POPE3Wedw_SovcuOZPuCjTdh2qRuQIFPynwCXQlldUlec_Qe-qXr0ij7jOL9_8D6nHqOeP9PaahL_0OeQQ6wQ9XPiA94mIcZc5xl2JrWUf1j_lrMGJ8Vaf4tZZ0XZIlm64gJdRA5FbC-A"/>
+<img class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Minimalist overhead portrait of travel artist Sam looking upward against soft sand-colored background, bright natural sunlight casting gentle graphic shadow. High fidelity editorial composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkOqajNNe0srkDvQfUZxvvnVCFTEf-73CHcrTqf1RaCCTGJ_JB5jVThOIZbgzPTDu40qDPWEAod2yEt_x7cLLHGh7CH9GJA6TiYnHms0ItQoPQCbCShGJ4wfTlbdjAL_5GC2AXWR_9bEuW8p0OXSyXnq6iIFUtKA6b16MbPnbLrkg-slESQGUIHOhUHRCItHOQd5TyH5O6pVwJz8t1mXvXqYggRn2mA4b9j3gjI_NPImctgWFFkouUlV_NqKFKL_oBGSWUCzrFdw"/>
+</div>
+<!-- "+ Invite" Button -->
+<button class="h-7 px-2.5 rounded-lg border border-surface-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Invite</span>
+</button>
+</div>
+<!-- Prominent Coral "+ Add moment" Button -->
+<button class="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md flex items-center space-x-1 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add moment</span>
+</button>
+</div>
+</section>
+<!-- Chronological Timeline Stream with hairline spine -->
+<div class="relative flex flex-col space-y-7">
+<!-- Discrete vertical timeline spine line -->
+<div class="absolute left-[7px] top-2 bottom-6 w-[1px] bg-surface-variant pointer-events-none z-0"></div>
+<!-- TIMELINE POST 1: @chloe.lens -->
+<article class="relative z-10 pl-6 flex flex-col">
+<!-- Timeline Node Point -->
+<div class="absolute left-0 top-1 w-3.5 h-3.5 rounded-full bg-surface-container-lowest border-2 border-primary flex items-center justify-center">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+<!-- Post Header Info -->
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center space-x-2">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">@chloe.lens</span>
+<span class="text-surface-dim font-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary">Fri 6:20 AM</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary tracking-tight">Nine Arch Bridge</span>
+</div>
+<!-- Main Photo (4:5 Aspect Ratio) -->
+<div class="w-full rounded-xl overflow-hidden bg-surface-container border border-surface-container mb-2.5">
+<img class="w-full aspect-[4/5] object-cover block" data-alt="Breathtaking morning landscape photograph of the historic colonial Nine Arch Bridge in Ella, Sri Lanka. Lush verdant emerald tea terraces and mist-shrouded tropical palm forests surround the curved stone viaduct as an iconic blue passenger train crosses slowly. Soft golden sunrise rays pierce through dense mountain fog creating ethereal volumetric light. Shot on medium format camera with rich analog film color grading and razor sharp editorial clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSuC1BiEQgpprNKjQjFiNecXF0Dv3wP0ZVd3DOuakEMOiUucX15K3bWlR3yLLaYfCLh8AuI3ub7lGtlFU49IfDe1CeTQZIg8fDiZzhZFm4TYTWLTwqPYQyg_PJCuOMsCMSg1Upr3cix3LmmllWFC_ReQ92fhVbQLScSOj8prkc0ex0Zi43yCgJIu3fcR091mNHPHuO5C2jJBmwO39VnulCIyfirf1cIb_rcdCC2bkJuakAqrMxRDQkEGOyOInMlMZiguJm9INKJg"/>
+</div>
+<!-- Poetic Caption -->
+<p class="font-body-md text-body-md text-on-surface mb-2.5 leading-relaxed">
+            The valley was completely silent until the steam whistle cut through the morning fog. Worth the 5:00 AM climb through damp tea bushes.
+          </p>
+<!-- Interaction Metadata & Reaction Pills -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-1.5">
+<button class="h-6 px-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/70 text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span>✨</span>
+<span class="font-label-sm-bold text-label-sm-bold">Magic light</span>
+<span class="text-secondary ml-0.5">8</span>
+</button>
+<button class="h-6 px-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/70 text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span>🔥</span>
+<span class="font-label-sm-bold text-label-sm-bold">Inspiring</span>
+<span class="text-secondary ml-0.5">14</span>
+</button>
+</div>
+<!-- Comment trigger -->
+<button class="flex items-center space-x-1 text-secondary hover:text-on-surface text-label-sm font-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+<span>12</span>
+</button>
+</div>
+</article>
+<!-- TIMELINE POST 2: @marcus_k -->
+<article class="relative z-10 pl-6 flex flex-col">
+<!-- Timeline Node Point -->
+<div class="absolute left-0 top-1 w-3.5 h-3.5 rounded-full bg-surface-container-lowest border-2 border-secondary flex items-center justify-center">
+<div class="w-1 h-1 rounded-full bg-secondary"></div>
+</div>
+<!-- Post Header Info -->
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center space-x-2">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">@marcus_k</span>
+<span class="text-surface-dim font-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary">Sat 11:15 AM</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary tracking-tight">Ceylon Tea Trail</span>
+</div>
+<!-- Side-by-Side Duo Photos -->
+<div class="grid grid-cols-2 gap-1.5 rounded-xl overflow-hidden mb-2.5">
+<div class="bg-surface-container aspect-square overflow-hidden border border-surface-container">
+<img class="w-full h-full object-cover" data-alt="Vibrant documentary photograph of a steep winding trail through bright lime-green Ceylon tea bushes under high-key equatorial sunshine in Sri Lanka. Two backpacker photographers in earthy linen clothes walk along the narrow earthen path carrying vintage rangefinder cameras. Editorial composition with razor crisp textural details of tea leaves and red soil." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdewfFoVMdfHf0-4EelOdDzN8zIsgHFJKYBICXWhQhmfjAMbSN_oFCr7Imp7e44ejRtlW7xFcNRdXRCZl-rWMzaj2qeZscYbXQjC7salJcGy4W04A0350oIg9L1BtbOJ_VWcbSQ4gaQs9jeOZev-2cXUyUo2J64pLgPvNVY9JeCqWnryGvGvtFyv-ENYPe5Lzu2jjsXhE-2Lg3tfy3R3bUeAUq_g2Nlvf8wy-6EZNrrLxOnALkh2OX-UBJTdwuouAdoHqGuMbGBg"/>
+</div>
+<div class="bg-surface-container aspect-square overflow-hidden border border-surface-container">
+<img class="w-full h-full object-cover" data-alt="Intimate candid portrait photograph of smiling friends pausing during a mountain trek, drinking fresh golden Ceylon tea from clear rustic glasses at an open-air mountain stall in Ella. Warm daylight, vibrant green foliage backdrop, soft depth of field with authentic film grain texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClJuvRxLKuJSZ1wxWAQHgC8FSBO3oHp0y7HIvSv5L91J_-zt1c-qVN33PCdZYWE8YHAGBafVvJP3PAMg3C7tJAANrQQqAYRtp4G4pmMyL0rueoCa0gNy_ox2dM0kyxQhkPR29LRF1EYzOeH3olBveruO6J6uJdpUfODHZ3omSI_rC0tIlnCLkkgbqxabBWACQ9BgzG6rKpOtHLNooYS70l-gQsiuwuM04m3rwehaMd9PjY1_3QINhUNDuslkxnIimtM99l6y1-ig"/>
+</div>
+</div>
+<!-- Concise Caption -->
+<p class="font-body-md text-body-md text-on-surface mb-2 leading-relaxed">
+            Miles of emerald terraces. We stopped at a weathered shack midway for fresh spiced pekoe tea.
+          </p>
+<!-- Interaction Metadata & Reaction Pills -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-1.5">
+<button class="h-6 px-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/70 text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span>🍃</span>
+<span class="font-label-sm-bold text-label-sm-bold">Serene</span>
+<span class="text-secondary ml-0.5">5</span>
+</button>
+</div>
+<button class="flex items-center space-x-1 text-secondary hover:text-on-surface text-label-sm font-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+<span>4</span>
+</button>
+</div>
+</article>
+<!-- TIMELINE POST 3: @elena_v -->
+<article class="relative z-10 pl-6 flex flex-col">
+<!-- Timeline Node Point -->
+<div class="absolute left-0 top-1 w-3.5 h-3.5 rounded-full bg-surface-container-lowest border-2 border-primary flex items-center justify-center">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+<!-- Post Header Info -->
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center space-x-2">
+<span class="font-body-md-medium text-body-md-medium text-on-surface">@elena_v</span>
+<span class="text-surface-dim font-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary">Sun 7:40 PM</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary tracking-tight">Little Adam's Peak</span>
+</div>
+<!-- Panoramic Landscape Sunset Photo (16:9 widescreen) -->
+<div class="w-full rounded-xl overflow-hidden bg-surface-container border border-surface-container mb-2.5">
+<img class="w-full aspect-[16/9] object-cover block" data-alt="Majestic panoramic sunset landscape photograph from the summit ridge of Little Adam's Peak overlooking the deep Ella Gap gorge in Sri Lanka. Layered jagged mountain silhouettes fade into a glowing twilight horizon painted with deep crimson, amber, and indigo tones. Subtle lone hiker silhouette standing quietly at the cliff edge admiring the vast celestial scale. Clean, fine-art photographic composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzkGJ9XqdIpSNfV8yYpA6kTCJ0WMvhDcgxwYrHXFV1w2rzAVFy4VtKCbxxy_dMi_bqnZufJUbc2Rc3XB_cR-iWvF-zP0mGUDs0nqutozNpiV4xqf755lptQzrXt_wdCPmVstCcOPH0UyyPDCVaXQOtOcp1kwSK0ArhWe0kRkFo1tfqo7y-RkUCM707MWONyD1F4BXkUFUp4tOto65QZ8hee8DYTuPgE-25Dt1wOU3RiyB_6HD6ST-NBAOlpjKoFS-rT-6PD0ENWQ"/>
+</div>
+<!-- Concise Caption -->
+<p class="font-body-md text-body-md text-on-surface mb-2 leading-relaxed">
+            The last light catching Ella Rock across the gorge. The winds were ferocious, but keeping the tripod steady paid off.
+          </p>
+<!-- Interaction Metadata & Reaction Pills -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-1.5">
+<button class="h-6 px-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/70 text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span>⛰️</span>
+<span class="font-label-sm-bold text-label-sm-bold">Epic</span>
+<span class="text-secondary ml-0.5">19</span>
+</button>
+<button class="h-6 px-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-surface-variant/70 text-on-surface font-label-sm text-label-sm flex items-center space-x-1 transition-colors" type="button">
+<span>❤️</span>
+<span class="text-secondary">7</span>
+</button>
+</div>
+<button class="flex items-center space-x-1 text-secondary hover:text-on-surface text-label-sm font-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chat_bubble_outline</span>
+<span>9</span>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- Sticky Bottom Interaction Drawer (Floating above 49px Bottom Bar) -->
+<section class="fixed bottom-[49px] w-full max-w-[390px] z-40 bg-surface-container-lowest/95 backdrop-blur-md px-gutter py-2 border-t border-surface-variant">
+<form class="flex items-center space-x-2" onsubmit="event.preventDefault()">
+<button aria-label="Attach Photo" class="h-9 w-9 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface active:scale-95 transition-transform flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</button>
+<div class="relative flex-1">
+<input class="w-full h-9 pl-3 pr-8 rounded-lg bg-surface-container border-0 focus:ring-1 focus:ring-on-surface text-body-md font-body-md placeholder:text-secondary placeholder:font-body-md text-on-surface focus:bg-surface-container-lowest transition-all" placeholder="Add your moment to this story..." type="text"/>
+<button aria-label="Tag location" class="absolute right-2 top-1/2 -translate-y-1/2 text-secondary hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+</button>
+</div>
+<button aria-label="Send moment" class="h-9 px-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center active:scale-95 transition-transform flex-shrink-0" type="submit">
+<span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+</button>
+</form>
+</section>
+<!-- Bottom Navigation Bar (Docked 49px standard destination shell from JSON) -->
+<!-- Destination count: 5 ["Home", "Rooms", "Create", "Challenges", "You"] -->
+<!-- "Rooms" active because Shared Story is a collaborative Room feature -->
+<nav class="fixed bottom-0 left-0 w-full h-[49px] z-50 flex justify-around items-center px-space-xs pb-safe bg-surface dark:bg-inverse-surface border-t border-surface-variant dark:border-outline-variant flat no shadows max-w-[390px] mx-auto right-0">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-label-sm text-label-sm hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-95 duration-150" href="#home">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<!-- Rooms (ACTIVE destination) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-label-sm-bold text-label-sm-bold hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-95 duration-150" href="#rooms">
+<span class="material-symbols-outlined material-symbols-fill" style="font-variation-settings: 'FILL' 1;">bubble_chart</span>
+<span>Rooms</span>
+</a>
+<!-- Create -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-label-sm text-label-sm hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-95 duration-150" href="#create">
+<span class="material-symbols-outlined">add_box</span>
+<span>Create</span>
+</a>
+<!-- Challenges -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-label-sm text-label-sm hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-95 duration-150" href="#challenges">
+<span class="material-symbols-outlined">emoji_events</span>
+<span>Challenges</span>
+</a>
+<!-- You -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-label-sm text-label-sm hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-95 duration-150" href="#you">
+<span class="material-symbols-outlined">person</span>
+<span>You</span>
+</a>
+</nav>
+</div>
+</body></html>
