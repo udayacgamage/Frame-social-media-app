@@ -14,6 +14,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { Icon } from '@/components/common/Icon';
+import { useChallenges } from '@/hooks/useChallenges';
 import { sampleChallenges } from '@/data/mockData';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -22,7 +23,12 @@ const subItemWidth = (screenWidth - spacing.gutter * 2 - 8) / 2;
 export default function ChallengeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const challenge = sampleChallenges.find((c) => c.id === id) || sampleChallenges[0];
+  const { challenges } = useChallenges();
+  const challenge =
+    challenges.find((c) => c.id === id) ||
+    sampleChallenges.find((c) => c.id === id) ||
+    challenges[0] ||
+    sampleChallenges[0];
   const [isJoined, setIsJoined] = useState(challenge.isJoined ?? false);
 
   const handleParticipate = () => {

@@ -1,12 +1,38 @@
 import React, { useEffect } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import { colors } from '@/theme/tokens';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+
+function NotificationHandler() {
+  usePushNotifications();
+  return null;
+}
+
+function RouteGuard({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, loading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!isAuthenticated && !inAuthGroup && segments[0] !== undefined) {
+      router.replace('/(auth)/login');
+    } else if (isAuthenticated && inAuthGroup) {
+      router.replace('/(tabs)');
+    }
+  }, [isAuthenticated, loading, segments]);
+
+  return <>{children}</>;
+}
 
 export default function RootLayout() {
   useEffect(() => {
@@ -15,15 +41,17 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: colors.surface },
-            animation: 'fade',
-          }}
-        >
+      <NotificationHandler />
+      <RouteGuard>
+        <SafeAreaProvider>
+          <StatusBar style="dark" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.surface },
+              animation: 'fade',
+            }}
+          >
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -62,8 +90,16 @@ export default function RootLayout() {
               animation: 'slide_from_right',
             }}
           />
+          <Stack.Screen
+            name="chat/[id]"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
         </Stack>
       </SafeAreaProvider>
+      </RouteGuard>
     </AuthProvider>
   );
 }

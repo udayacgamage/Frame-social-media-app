@@ -246,18 +246,22 @@ export const samplePosts: Post[] = [
         tag: 'In-Camera',
         description: 'Leica Q2, 28mm Summilux at f/5.6. ISO 200, 1/500s. Underexposed by 1 stop to protect highlight detail on polished stone.',
         gearSetup: 'Spot metering locked on sunlit column edge.',
+        rawImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDr3guoVmV99k1a30wsI4AMDT6EHEIkBnZrKBzbG7_9dQFxHj4UPnti9PhFB3ar-zGp-L69FPvKyNwkQb-mvfQLN9o2oZy99HDtHOluuriG4hGiJ0zlWTD6w-0Pkh4GVHOYjgvbwq_ZgUHugdXiejN5t0MZR9UrIbfTfUYhF4vHDzBr5okeuci4hvNOlzC_AE21fly4_lbl8aogKIe_3_T2JvQ2tp5yCSeMrGsv4WhP5ld10g_FUUb67jwlpB2ryVCU-C6L_h9VbA',
+        processedImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDr3guoVmV99k1a30wsI4AMDT6EHEIkBnZrKBzbG7_9dQFxHj4UPnti9PhFB3ar-zGp-L69FPvKyNwkQb-mvfQLN9o2oZy99HDtHOluuriG4hGiJ0zlWTD6w-0Pkh4GVHOYjgvbwq_ZgUHugdXiejN5t0MZR9UrIbfTfUYhF4vHDzBr5okeuci4hvNOlzC_AE21fly4_lbl8aogKIe_3_T2JvQ2tp5yCSeMrGsv4WhP5ld10g_FUUb67jwlpB2ryVCU-C6L_h9VbA',
       },
       {
         stepNumber: 2,
         title: 'Base Curve & Highlight Roll-off',
         tag: 'Lightroom',
         description: 'Pulling back blown stone values with an S-curve tailored for linear sensor roll-off. Preserves tactile cement grain.',
+        processedImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBNlLPGxPQ24wQmDnEdXmntTUYvazyKvO3YfEQ0WYw8be89Dxzy0mmiyH1aq97ZM7OE-F21v3CXhQD1WkpDgYJv5oebg6pYKKZd3U-G4swhWxJITyRrIBUEQQtq9PlnIv48BrqYf8hzvR1MxZzYWN7_w6-cB1thZdmhacmB_tNBlc5SRFcLxUnPS7bpM8W3c18ItoB0NnOHFWYNWPQXGIKyOyA0_H8RLdhHJVMkfljvwQQjO4eINz75J0gbcoTh_Ye8V43QqqtgSw',
       },
       {
         stepNumber: 3,
         title: 'Split Toning & Color Balance',
         tag: 'Master',
         description: 'Infusing deep warm amber into midtones while pulling shadows slightly toward cool slate for atmospheric balance.',
+        processedImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQVMMzKwDq_hIbX61uJ8xPaDKmx9KR885KCV9cs3ufIxXXUmXOO0fCxDcqDtRlPKz-Iw4_C1JkmR73ahRtzsFncOYiMt5lvwm_dEQwFbrSJ6PaZHFx9wfEa9uL65ZgrgucUs2a3QZTZQ0snr9ZkHQs76sSgmLEAY0M-H4l0BhhSpEYOZiMtd7hjhQap86FJg27A3mZcIZPF2UVp2T_QibuE7hmJSqkHqskCBVlx3MwlGcyePavitRj3XTEIfyfYFbKTzJpQ8tNIg',
       }
     ],
     createdAt: '2h ago',
@@ -282,6 +286,7 @@ export const sampleChallenges: Challenge[] = [
       'Any camera format (Digital or Film)',
       'Include technical exposure notes',
     ],
+    category: 'Photography',
     submissions: [
       {
         id: 'sub_1',
@@ -304,6 +309,66 @@ export const sampleChallenges: Challenge[] = [
         }
       }
     ]
+  },
+  {
+    id: 'wild-sourdough-crumb',
+    title: 'Wild Sourdough & Hearth Crumb',
+    subtitle: 'Culinary Craft Community',
+    description: 'Document your hydration ratios, blistering blisters, open air pocket crumb geometry, and natural wood-fired crust caramelization.',
+    roomName: 'Home Cooking & Craft',
+    roomId: 'home-cooking',
+    category: 'Culinary',
+    coverImageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80',
+    closesIn: '6 days remaining',
+    deadlineDate: 'Closes October 30',
+    entriesCount: 192,
+    isJoined: false,
+    guidelines: [
+      'Document flour type & hydration percentage',
+      'Macro slice capture required',
+      'Recipe formula notes encouraged',
+    ],
+    submissions: []
+  },
+  {
+    id: 'nordic-reduction-forms',
+    title: 'Tactile Stoneware & Reduction Glaze',
+    subtitle: 'Visual Arts Collective',
+    description: 'Sculptural stoneware silhouettes and subtle celadon reduction glazes. Highlight tactile surface texture under natural side light.',
+    roomName: 'Nordic Ceramics Studio',
+    roomId: 'nordic-ceramics',
+    category: 'Art',
+    coverImageUrl: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80',
+    closesIn: '10 days remaining',
+    deadlineDate: 'Closes November 4',
+    entriesCount: 114,
+    isJoined: false,
+    guidelines: [
+      'Original wheel or handbuilt ceramics',
+      'Natural side-lit lighting',
+      'Detail kiln temperature & cone',
+    ],
+    submissions: []
+  },
+  {
+    id: 'tokyo-analog-journal',
+    title: 'Analog Travel Dispatches: Tokyo Alleyways',
+    subtitle: 'Writers & Photographers Collective',
+    description: 'Short poetic prose paired with 35mm candid street observations. Capture the quiet neon mist of late-night backstreets.',
+    roomName: 'Tokyo Field Notes',
+    roomId: 'tokyo-notes',
+    category: 'Writing',
+    coverImageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&q=80',
+    closesIn: '12 days remaining',
+    deadlineDate: 'Closes November 6',
+    entriesCount: 78,
+    isJoined: false,
+    guidelines: [
+      'Micro-essay or prose poem (max 150 words)',
+      '1 accompanying original photo',
+      'Location coordinate details',
+    ],
+    submissions: []
   }
 ];
 

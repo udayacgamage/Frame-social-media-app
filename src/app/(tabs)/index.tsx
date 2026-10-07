@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,19 @@ import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { StoryAvatarStrip } from '@/components/stories/StoryAvatarStrip';
 import { FeedCard } from '@/components/feed/FeedCard';
+import { CommentsModal } from '@/components/feed/CommentsModal';
 import { Icon } from '@/components/common/Icon';
 import { usePosts } from '@/hooks/usePosts';
 import { useStories } from '@/hooks/useStories';
 import { useActivity } from '@/hooks/useActivity';
+import type { Post } from '@/types';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { posts, loading: postsLoading, toggleLike, toggleBookmark } = usePosts();
+  const { posts, loading: postsLoading, toggleLike, toggleBookmark, updateCommentCount } = usePosts();
   const { stories } = useStories();
   const { unreadCount } = useActivity();
+  const [activeCommentPost, setActiveCommentPost] = useState<Post | null>(null);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -87,6 +90,7 @@ export default function HomeScreen() {
               post={post}
               onToggleLike={() => toggleLike(post.id)}
               onToggleBookmark={() => toggleBookmark(post.id)}
+              onCommentPress={(p) => setActiveCommentPost(p)}
             />
           ))
         )}
@@ -108,6 +112,21 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Post Comments Bottom Sheet */}
+      {activeCommentPost && (
+        <CommentsModal
+          visible={!!activeCommentPost}
+          onClose={() => setActiveCommentPost(null)}
+          postId={activeCommentPost.id}
+          postTitle={activeCommentPost.caption?.slice(0, 32)}
+          postAuthorHandle={activeCommentPost.author.handle}
+          onCommentCountChange={(newCount) => {
+            activeCommentPost.commentsCount = newCount;
+            updateCommentCount(activeCommentPost.id, newCount);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }

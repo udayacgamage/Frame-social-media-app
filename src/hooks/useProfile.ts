@@ -45,8 +45,22 @@ export function useProfile(userId?: string) {
 
     if (err) {
       setError(err.message);
-      // Fallback to mock data if fetch fails
-      setProfile(currentUser);
+      if (user) {
+        setProfile({
+          id: user.id,
+          handle: user.user_metadata?.handle || user.email?.split('@')[0] || 'creator',
+          displayName: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Creator',
+          pronouns: 'they/them',
+          roleTitle: 'Visual Artist',
+          avatarUrl: user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80',
+          bio: 'Creator on Frame',
+          stats: { challenges: 0, sharedStories: 0, processGuides: 0 },
+          gearList: ['Fujifilm X-T5', '35mm f/1.4'],
+          quietModeEnabled: false,
+        });
+      } else {
+        setProfile(currentUser);
+      }
     } else {
       setProfile(mapProfile(data));
     }
@@ -58,31 +72,81 @@ export function useProfile(userId?: string) {
   }, [fetchProfile]);
 
   const updateProfile = useCallback(
-    async (updates: Partial<Pick<UserProfile, 'displayName' | 'bio' | 'pronouns' | 'roleTitle' | 'avatarUrl' | 'quietModeEnabled' | 'gearList'>>) => {
-      if (isMockMode) {
-        setProfile((prev) => (prev ? { ...prev, ...updates } : prev));
+    async (
+      updates: Partial<
+        Pick<
+          UserProfile,
+          | 'handle'
+          | 'displayName'
+          | 'bio'
+          | 'pronouns'
+          | 'roleTitle'
+          | 'avatarUrl'
+          | 'quietModeEnabled'
+          | 'gearList'
+        >
+      >
+    ) => {
+      setProfile((prev) => (prev ? { ...prev, ...updates } : prev));
+
+      if (isMockMode || !targetId) {
         return { error: null };
       }
 
-      const { error: err } = await supabase
-        .from('profiles')
-        .update({
-          display_name: updates.displayName,
-          bio: updates.bio,
-          pronouns: updates.pronouns,
-          role_title: updates.roleTitle,
-          avatar_url: updates.avatarUrl,
-          quiet_mode_enabled: updates.quietModeEnabled,
-          gear_list: updates.gearList,
-        })
-        .eq('id', targetId);
+      const payload: Record<string, any> = {
+        updated_at: new Date().toISOString(),
+      };
+      if (updates.handle !== undefined) payload.handle = updates.handle;
+      if (updates.displayName !== undefined) payload.display_name = updates.displayName;
+      if (updates.bio !== undefined) payload.bio = updates.bio;
+      if (updates.pronouns !== undefined) payload.pronouns = updates.pronouns;
+      if (updates.roleTitle !== undefined) payload.role_title = updates.roleTitle;
+      if (updates.avatarUrl !== undefined) payload.avatar_url = updates.avatarUrl;
+      if (updates.quietModeEnabled !== undefined) payload.quiet_mode_enabled = updates.quietModeEnabled;
+      if (updates.gearList !== undefined) payload.gear_list = updates.gearList;
 
-      if (!err) {
+      const { data, error: err } = await supabase
+        .from('profiles')
+        .upsert(
+          {
+            id: targetId,
+            handle: updates.handle || profile?.handle || 'creator',
+            display_name: updates.displayName || profile?.displayName || 'Creator',
+            ...payload,
+          },
+          { onConflict: 'id' }
+        )
+        .select()
+        .single();
+
+      if (err) {
+        await fetchProfile();
+        return { error: err.message };
+      }
+
+      if (user && !isMockMode) {
+        const metaUpdates: Record<string, any> = {};
+        if (updates.displayName) metaUpdates.display_name = updates.displayName;
+        if (updates.handle) metaUpdates.handle = updates.handle;
+        if (updates.avatarUrl) metaUpdates.avatar_url = updates.avatarUrl;
+        if (Object.keys(metaUpdates).length > 0) {
+          supabase.auth.updateUser({ data: metaUpdates }).catch(() => {});
+        }
+      }
+
+      if (data) {
+        setProfile((prev) => ({
+          ...(prev || ({} as UserProfile)),
+          ...mapProfile(data),
+          stats: prev?.stats || { challenges: 0, sharedStories: 0, processGuides: 0 },
+        }));
+      } else {
         await fetchProfile();
       }
-      return { error: err?.message ?? null };
+
+      return { error: null };
     },
-    [targetId, isMockMode, fetchProfile]
+    [targetId, isMockMode, user, profile, fetchProfile]
   );
 
   return { profile, loading, error, updateProfile, refetch: fetchProfile };

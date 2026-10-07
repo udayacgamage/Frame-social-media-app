@@ -14,10 +14,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { FeedCard } from '@/components/feed/FeedCard';
+import { CommentsModal } from '@/components/feed/CommentsModal';
 import { Icon } from '@/components/common/Icon';
 import { useRooms } from '@/hooks/useRooms';
 import { usePosts } from '@/hooks/usePosts';
 import { useChallenges } from '@/hooks/useChallenges';
+import type { Post } from '@/types';
 
 type RoomTab = 'All' | 'Process' | 'Discussions';
 
@@ -25,11 +27,19 @@ export default function RoomDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { rooms, toggleJoin } = useRooms();
-  const room = rooms.find((r) => r.id === id) || rooms[0];
+  const room = rooms.find((r) => r.id === id || r.slug === id) || rooms[0];
   const [activeTab, setActiveTab] = useState<RoomTab>('All');
-  const { posts: relatedPosts, toggleLike, toggleBookmark } = usePosts({ roomId: id });
+  const [activeCommentPost, setActiveCommentPost] = useState<Post | null>(null);
+  const isJoined = room?.isJoined ?? false;
+  const { posts: relatedPosts, toggleLike, toggleBookmark } = usePosts({ roomId: room?.id || id });
   const { challenges } = useChallenges();
-  const roomChallenge = challenges[0];
+  const roomChallenge = challenges.find((c) => c.roomId === room?.id) || challenges[0];
+
+  const handleToggleJoin = async () => {
+    if (room?.id) {
+      await toggleJoin(room.id);
+    }
+  };
 
   const handleShare = async () => {
     try {
@@ -85,7 +95,7 @@ export default function RoomDetailScreen() {
             {/* Joined State Toggle */}
             <TouchableOpacity
               style={[styles.joinedButton, !isJoined && styles.joinButton]}
-              onPress={() => setIsJoined(!isJoined)}
+              onPress={handleToggleJoin}
               activeOpacity={0.8}
             >
               <Text style={[styles.joinedButtonText, !isJoined && styles.joinButtonText]}>
@@ -152,9 +162,29 @@ export default function RoomDetailScreen() {
 
         {/* Room Feed */}
         {relatedPosts.map((post) => (
-          <FeedCard key={post.id} post={post} />
+          <FeedCard
+            key={post.id}
+            post={post}
+            onToggleLike={() => toggleLike(post.id)}
+            onToggleBookmark={() => toggleBookmark(post.id)}
+            onCommentPress={(p) => setActiveCommentPost(p)}
+          />
         ))}
       </ScrollView>
+
+      {/* Post Comments Bottom Sheet */}
+      {activeCommentPost && (
+        <CommentsModal
+          visible={!!activeCommentPost}
+          onClose={() => setActiveCommentPost(null)}
+          postId={activeCommentPost.id}
+          postTitle={activeCommentPost.caption?.slice(0, 32)}
+          postAuthorHandle={activeCommentPost.author.handle}
+          onCommentCountChange={(newCount) => {
+            activeCommentPost.commentsCount = newCount;
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }

@@ -17,6 +17,7 @@ import { Icon } from '@/components/common/Icon';
 import { useRooms } from '@/hooks/useRooms';
 
 const categories = ['All', 'Photography', 'Culinary', 'Visual Arts', 'Writing'];
+const quickRoomTags = ['Street', 'Nordic', 'Cooking', 'Tokyo', 'Ceramics'];
 
 export default function DiscoverRoomsScreen() {
   const router = useRouter();
@@ -26,13 +27,25 @@ export default function DiscoverRoomsScreen() {
 
   const filteredRooms = rooms.filter((r) => {
     const matchesCat =
-      selectedCategory === 'All' || r.category.toLowerCase().includes(selectedCategory.toLowerCase());
+      selectedCategory === 'All' ||
+      r.category.toLowerCase().includes(selectedCategory.toLowerCase());
+
+    const cleanQuery = searchQuery.trim().toLowerCase();
     const matchesQuery =
-      searchQuery.trim() === '' ||
-      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.description.toLowerCase().includes(searchQuery.toLowerCase());
+      cleanQuery === '' ||
+      r.name.toLowerCase().includes(cleanQuery) ||
+      r.description.toLowerCase().includes(cleanQuery) ||
+      r.slug.toLowerCase().includes(cleanQuery);
+
     return matchesCat && matchesQuery;
   });
+
+  const handleResetFilters = () => {
+    setSelectedCategory('All');
+    setSearchQuery('');
+  };
+
+  const isFiltered = selectedCategory !== 'All' || searchQuery.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -59,11 +72,35 @@ export default function DiscoverRoomsScreen() {
             <TextInput
               style={styles.searchInput}
               placeholder="Search rooms, topics, tags..."
-              placeholderTextColor={colors.secondary}
+              placeholderTextColor={colors.muted}
               value={searchQuery}
               onChangeText={setSearchQuery}
-              clearButtonMode="while-editing"
+              returnKeyType="search"
             />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity
+                onPress={() => setSearchQuery('')}
+                style={styles.clearButton}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Icon name="close" size={16} color={colors.secondary} />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Quick Keyword Chips */}
+          <View style={styles.quickTagRow}>
+            <Text style={styles.quickTagLabel}>Try:</Text>
+            {quickRoomTags.map((tag) => (
+              <TouchableOpacity
+                key={tag}
+                style={styles.quickTag}
+                onPress={() => setSearchQuery(tag)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.quickTagText}>{tag}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 
@@ -95,66 +132,106 @@ export default function DiscoverRoomsScreen() {
           })}
         </ScrollView>
 
-        {/* Rooms Stream */}
-        <View style={styles.roomList}>
-          {filteredRooms.map((room) => (
-            <View key={room.id} style={styles.roomCard}>
-              {/* Cover Image 16:9 */}
-              <TouchableOpacity
-                style={styles.coverContainer}
-                onPress={() => router.push(`/room/${room.id}`)}
-                activeOpacity={0.9}
-              >
-                <Image source={{ uri: room.coverImageUrl }} style={styles.coverImage} />
-                {room.isFeatured && (
-                  <View style={styles.featuredBadge}>
-                    <Text style={styles.featuredBadgeText}>Featured</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
+        {/* Status Bar */}
+        <View style={styles.statusRow}>
+          <Text style={styles.statusText}>
+            {loading
+              ? 'Loading rooms...'
+              : `Showing ${filteredRooms.length} ${
+                  filteredRooms.length === 1 ? 'room' : 'rooms'
+                }${selectedCategory !== 'All' ? ` in ${selectedCategory}` : ''}`}
+          </Text>
 
-              {/* Room Content */}
-              <View style={styles.roomMetaRow}>
+          {isFiltered && (
+            <TouchableOpacity onPress={handleResetFilters} activeOpacity={0.7}>
+              <Text style={styles.resetText}>Reset filters</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Rooms Stream / Empty State */}
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={colors.coral} />
+          </View>
+        ) : filteredRooms.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <View style={styles.emptyIconCircle}>
+              <Icon name="search" size={26} color={colors.secondary} />
+            </View>
+            <Text style={styles.emptyTitle}>No rooms found</Text>
+            <Text style={styles.emptySubtitle}>
+              No community rooms match “{searchQuery}”. Try a broader search term or explore all rooms.
+            </Text>
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={handleResetFilters}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.resetButtonText}>Explore All Rooms</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.roomList}>
+            {filteredRooms.map((room) => (
+              <View key={room.id} style={styles.roomCard}>
+                {/* Cover Image 16:9 */}
                 <TouchableOpacity
-                  style={styles.roomTextColumn}
+                  style={styles.coverContainer}
                   onPress={() => router.push(`/room/${room.id}`)}
-                  activeOpacity={0.8}
+                  activeOpacity={0.9}
                 >
-                  <Text style={styles.roomTitle}>{room.name}</Text>
-                  <Text style={styles.roomDescription} numberOfLines={2}>
-                    {room.description}
-                  </Text>
-                  <View style={styles.statsRow}>
-                    <View style={styles.activePill}>
-                      <View style={styles.activeDot} />
-                      <Text style={styles.activeText}>{room.activeCount} active</Text>
+                  <Image source={{ uri: room.coverImageUrl }} style={styles.coverImage} />
+                  {room.isFeatured && (
+                    <View style={styles.featuredBadge}>
+                      <Text style={styles.featuredBadgeText}>Featured</Text>
                     </View>
-                    <Text style={styles.dotSeparator}>•</Text>
-                    <Text style={styles.membersText}>
-                      {(room.membersCount / 1000).toFixed(1)}k members
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-
-                {/* Join CTA */}
-                <TouchableOpacity
-                  style={[styles.joinButton, room.isJoined && styles.joinedButton]}
-                  onPress={() => toggleJoin(room.id)}
-                  activeOpacity={0.8}
-                >
-                  <Text
-                    style={[styles.joinButtonText, room.isJoined && styles.joinedButtonText]}
-                  >
-                    {room.isJoined ? 'Joined' : 'Join'}
-                  </Text>
-                  {room.isJoined && (
-                    <Icon name="check" size={14} color={colors.ink} />
                   )}
                 </TouchableOpacity>
+
+                {/* Room Content */}
+                <View style={styles.roomMetaRow}>
+                  <TouchableOpacity
+                    style={styles.roomTextColumn}
+                    onPress={() => router.push(`/room/${room.id}`)}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.roomTitle}>{room.name}</Text>
+                    <Text style={styles.roomDescription} numberOfLines={2}>
+                      {room.description}
+                    </Text>
+                    <View style={styles.statsRow}>
+                      <View style={styles.activePill}>
+                        <View style={styles.activeDot} />
+                        <Text style={styles.activeText}>{room.activeCount} active</Text>
+                      </View>
+                      <Text style={styles.dotSeparator}>•</Text>
+                      <Text style={styles.membersText}>
+                        {(room.membersCount / 1000).toFixed(1)}k members
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  {/* Join CTA */}
+                  <TouchableOpacity
+                    style={[styles.joinButton, room.isJoined && styles.joinedButton]}
+                    onPress={() => toggleJoin(room.id)}
+                    activeOpacity={0.8}
+                  >
+                    <Text
+                      style={[styles.joinButtonText, room.isJoined && styles.joinedButtonText]}
+                    >
+                      {room.isJoined ? 'Joined' : 'Join'}
+                    </Text>
+                    {room.isJoined && (
+                      <Icon name="check" size={14} color={colors.ink} />
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -182,17 +259,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surfaceContainerLow,
     borderRadius: radii.md,
-    height: 40,
-    paddingHorizontal: spacing.sm + 4,
+    paddingHorizontal: spacing.sm,
+    height: 42,
+    borderWidth: 1,
+    borderColor: colors.hairline,
   },
   searchIcon: {
-    marginRight: 8,
+    marginRight: 6,
   },
   searchInput: {
     flex: 1,
-    height: '100%',
     ...typography.bodyMd,
     color: colors.ink,
+  },
+  clearButton: {
+    padding: 4,
+  },
+  quickTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: spacing.xs,
+  },
+  quickTagLabel: {
+    ...typography.labelSm,
+    color: colors.secondary,
+    fontSize: 11,
+  },
+  quickTag: {
+    backgroundColor: colors.surfaceContainerLow,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: radii.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.hairline,
+  },
+  quickTagText: {
+    ...typography.labelSm,
+    color: colors.ink,
+    fontSize: 11,
   },
   chipRow: {
     paddingHorizontal: spacing.gutter,
@@ -221,24 +326,84 @@ const styles = StyleSheet.create({
   inactiveChipText: {
     color: colors.secondary,
   },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.gutter,
+    paddingVertical: spacing.xs,
+    marginBottom: 4,
+  },
+  statusText: {
+    ...typography.labelSm,
+    color: colors.secondary,
+  },
+  resetText: {
+    ...typography.labelSm,
+    color: colors.coral,
+    fontWeight: '500',
+  },
+  loadingContainer: {
+    paddingVertical: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyContainer: {
+    paddingVertical: 56,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyIconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: colors.surfaceContainerLow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+  },
+  emptyTitle: {
+    ...typography.bodyMdMedium,
+    color: colors.ink,
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  emptySubtitle: {
+    ...typography.bodyMd,
+    color: colors.secondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: spacing.md,
+  },
+  resetButton: {
+    backgroundColor: colors.ink,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 8,
+    borderRadius: radii.md,
+  },
+  resetButtonText: {
+    ...typography.labelSmBold,
+    color: colors.surface,
+  },
   roomList: {
     paddingHorizontal: spacing.gutter,
-    paddingTop: spacing.xs,
+    gap: spacing.lg,
   },
   roomCard: {
-    paddingBottom: spacing.lg,
+    backgroundColor: colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.surfaceContainerHighest,
-    marginBottom: spacing.md,
+    borderBottomColor: colors.hairline,
+    paddingBottom: spacing.md,
   },
   coverContainer: {
     width: '100%',
     aspectRatio: 16 / 9,
     borderRadius: radii.md,
     overflow: 'hidden',
+    position: 'relative',
     backgroundColor: colors.surfaceContainer,
     marginBottom: spacing.sm,
-    position: 'relative',
   },
   coverImage: {
     width: '100%',

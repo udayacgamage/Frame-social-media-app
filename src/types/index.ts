@@ -112,6 +112,7 @@ export interface Challenge {
   description: string;
   roomName: string;
   roomId: string;
+  category?: string;
   coverImageUrl: string;
   closesIn: string;
   deadlineDate: string;
@@ -145,3 +146,18 @@ export interface MessageThread {
   unreadCount: number;
   online?: boolean;
 }
+
+export interface ChatMessage {
+  id: string;
+  threadId?: string;
+  senderId: string;
+  receiverId?: string;
+  content: string;
+  imageUrl?: string;
+  isMe: boolean;
+  isRead?: boolean;
+  createdAt: string;
+  timeLabel?: string;
+  status?: 'sending' | 'sent' | 'read' | 'error';
+}
+

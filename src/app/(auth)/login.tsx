@@ -36,8 +36,9 @@ export default function LoginScreen() {
 
     if (error) {
       Alert.alert('Sign in failed', error);
+    } else {
+      router.replace('/(tabs)');
     }
-    // On success, auth state change triggers redirect in root layout
   };
 
   return (

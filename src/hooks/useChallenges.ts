@@ -17,6 +17,7 @@ function mapChallenge(row: any, userSubmitted = false): Challenge {
     description: row.description || '',
     roomName: row.room?.name || '',
     roomId: row.room_id || '',
+    category: row.category || row.room?.category || 'Photography',
     coverImageUrl: row.cover_image_url || '',
     closesIn: diffDays > 0 ? `${diffDays}d left` : 'Closed',
     deadlineDate: closesAt.toISOString(),
@@ -45,7 +46,7 @@ export function useChallenges() {
       .from('challenges')
       .select(`
         *,
-        room:rooms(name)
+        room:rooms(name, category)
       `)
       .order('closes_at', { ascending: true });
 

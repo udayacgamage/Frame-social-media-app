@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Share } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Icon } from '../common/Icon';
@@ -23,6 +23,7 @@ export const FeedCard: React.FC<FeedCardProps> = ({
   onToggleBookmark,
 }) => {
   const router = useRouter();
+  const lastTapRef = useRef<number>(0);
   const liked = post.isLiked ?? false;
   const likesCount = post.likesCount;
   const bookmarked = post.isBookmarked ?? false;
@@ -41,6 +42,34 @@ export const FeedCard: React.FC<FeedCardProps> = ({
 
   const openRoom = () => {
     router.push(`/room/${post.roomId}`);
+  };
+
+  const handleImagePress = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    if (now - lastTapRef.current < DOUBLE_PRESS_DELAY) {
+      if (!liked) {
+        toggleLike();
+      }
+    } else {
+      if (post.processStagesCount) {
+        openProcess();
+      }
+    }
+    lastTapRef.current = now;
+  };
+
+  const handleShare = async () => {
+    if (onSharePress) {
+      onSharePress(post);
+      return;
+    }
+    try {
+      await Share.share({
+        title: `Atelier Frame - @${post.author.handle}`,
+        message: `Check out @${post.author.handle}'s visual craft on Atelier Frame: "${post.caption || 'Process study'}"`,
+      });
+    } catch {}
   };
 
   return (
@@ -65,7 +94,11 @@ export const FeedCard: React.FC<FeedCardProps> = ({
           </View>
         </View>
 
-        <TouchableOpacity style={styles.moreButton} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        <TouchableOpacity
+          style={styles.moreButton}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          onPress={handleShare}
+        >
           <Icon name="more-horiz" size={20} color={colors.secondary} />
         </TouchableOpacity>
       </View>
@@ -73,12 +106,8 @@ export const FeedCard: React.FC<FeedCardProps> = ({
       {/* Media Viewport (4:5 Aspect Ratio) */}
       <TouchableOpacity
         style={styles.mediaContainer}
-        activeOpacity={post.processStagesCount ? 0.9 : 1}
-        onPress={() => {
-          if (post.processStagesCount) {
-            openProcess();
-          }
-        }}
+        activeOpacity={0.95}
+        onPress={handleImagePress}
       >
         <Image source={{ uri: post.imageUrl }} style={styles.mediaImage} />
 
@@ -111,16 +140,21 @@ export const FeedCard: React.FC<FeedCardProps> = ({
 
             <TouchableOpacity
               onPress={() => (onCommentPress ? onCommentPress(post) : openProcess())}
-              style={styles.actionButton}
+              style={styles.actionButtonWithCount}
               activeOpacity={0.7}
+              hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
             >
               <Icon name="chat-bubble-outline" size={22} color={colors.ink} />
+              {post.commentsCount > 0 && (
+                <Text style={styles.actionCountBadge}>{post.commentsCount}</Text>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => (onSharePress ? onSharePress(post) : null)}
+              onPress={handleShare}
               style={styles.actionButton}
               activeOpacity={0.7}
+              hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
             >
               <Icon name="send" size={21} color={colors.ink} />
             </TouchableOpacity>
@@ -152,10 +186,25 @@ export const FeedCard: React.FC<FeedCardProps> = ({
             style={styles.commentsLink}
           >
             <Text style={styles.commentsLinkText}>
-              View all {post.commentsCount} comments
+              View all {post.commentsCount} {post.commentsCount === 1 ? 'comment' : 'comments'}
             </Text>
           </TouchableOpacity>
         )}
+
+        {/* Quick Inline Comment Trigger Bar */}
+        <TouchableOpacity
+          onPress={() => (onCommentPress ? onCommentPress(post) : openProcess())}
+          activeOpacity={0.8}
+          style={styles.inlineCommentBar}
+        >
+          <View style={styles.inlineCommentLeft}>
+            <Icon name="chat-bubble-outline" size={13} color={colors.secondary} />
+            <Text style={styles.inlineCommentPlaceholder}>
+              Add a technique note or comment...
+            </Text>
+          </View>
+          <Text style={styles.inlineCommentCta}>Reply</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -280,5 +329,46 @@ const styles = StyleSheet.create({
   commentsLinkText: {
     ...typography.labelSm,
     color: colors.secondary,
+  },
+  actionButtonWithCount: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingVertical: 2,
+  },
+  actionCountBadge: {
+    ...typography.labelSm,
+    color: colors.ink,
+    fontWeight: '600',
+    fontSize: 12,
+  },
+  inlineCommentBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: radii.full,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginTop: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.hairline,
+  },
+  inlineCommentLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    flex: 1,
+  },
+  inlineCommentPlaceholder: {
+    ...typography.bodyMd,
+    color: colors.secondary,
+    fontSize: 12,
+  },
+  inlineCommentCta: {
+    ...typography.labelSm,
+    color: colors.coral,
+    fontWeight: '600',
+    fontSize: 12,
   },
 });

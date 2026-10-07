@@ -8,6 +8,16 @@ import type { Post } from '@/types';
 function mapPost(row: any): Post {
   const author = row.author || {};
   const coAuthor = row.co_author;
+  const stages = (row.process_stages || []).map((s: any) => ({
+    stepNumber: s.step_number,
+    title: s.title,
+    tag: s.tag,
+    description: s.description || '',
+    rawImageUrl: s.image_url,
+    processedImageUrl: s.processed_image_url || s.image_url,
+    gearSetup: s.gear_setup,
+  }));
+
   return {
     id: row.id,
     author: {
@@ -34,7 +44,8 @@ function mapPost(row: any): Post {
     commentsCount: row.comments_count || 0,
     isLiked: row._is_liked ?? false,
     isBookmarked: row._is_bookmarked ?? false,
-    processStagesCount: row._stages_count ?? 0,
+    processStagesCount: stages.length || row._stages_count || 0,
+    processStages: stages.length > 0 ? stages : undefined,
     cameraExif: row.camera_exif || undefined,
     createdAt: row.created_at,
   };
@@ -74,7 +85,8 @@ export function usePosts(options: UsePostsOptions = {}) {
         *,
         author:profiles!posts_author_id_fkey(*),
         co_author:profiles!posts_co_author_id_fkey(*),
-        room:rooms(name)
+        room:rooms(name),
+        process_stages(*)
       `)
       .order('created_at', { ascending: false })
       .limit(options.limit || 30);
@@ -91,6 +103,13 @@ export function usePosts(options: UsePostsOptions = {}) {
     if (err) {
       setError(err.message);
       setPosts(samplePosts); // Fallback
+    } else if (!data || data.length === 0) {
+      // If no posts found for specific author, keep empty. Otherwise show sample posts
+      if (options.authorId) {
+        setPosts([]);
+      } else {
+        setPosts(samplePosts);
+      }
     } else {
       // Check like/bookmark status for current user
       const mapped = (data || []).map(mapPost);
@@ -183,6 +202,14 @@ export function usePosts(options: UsePostsOptions = {}) {
       visibility?: 'public' | 'contributors' | 'followers';
       quietMode?: boolean;
       cameraExif?: any;
+      processStages?: {
+        stepNumber: number;
+        title: string;
+        tag: string;
+        description: string;
+        imageUri?: string;
+        gearSetup?: string;
+      }[];
     }) => {
       if (isMockMode || !user?.id) {
         return { error: null, postId: 'mock-post-id' };
@@ -204,6 +231,20 @@ export function usePosts(options: UsePostsOptions = {}) {
         .select('id')
         .single();
 
+      if (!err && data?.id && newPost.processStages?.length) {
+        // Insert process stages linked to the new post
+        const stageRows = newPost.processStages.map((s) => ({
+          post_id: data.id,
+          step_number: s.stepNumber,
+          title: s.title,
+          tag: s.tag,
+          description: s.description,
+          image_url: s.imageUri || null,
+          gear_setup: s.gearSetup || null,
+        }));
+        await supabase.from('process_stages').insert(stageRows);
+      }
+
       if (!err) {
         await fetchPosts();
       }
@@ -212,5 +253,20 @@ export function usePosts(options: UsePostsOptions = {}) {
     [user?.id, isMockMode, fetchPosts]
   );
 
-  return { posts, loading, error, toggleLike, toggleBookmark, createPost, refetch: fetchPosts };
+  const updateCommentCount = useCallback((postId: string, count: number) => {
+    setPosts((prev) =>
+      prev.map((p) => (p.id === postId ? { ...p, commentsCount: count } : p))
+    );
+  }, []);
+
+  return {
+    posts,
+    loading,
+    error,
+    toggleLike,
+    toggleBookmark,
+    createPost,
+    updateCommentCount,
+    refetch: fetchPosts,
+  };
 }

@@ -11,7 +11,7 @@ interface AuthContextType {
   /** True when using mock data (Supabase not configured) */
   isMockMode: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string, meta: { handle: string; displayName: string }) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string, meta: { handle: string; displayName: string }) => Promise<{ error: string | null; needsEmailConfirmation?: boolean }>;
   signOut: () => Promise<void>;
 }
 
@@ -75,10 +75,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (isMockMode) {
         setUser({ id: currentUser.id } as unknown as User);
         setSession({} as Session);
-        return { error: null };
+        return { error: null, needsEmailConfirmation: false };
       }
 
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -88,7 +88,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           },
         },
       });
-      return { error: error?.message ?? null };
+
+      if (data?.session) {
+        setSession(data.session);
+        setUser(data.user);
+      }
+
+      return {
+        error: error?.message ?? null,
+        needsEmailConfirmation: !data?.session && !!data?.user,
+      };
     },
     [isMockMode]
   );

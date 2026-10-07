@@ -8,31 +8,54 @@ import {
   Image,
   SafeAreaView,
   Alert,
+  Share,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { Icon } from '@/components/common/Icon';
 import { CompareSlider } from '@/components/process/CompareSlider';
+import { ProcessTimeline } from '@/components/process/ProcessTimeline';
+import { CommentsModal } from '@/components/feed/CommentsModal';
+import { usePosts } from '@/hooks/usePosts';
+import { useComments } from '@/hooks/useComments';
 import { samplePosts } from '@/data/mockData';
 
 export default function ProcessScreen() {
   const { postId } = useLocalSearchParams<{ postId: string }>();
   const router = useRouter();
+  const { posts, toggleBookmark, updateCommentCount } = usePosts();
   const post =
+    posts.find((p) => p.id === postId) ||
     samplePosts.find((p) => p.id === postId || p.id === 'post_technique') ||
     samplePosts[2];
 
-  const [savedRecipe, setSavedRecipe] = useState(false);
+  const [savedRecipe, setSavedRecipe] = useState(post.isBookmarked ?? false);
+  const [commentsVisible, setCommentsVisible] = useState(false);
+  const { comments } = useComments(post.id);
 
-  const handleSaveRecipe = () => {
+  const hasProcessStages = (post.processStages?.length ?? 0) > 0;
+
+  const handleSaveRecipe = async () => {
+    if (post.id) {
+      await toggleBookmark(post.id);
+    }
     setSavedRecipe(!savedRecipe);
     Alert.alert(
-      savedRecipe ? 'Recipe Removed' : 'Recipe Saved',
-      savedRecipe
-        ? 'Technique removed from your collection.'
-        : 'Technique recipe bookmarked to your Atelier vault.'
+      !savedRecipe ? 'Recipe Saved' : 'Recipe Removed',
+      !savedRecipe
+        ? 'Technique recipe bookmarked to your Atelier vault.'
+        : 'Technique removed from your collection.'
     );
+  };
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        title: `Atelier Frame - ${post.caption || 'Process Breakdown'}`,
+        message: `Discover ${post.author.name}'s process recipe on Atelier Frame: "${post.caption || 'Technique Breakdown'}"`,
+      });
+    } catch {}
   };
 
   return (
@@ -48,7 +71,7 @@ export default function ProcessScreen() {
           },
           {
             icon: 'share',
-            onPress: () => {},
+            onPress: handleShare,
             ariaLabel: 'Share post',
           },
         ]}
@@ -127,11 +150,13 @@ export default function ProcessScreen() {
 
             <TouchableOpacity
               style={styles.outlineAction}
-              onPress={() => Alert.alert('Technique Q&A', '12 questions asked by community members.')}
+              onPress={() => setCommentsVisible(true)}
               activeOpacity={0.8}
             >
               <Icon name="forum" size={16} color={colors.ink} />
-              <Text style={styles.outlineActionText}>Ask Question</Text>
+              <Text style={styles.outlineActionText}>
+                {comments.length > 0 ? `Q&A (${comments.length})` : 'Ask Question'}
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -145,40 +170,63 @@ export default function ProcessScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Numbered Process Steps */}
-        <View style={styles.processStepsSection}>
-          <View style={styles.stepsHeaderRow}>
-            <Text style={styles.stepsSectionTitle}>Process Breakdown</Text>
-            <Text style={styles.stepsCountText}>
-              {post.processStages?.length || 3} Steps Documented
-            </Text>
-          </View>
+        {/* =========== PROCESS TIMELINE =========== */}
+        {hasProcessStages && (
+          <ProcessTimeline
+            stages={post.processStages!}
+            finalImageUrl={post.imageUrl}
+            rawImageUrl={post.rawImageUrl}
+          />
+        )}
 
-          {/* Timeline steps with hairline vertical line */}
-          <View style={styles.timelineList}>
-            {post.processStages?.map((stage, idx) => (
-              <View key={idx} style={styles.timelineItem}>
-                {/* Step Circle */}
-                <View style={styles.stepCircle}>
-                  <Text style={styles.stepNumberText}>{stage.stepNumber}</Text>
-                </View>
+        {/* Legacy Numbered Process Steps (fallback for posts without stage images) */}
+        {hasProcessStages && (
+          <View style={styles.processStepsSection}>
+            <View style={styles.stepsHeaderRow}>
+              <Text style={styles.stepsSectionTitle}>Process Breakdown</Text>
+              <Text style={styles.stepsCountText}>
+                {post.processStages?.length || 3} Steps Documented
+              </Text>
+            </View>
 
-                {/* Step Details */}
-                <View style={styles.stepContent}>
-                  <View style={styles.stepHeaderRow}>
-                    <Text style={styles.stepTitle}>{stage.title}</Text>
-                    <Text style={styles.stepTag}>{stage.tag}</Text>
+            {/* Timeline steps with hairline vertical line */}
+            <View style={styles.timelineList}>
+              {post.processStages?.map((stage, idx) => (
+                <View key={idx} style={styles.timelineItem}>
+                  {/* Step Circle */}
+                  <View style={styles.stepCircle}>
+                    <Text style={styles.stepNumberText}>{stage.stepNumber}</Text>
                   </View>
-                  <Text style={styles.stepDescription}>{stage.description}</Text>
-                  {stage.gearSetup && (
-                    <Text style={styles.gearSetup}>{stage.gearSetup}</Text>
-                  )}
+
+                  {/* Step Details */}
+                  <View style={styles.stepContent}>
+                    <View style={styles.stepHeaderRow}>
+                      <Text style={styles.stepTitle}>{stage.title}</Text>
+                      <Text style={styles.stepTag}>{stage.tag}</Text>
+                    </View>
+                    <Text style={styles.stepDescription}>{stage.description}</Text>
+                    {stage.gearSetup && (
+                      <Text style={styles.gearSetup}>{stage.gearSetup}</Text>
+                    )}
+                  </View>
                 </View>
-              </View>
-            ))}
+              ))}
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
+
+      {/* Technique Comments / Q&A Modal */}
+      <CommentsModal
+        visible={commentsVisible}
+        onClose={() => setCommentsVisible(false)}
+        postId={post.id}
+        postTitle={post.caption?.slice(0, 32)}
+        postAuthorHandle={post.author.handle}
+        onCommentCountChange={(newCount) => {
+          updateCommentCount(post.id, newCount);
+        }}
+      />
     </SafeAreaView>
   );
 }

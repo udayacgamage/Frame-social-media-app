@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
   Image,
   SafeAreaView,
   Alert,
@@ -13,6 +14,8 @@ import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { Icon } from '@/components/common/Icon';
+import { useActivity } from '@/hooks/useActivity';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { sampleActivities, sampleMessages } from '@/data/mockData';
 
 type ActivityTab = 'Activity' | 'Messages';
@@ -21,6 +24,35 @@ export default function ActivityScreen() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ActivityTab>('Activity');
   const [invitationAccepted, setInvitationAccepted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+
+  const { activity, messages, unreadCount, markAsRead, markAllRead } = useActivity();
+  const { sendLocalTestNotification, expoPushToken } = usePushNotifications();
+  const displayActivities = activity.length > 0 ? activity : sampleActivities;
+  const displayMessages = messages.length > 0 ? messages : sampleMessages;
+  const unreadMessagesCount = displayMessages.reduce((acc, m) => acc + (m.unreadCount || 0), 0);
+
+  const filteredActivities = displayActivities.filter((act) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      act.user.name.toLowerCase().includes(q) ||
+      act.user.handle.toLowerCase().includes(q) ||
+      act.message.toLowerCase().includes(q) ||
+      act.targetTitle?.toLowerCase().includes(q)
+    );
+  });
+
+  const filteredMessages = displayMessages.filter((msg) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      msg.user.name.toLowerCase().includes(q) ||
+      msg.user.handle.toLowerCase().includes(q) ||
+      msg.lastMessage.toLowerCase().includes(q)
+    );
+  });
 
   const handleAcceptInvite = () => {
     setInvitationAccepted(true);
@@ -43,17 +75,69 @@ export default function ActivityScreen() {
         showBack
         rightActions={[
           {
-            icon: 'search',
-            onPress: () => {},
-            ariaLabel: 'Search activities',
+            icon: isSearchVisible ? 'close' : 'search',
+            onPress: () => {
+              setIsSearchVisible((prev) => !prev);
+              if (isSearchVisible) setSearchQuery('');
+            },
+            ariaLabel: isSearchVisible ? 'Close search' : 'Search activities',
           },
           {
             icon: 'more-horiz',
-            onPress: () => {},
+            onPress: () => {
+              Alert.alert(
+                'Activity & Notifications',
+                `Push Status: ${expoPushToken ? 'Connected' : 'Local Only'}\nManage creative alerts, collaborative invites, and quiet mode.`,
+                [
+                  {
+                    text: 'Send Test Notification',
+                    onPress: async () => {
+                      await sendLocalTestNotification(
+                        'Atelier Frame',
+                        'New collaboration invite on "A Weekend in Ella" from Chloe Lens',
+                        { storyId: 'story_ella' }
+                      );
+                      Alert.alert('Notification Dispatched', 'A preview notification has been presented.');
+                    },
+                  },
+                  {
+                    text: 'Dismiss All Unread',
+                    onPress: markAllRead,
+                  },
+                  { text: 'Close', style: 'cancel' },
+                ]
+              );
+            },
             ariaLabel: 'Activity settings',
           },
         ]}
       />
+
+      {/* Expandable Search Input */}
+      {isSearchVisible && (
+        <View style={styles.searchSection}>
+          <View style={styles.searchContainer}>
+            <Icon name="search" size={18} color={colors.secondary} style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder={`Search ${activeTab.toLowerCase()} by name, handle, keyword...`}
+              placeholderTextColor={colors.muted}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              autoFocus
+            />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity
+                onPress={() => setSearchQuery('')}
+                style={styles.clearBtn}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Icon name="close" size={16} color={colors.secondary} />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      )}
 
       {/* Segmented Control Tabs (Activity vs Messages) */}
       <View style={styles.tabContainer}>
@@ -87,12 +171,30 @@ export default function ActivityScreen() {
               >
                 Messages
               </Text>
-              <View style={styles.unreadBadge}>
-                <Text style={styles.unreadBadgeText}>3</Text>
-              </View>
+              {unreadMessagesCount > 0 && (
+                <View style={styles.unreadBadge}>
+                  <Text style={styles.unreadBadgeText}>{unreadMessagesCount}</Text>
+                </View>
+              )}
             </View>
           </TouchableOpacity>
         </View>
+
+        {/* Search Status Indicator */}
+        {searchQuery.trim().length > 0 && (
+          <View style={styles.statusRow}>
+            <Text style={styles.statusCount}>
+              Showing{' '}
+              {activeTab === 'Activity'
+                ? filteredActivities.length
+                : filteredMessages.length}{' '}
+              {activeTab === 'Activity' ? 'activities' : 'conversations'} for "{searchQuery}"
+            </Text>
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Text style={styles.resetFilterText}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       <ScrollView
@@ -102,8 +204,8 @@ export default function ActivityScreen() {
       >
         {activeTab === 'Activity' ? (
           <>
-            {/* Priority Section: Shared Story Invitation Card */}
-            {!invitationAccepted && (
+            {/* Priority Section: Shared Story Invitation Card (hidden during active search) */}
+            {!invitationAccepted && !searchQuery.trim() && (
               <View style={styles.inviteCard}>
                 <View style={styles.inviteHeader}>
                   <View style={styles.inviteAuthorRow}>
@@ -158,61 +260,113 @@ export default function ActivityScreen() {
             )}
 
             {/* General Activity Stream */}
-            <View style={styles.activityList}>
-              {sampleActivities.map((act) => (
-                <View key={act.id} style={styles.activityItem}>
-                  <Image source={{ uri: act.user.avatarUrl }} style={styles.actAvatar} />
-                  <View style={styles.actContent}>
-                    <Text style={styles.actText}>
-                      <Text style={styles.actAuthor}>{act.user.name} </Text>
-                      {act.message}
-                    </Text>
-                    <Text style={styles.actTime}>{act.timeAgo}</Text>
-                  </View>
-                  {act.unread && <View style={styles.actUnreadDot} />}
+            {filteredActivities.length === 0 ? (
+              <View style={styles.emptyContainer}>
+                <View style={styles.emptyIconCircle}>
+                  <Icon name="search" size={22} color={colors.secondary} />
                 </View>
-              ))}
-            </View>
+                <Text style={styles.emptyTitle}>No activities found</Text>
+                <Text style={styles.emptySubtitle}>
+                  {searchQuery.trim()
+                    ? `No activity matching "${searchQuery}". Try a different search term.`
+                    : 'No recent activity yet.'}
+                </Text>
+                {searchQuery.trim().length > 0 && (
+                  <TouchableOpacity
+                    style={styles.resetButton}
+                    onPress={() => setSearchQuery('')}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.resetButtonText}>Clear Search</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ) : (
+              <View style={styles.activityList}>
+                {filteredActivities.map((act) => (
+                  <TouchableOpacity
+                    key={act.id}
+                    style={styles.activityItem}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if (act.unread) markAsRead(act.id);
+                    }}
+                  >
+                    <Image source={{ uri: act.user.avatarUrl }} style={styles.actAvatar} />
+                    <View style={styles.actContent}>
+                      <Text style={styles.actText}>
+                        <Text style={styles.actAuthor}>{act.user.name} </Text>
+                        {act.message}
+                      </Text>
+                      <Text style={styles.actTime}>{act.timeAgo}</Text>
+                    </View>
+                    {act.unread && <View style={styles.actUnreadDot} />}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </>
         ) : (
           /* Messages Stream */
-          <View style={styles.messagesList}>
-            {sampleMessages.map((msg) => (
-              <TouchableOpacity
-                key={msg.id}
-                style={styles.messageItem}
-                activeOpacity={0.8}
-                onPress={() =>
-                  Alert.alert(
-                    `Chat with ${msg.user.name}`,
-                    'Direct messaging powered by Stream Chat SDK & Supabase Auth.',
-                    [{ text: 'OK' }]
-                  )
-                }
-              >
-                <View style={styles.msgAvatarWrapper}>
-                  <Image source={{ uri: msg.user.avatarUrl }} style={styles.msgAvatar} />
-                  {msg.online && <View style={styles.msgOnlineDot} />}
-                </View>
-
-                <View style={styles.msgContent}>
-                  <View style={styles.msgHeaderRow}>
-                    <Text style={styles.msgAuthor}>{msg.user.name}</Text>
-                    <Text style={styles.msgTime}>{msg.timeAgo}</Text>
+          filteredMessages.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <View style={styles.emptyIconCircle}>
+                <Icon name="chat" size={22} color={colors.secondary} />
+              </View>
+              <Text style={styles.emptyTitle}>No conversations found</Text>
+              <Text style={styles.emptySubtitle}>
+                {searchQuery.trim()
+                  ? `No message thread matching "${searchQuery}".`
+                  : 'No direct messages yet. Start a conversation from any profile or room.'}
+              </Text>
+              {searchQuery.trim().length > 0 && (
+                <TouchableOpacity
+                  style={styles.resetButton}
+                  onPress={() => setSearchQuery('')}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.resetButtonText}>Clear Search</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : (
+            <View style={styles.messagesList}>
+              {filteredMessages.map((msg) => (
+                <TouchableOpacity
+                  key={msg.id}
+                  style={styles.messageItem}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/chat/[id]' as any,
+                      params: { id: msg.id },
+                    })
+                  }
+                >
+                  <View style={styles.msgAvatarWrapper}>
+                    <Image source={{ uri: msg.user.avatarUrl }} style={styles.msgAvatar} />
+                    {msg.online && <View style={styles.msgOnlineDot} />}
                   </View>
-                  <Text style={styles.msgSnippet} numberOfLines={1}>
-                    {msg.lastMessage}
-                  </Text>
-                </View>
 
-                {msg.unreadCount > 0 && (
-                  <View style={styles.msgUnreadBadge}>
-                    <Text style={styles.msgUnreadText}>{msg.unreadCount}</Text>
+                  <View style={styles.msgContent}>
+                    <View style={styles.msgHeaderRow}>
+                      <Text style={styles.msgAuthor}>{msg.user.name}</Text>
+                      <Text style={styles.msgTime}>{msg.timeAgo}</Text>
+                    </View>
+                    <Text style={styles.msgSnippet} numberOfLines={1}>
+                      {msg.lastMessage}
+                    </Text>
                   </View>
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
+
+                  {msg.unreadCount > 0 && (
+                    <View style={styles.msgUnreadBadge}>
+                      <Text style={styles.msgUnreadText}>{msg.unreadCount}</Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          )
         )}
       </ScrollView>
     </SafeAreaView>
@@ -489,5 +643,89 @@ const styles = StyleSheet.create({
     color: colors.surface,
     fontSize: 10,
     fontWeight: '700',
+  },
+  searchSection: {
+    paddingHorizontal: spacing.gutter,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.xs,
+    backgroundColor: colors.surface,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: radii.md,
+    paddingHorizontal: spacing.sm,
+    height: 40,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  searchIcon: {
+    marginRight: 6,
+  },
+  searchInput: {
+    flex: 1,
+    ...typography.bodyMd,
+    color: colors.ink,
+  },
+  clearBtn: {
+    padding: 4,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: spacing.xs,
+    paddingBottom: 2,
+  },
+  statusCount: {
+    ...typography.labelSm,
+    color: colors.secondary,
+  },
+  resetFilterText: {
+    ...typography.labelSm,
+    color: colors.coral,
+    fontWeight: '500',
+  },
+  emptyContainer: {
+    paddingVertical: 48,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.surfaceContainerLow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+  },
+  emptyTitle: {
+    ...typography.bodyMdMedium,
+    color: colors.ink,
+    fontSize: 15,
+    marginBottom: 4,
+  },
+  emptySubtitle: {
+    ...typography.bodyMd,
+    color: colors.secondary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: spacing.md,
+  },
+  resetButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: radii.md,
+    backgroundColor: colors.surfaceContainerLow,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  resetButtonText: {
+    ...typography.labelMd,
+    color: colors.ink,
+    fontWeight: '500',
   },
 });

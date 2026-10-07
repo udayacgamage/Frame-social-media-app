@@ -39,22 +39,23 @@ export default function SignupScreen() {
     }
 
     setLoading(true);
-    const { error } = await signUp(email.trim(), password, {
+    const result = await signUp(email.trim(), password, {
       handle: handle.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''),
       displayName: displayName.trim(),
     });
     setLoading(false);
 
-    if (error) {
-      Alert.alert('Sign up failed', error);
-    } else if (!isMockMode) {
+    if (result.error) {
+      Alert.alert('Sign up failed', result.error);
+    } else if (result.needsEmailConfirmation) {
       Alert.alert(
         'Check your email',
         'We sent a confirmation link to your email. Please verify to continue.',
         [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
       );
+    } else {
+      router.replace('/(tabs)');
     }
-    // In mock mode, auth state change triggers auto-redirect
   };
 
   return (

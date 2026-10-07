@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
-import { sampleActivity, sampleMessages } from '@/data/mockData';
+import { sampleActivities, sampleMessages } from '@/data/mockData';
 import type { ActivityItem, MessageThread } from '@/types';
 
 function mapNotification(row: any): ActivityItem {
@@ -38,7 +38,7 @@ function getTimeAgo(dateStr: string): string {
 
 export function useActivity() {
   const { user, isMockMode } = useAuth();
-  const [activity, setActivity] = useState<ActivityItem[]>(isMockMode ? sampleActivity : []);
+  const [activity, setActivity] = useState<ActivityItem[]>(isMockMode ? sampleActivities : []);
   const [messages, setMessages] = useState<MessageThread[]>(isMockMode ? sampleMessages : []);
   const [loading, setLoading] = useState(!isMockMode);
   const [error, setError] = useState<string | null>(null);
@@ -46,9 +46,9 @@ export function useActivity() {
 
   const fetchActivity = useCallback(async () => {
     if (isMockMode) {
-      setActivity(sampleActivity);
+      setActivity(sampleActivities);
       setMessages(sampleMessages);
-      setUnreadCount(sampleActivity.filter((a) => a.unread).length);
+      setUnreadCount(sampleActivities.filter((a: ActivityItem) => a.unread).length);
       return;
     }
 
@@ -69,11 +69,11 @@ export function useActivity() {
 
     if (err) {
       setError(err.message);
-      setActivity(sampleActivity);
+      setActivity(sampleActivities);
     } else {
       const mapped = (data || []).map(mapNotification);
       setActivity(mapped);
-      setUnreadCount(mapped.filter((a) => a.unread).length);
+      setUnreadCount(mapped.filter((a: ActivityItem) => a.unread).length);
     }
     setLoading(false);
   }, [user?.id, isMockMode]);

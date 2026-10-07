@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Icon } from '@/components/common/Icon';
+import { ProcessStageEditor, ProcessStageInput } from '@/components/process/ProcessStageEditor';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { usePosts } from '@/hooks/usePosts';
 import { useRooms } from '@/hooks/useRooms';
@@ -39,10 +40,25 @@ export default function CreateScreen() {
   );
   const [publishing, setPublishing] = useState(false);
 
+  // ----------- Process Timeline State -----------
+  const [showProcessEditor, setShowProcessEditor] = useState(false);
+  const [processStages, setProcessStages] = useState<ProcessStageInput[]>([]);
+
   const handlePickImage = async () => {
     const asset = await pickImage({ aspect: [4, 5] });
     if (asset) {
       setImageUri(asset.uri);
+    }
+  };
+
+  const handlePickStageImage = async (stageId: string) => {
+    const asset = await pickImage({ aspect: [16, 9] });
+    if (asset) {
+      setProcessStages((prev) =>
+        prev.map((s) =>
+          s.id === stageId ? { ...s, imageUri: asset.uri } : s
+        )
+      );
     }
   };
 
@@ -51,8 +67,8 @@ export default function CreateScreen() {
 
     // Upload image if it's a local URI
     let publicUrl = imageUri;
-    if (imageUri.startsWith('file://') || imageUri.startsWith('content://')) {
-      const result = await uploadImage({ uri: imageUri, width: 1080, height: 1350 } as any);
+    if (imageUri.startsWith('file://') || imageUri.startsWith('content://') || imageUri.startsWith('ph://') || imageUri.startsWith('blob:')) {
+      const result = await uploadImage({ uri: imageUri, width: 1080, height: 1350 } as any, 'posts');
       if (result.error) {
         Alert.alert('Upload failed', result.error);
         setPublishing(false);
@@ -65,12 +81,25 @@ export default function CreateScreen() {
       (r) => r.name.toLowerCase() === destinationRoom.toLowerCase()
     );
 
+    // Build process stages for the post
+    const stagesForPost = processStages
+      .filter((s) => s.title.trim())
+      .map((s, idx) => ({
+        stepNumber: idx + 1,
+        title: s.title,
+        tag: s.tag,
+        description: s.description,
+        imageUri: s.imageUri,
+        gearSetup: s.gearSetup,
+      }));
+
     const { error } = await createPost({
       imageUrl: publicUrl,
       caption,
       roomId: selectedRoom?.id,
       visibility: visibility === 'Public Room' ? 'public' : visibility === 'Contributors' ? 'contributors' : 'followers',
       quietMode,
+      processStages: stagesForPost.length > 0 ? stagesForPost : undefined,
     });
 
     setPublishing(false);
@@ -80,7 +109,7 @@ export default function CreateScreen() {
     } else {
       Alert.alert(
         'Creation Published',
-        `Your creative work has been shared to ${destinationRoom}.`,
+        `Your creative work${stagesForPost.length > 0 ? ` with ${stagesForPost.length} process stages` : ''} has been shared to ${destinationRoom}.`,
         [
           {
             text: 'View in Feed',
@@ -103,11 +132,16 @@ export default function CreateScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New creation</Text>
         <TouchableOpacity
-          style={styles.publishButton}
+          style={[styles.publishButton, (publishing || uploading) && { opacity: 0.7 }]}
           onPress={handlePublish}
+          disabled={publishing || uploading}
           activeOpacity={0.85}
         >
-          <Text style={styles.publishButtonText}>Share</Text>
+          {publishing || uploading ? (
+            <ActivityIndicator size="small" color={colors.surface} />
+          ) : (
+            <Text style={styles.publishButtonText}>Share</Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -148,6 +182,16 @@ export default function CreateScreen() {
             <Text style={styles.rawTagText}>RAW 48MP</Text>
           </View>
 
+          {/* Process Stage Count Badge (if stages added) */}
+          {processStages.length > 0 && (
+            <View style={styles.processCountBadge}>
+              <Icon name="auto-awesome" size={13} color={colors.surface} />
+              <Text style={styles.processCountText}>
+                {processStages.length} Process {processStages.length === 1 ? 'Stage' : 'Stages'}
+              </Text>
+            </View>
+          )}
+
           {/* Bottom Floating Bar */}
           <View style={styles.mediaFloatingBar}>
             <View style={styles.aspectPill}>
@@ -158,13 +202,7 @@ export default function CreateScreen() {
             <TouchableOpacity
               style={styles.replaceButton}
               activeOpacity={0.85}
-              onPress={() => {
-                Alert.alert(
-                  'Media Selector',
-                  'Select from Camera Roll or Supabase RAW Vault',
-                  [{ text: 'OK' }]
-                );
-              }}
+              onPress={handlePickImage}
             >
               <Icon name="autorenew" size={15} color={colors.secondary} />
               <Text style={styles.replaceButtonText}>Replace photo</Text>
@@ -199,18 +237,71 @@ export default function CreateScreen() {
           </View>
         </View>
 
+        {/* =========== PROCESS TIMELINE SECTION =========== */}
+        <TouchableOpacity
+          style={[
+            styles.processToggleRow,
+            showProcessEditor && styles.processToggleRowActive,
+          ]}
+          onPress={() => setShowProcessEditor(!showProcessEditor)}
+          activeOpacity={0.8}
+        >
+          <View style={styles.processToggleLeft}>
+            <Icon
+              name="auto-awesome"
+              size={20}
+              color={showProcessEditor ? colors.coral : colors.secondary}
+            />
+            <View>
+              <Text style={styles.processToggleTitle}>
+                Add Process Timeline
+              </Text>
+              <Text style={styles.processToggleSubtitle}>
+                Show the journey behind this image
+              </Text>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.processToggleChevron,
+              showProcessEditor && styles.processToggleChevronActive,
+            ]}
+          >
+            <Icon
+              name={showProcessEditor ? 'expand-less' : 'expand-more'}
+              size={20}
+              color={showProcessEditor ? colors.coral : colors.secondary}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showProcessEditor && (
+          <View style={styles.processEditorWrapper}>
+            <ProcessStageEditor
+              stages={processStages}
+              onStagesChange={setProcessStages}
+              onPickStageImage={handlePickStageImage}
+            />
+          </View>
+        )}
+
         {/* Meta Configuration Rows */}
         <View style={styles.metaSection}>
           {/* Destination Room */}
           <TouchableOpacity
             style={styles.metaRow}
             onPress={() => {
-              Alert.alert('Destination Room', 'Select target community room:', [
-                { text: 'Street Photography', onPress: () => setDestinationRoom('Street Photography') },
-                { text: 'Home Cooking & Craft', onPress: () => setDestinationRoom('Home Cooking & Craft') },
-                { text: 'Nordic Ceramics Studio', onPress: () => setDestinationRoom('Nordic Ceramics Studio') },
-                { text: 'Cancel', style: 'cancel' },
-              ]);
+              Alert.alert(
+                'Destination Room',
+                'Select target community room:',
+                [
+                  ...rooms.map((r) => ({
+                    text: r.name,
+                    onPress: () => setDestinationRoom(r.name),
+                  })),
+                  { text: 'Cancel', style: 'cancel' },
+                ]
+              );
             }}
           >
             <Text style={styles.metaLabel}>Destination Room</Text>
@@ -372,6 +463,26 @@ const styles = StyleSheet.create({
     fontSize: 11,
     letterSpacing: 0.5,
   },
+  processCountBadge: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(230, 75, 56, 0.85)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  processCountText: {
+    ...typography.labelSm,
+    color: colors.surface,
+    fontWeight: '600',
+    fontSize: 11,
+  },
   mediaFloatingBar: {
     position: 'absolute',
     bottom: 10,
@@ -445,6 +556,54 @@ const styles = StyleSheet.create({
     ...typography.labelSm,
     color: colors.secondary,
   },
+
+  // ---- Process Timeline Toggle ----
+  processToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: radii.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  processToggleRowActive: {
+    borderColor: colors.coral,
+    backgroundColor: '#FFF8F7',
+  },
+  processToggleLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+  },
+  processToggleTitle: {
+    ...typography.bodyMdMedium,
+    color: colors.ink,
+  },
+  processToggleSubtitle: {
+    ...typography.labelSm,
+    color: colors.secondary,
+    marginTop: 1,
+  },
+  processToggleChevron: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  processToggleChevronActive: {
+    backgroundColor: '#FFE8E5',
+  },
+  processEditorWrapper: {
+    marginTop: -spacing.xs,
+    paddingTop: spacing.sm,
+  },
+
   metaSection: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,

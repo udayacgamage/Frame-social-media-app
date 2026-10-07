@@ -385,3 +385,96 @@ CREATE INDEX IF NOT EXISTS idx_notifications_user ON public.notifications(user_i
 CREATE INDEX IF NOT EXISTS idx_story_contributions_story ON public.story_contributions(story_id);
 CREATE INDEX IF NOT EXISTS idx_followers_following ON public.followers(following_id);
 CREATE INDEX IF NOT EXISTS idx_room_members_user ON public.room_members(user_id);
+
+-- ============================================================
+-- Storage Buckets & Policies
+-- ============================================================
+
+-- Create public media buckets (posts, avatars, stories)
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES 
+  ('avatars', 'avatars', true, 5242880, ARRAY['image/jpeg', 'image/png', 'image/webp']),
+  ('posts', 'posts', true, 20971520, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/heic']),
+  ('stories', 'stories', true, 20971520, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/gif'])
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Public read policy for media
+CREATE POLICY "Public Access for frame media"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id IN ('posts', 'avatars', 'stories'));
+
+-- Authenticated upload with folder isolation
+CREATE POLICY "Authenticated users can upload media"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (
+  bucket_id IN ('posts', 'avatars', 'stories')
+  AND (storage.foldername(name))[1] = (select auth.uid()::text)
+);
+
+-- Authenticated update with folder isolation
+CREATE POLICY "Authenticated users can update own media"
+ON storage.objects FOR UPDATE
+TO authenticated
+USING (
+  bucket_id IN ('posts', 'avatars', 'stories')
+  AND (storage.foldername(name))[1] = (select auth.uid()::text)
+)
+WITH CHECK (
+  bucket_id IN ('posts', 'avatars', 'stories')
+  AND (storage.foldername(name))[1] = (select auth.uid()::text)
+);
+
+-- Authenticated delete with folder isolation
+CREATE POLICY "Authenticated users can delete own media"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (
+  bucket_id IN ('posts', 'avatars', 'stories')
+  AND (storage.foldername(name))[1] = (select auth.uid()::text)
+);
+
+-- ============================================================
+-- Direct Messages Table & Policies
+-- ============================================================
+CREATE TABLE IF NOT EXISTS public.direct_messages (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  sender_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+  receiver_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+  content TEXT NOT NULL,
+  image_url TEXT,
+  is_read BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.direct_messages ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own direct messages"
+ON public.direct_messages FOR SELECT
+TO authenticated
+USING ((select auth.uid()) = sender_id OR (select auth.uid()) = receiver_id);
+
+CREATE POLICY "Users can insert direct messages"
+ON public.direct_messages FOR INSERT
+TO authenticated
+WITH CHECK ((select auth.uid()) = sender_id);
+
+CREATE POLICY "Users can update their received direct messages"
+ON public.direct_messages FOR UPDATE
+TO authenticated
+USING ((select auth.uid()) = receiver_id)
+WITH CHECK ((select auth.uid()) = receiver_id);
+
+ALTER PUBLICATION supabase_realtime ADD TABLE public.direct_messages;
+
+CREATE INDEX IF NOT EXISTS idx_direct_messages_sender_receiver 
+ON public.direct_messages(sender_id, receiver_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_direct_messages_receiver_sender 
+ON public.direct_messages(receiver_id, sender_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_direct_messages_unread 
+ON public.direct_messages(receiver_id, is_read);
+
+

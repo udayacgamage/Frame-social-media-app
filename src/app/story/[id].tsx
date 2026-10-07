@@ -13,17 +13,25 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { Icon } from '@/components/common/Icon';
+import { useStories } from '@/hooks/useStories';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { sampleStories } from '@/data/mockData';
 
 export default function SharedStoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const story = sampleStories.find((s) => s.id === id) || sampleStories[0];
+  const { stories, addContribution } = useStories(id);
+  const { pickImage, takePhoto, uploadImage, uploading } = useImageUpload();
+  const story =
+    stories.find((s) => s.id === id) ||
+    sampleStories.find((s) => s.id === id) ||
+    stories[0] ||
+    sampleStories[0];
 
   const handleInvite = () => {
     Alert.alert(
       'Invite Collaborator',
-      'Send a private invitation link to add visual moments to this Shared Story.',
+      `Share this invite link with collaborators for "${story.title}": https://frame.community/story/${story.id}`,
       [{ text: 'Copy Invite Link' }, { text: 'Cancel', style: 'cancel' }]
     );
   };
@@ -31,10 +39,42 @@ export default function SharedStoryScreen() {
   const handleAddSlide = () => {
     Alert.alert(
       'Add to Shared Story',
-      'Select a photo or document a new chapter in Ella.',
+      `Document a new visual chapter in ${story.title}.`,
       [
-        { text: 'Take Photo' },
-        { text: 'Choose from Camera Roll' },
+        {
+          text: 'Take Photo',
+          onPress: async () => {
+            const asset = await takePhoto();
+            if (asset) {
+              const res = await uploadImage(asset, 'posts');
+              if (res.publicUrl) {
+                await addContribution(story.id, {
+                  imageUrl: res.publicUrl,
+                  caption: 'Captured moment',
+                  timestampLabel: 'Just now',
+                });
+                Alert.alert('Moment Added', 'Your contribution has been added to this story.');
+              }
+            }
+          },
+        },
+        {
+          text: 'Choose from Camera Roll',
+          onPress: async () => {
+            const asset = await pickImage({ allowsEditing: true, aspect: [4, 5] });
+            if (asset) {
+              const res = await uploadImage(asset, 'posts');
+              if (res.publicUrl) {
+                await addContribution(story.id, {
+                  imageUrl: res.publicUrl,
+                  caption: 'Captured moment',
+                  timestampLabel: 'Just now',
+                });
+                Alert.alert('Moment Added', 'Your contribution has been added to this story.');
+              }
+            }
+          },
+        },
         { text: 'Cancel', style: 'cancel' },
       ]
     );
