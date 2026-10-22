@@ -77,14 +77,20 @@ export const FeedCard: React.FC<FeedCardProps> = ({
       {/* Author Bar */}
       <View style={styles.authorBar}>
         <View style={styles.authorCluster}>
-          <Image source={{ uri: post.author.avatarUrl }} style={styles.authorAvatar} />
+          <TouchableOpacity onPress={() => post.author?.id && router.push(`/profile/${post.author.id}` as any)} activeOpacity={0.8}>
+            <Image source={{ uri: post.author.avatarUrl }} style={styles.authorAvatar} />
+          </TouchableOpacity>
           <View style={styles.authorMeta}>
             <View style={styles.nameRow}>
-              <Text style={styles.authorName}>{post.author.handle}</Text>
+              <TouchableOpacity onPress={() => post.author?.id && router.push(`/profile/${post.author.id}` as any)} activeOpacity={0.8}>
+                <Text style={styles.authorName}>{post.author.handle}</Text>
+              </TouchableOpacity>
               {post.coAuthor && (
                 <>
                   <Text style={styles.ampersand}>&</Text>
-                  <Text style={styles.authorName}>{post.coAuthor.handle}</Text>
+                  <TouchableOpacity onPress={() => post.coAuthor?.id && router.push(`/profile/${post.coAuthor.id}` as any)} activeOpacity={0.8}>
+                    <Text style={styles.authorName}>{post.coAuthor.handle}</Text>
+                  </TouchableOpacity>
                 </>
               )}
             </View>

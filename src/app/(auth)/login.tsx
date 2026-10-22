@@ -10,6 +10,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
@@ -49,9 +50,11 @@ export default function LoginScreen() {
       >
         {/* Logo / Brand */}
         <View style={styles.brandSection}>
-          <View style={styles.logoMark}>
-            <Icon name="camera" size={32} color={colors.surface} />
-          </View>
+          <Image
+            source={require('../../../assets/images/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.brandName}>Frame</Text>
           <Text style={styles.brandTagline}>Your creative world</Text>
         </View>
@@ -125,6 +128,28 @@ export default function LoginScreen() {
               <Text style={styles.signInButtonText}>Sign in</Text>
             )}
           </TouchableOpacity>
+
+          {/* Quick Demo Sign In Button */}
+          <TouchableOpacity
+            style={styles.demoFillButton}
+            onPress={async () => {
+              setEmail('demo@frame.community');
+              setPassword('demo123');
+              setLoading(true);
+              const { error } = await signIn('demo@frame.community', 'demo123');
+              setLoading(false);
+              if (!error) {
+                router.replace('/(tabs)');
+              } else {
+                Alert.alert('Sign in failed', error);
+              }
+            }}
+            disabled={loading}
+            activeOpacity={0.85}
+          >
+            <Icon name="bolt" size={18} color={colors.coral} />
+            <Text style={styles.demoFillText}>Quick Demo Sign In (@elena_v)</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Divider */}
@@ -171,6 +196,11 @@ const styles = StyleSheet.create({
   brandSection: {
     alignItems: 'center',
     marginBottom: 40,
+  },
+  logoImage: {
+    width: 72,
+    height: 72,
+    marginBottom: 16,
   },
   logoMark: {
     width: 64,
@@ -252,6 +282,22 @@ const styles = StyleSheet.create({
     color: colors.surface,
     fontWeight: '700',
     fontSize: 16,
+  },
+  demoFillButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 44,
+    borderRadius: radii.md,
+    backgroundColor: colors.surfaceContainerLow,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    marginTop: 2,
+  },
+  demoFillText: {
+    ...typography.labelSmBold,
+    color: colors.ink,
   },
   divider: {
     flexDirection: 'row',

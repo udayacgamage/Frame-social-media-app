@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,14 @@ import {
   Image,
   SafeAreaView,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
 import { Header } from '@/components/common/Header';
 import { Icon } from '@/components/common/Icon';
 import { useRooms } from '@/hooks/useRooms';
+import { useActivity } from '@/hooks/useActivity';
 
 const categories = ['All', 'Photography', 'Culinary', 'Visual Arts', 'Writing'];
 const quickRoomTags = ['Street', 'Nordic', 'Cooking', 'Tokyo', 'Ceramics'];
@@ -23,19 +25,32 @@ export default function DiscoverRoomsScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const { rooms, loading, toggleJoin } = useRooms();
+  const { rooms, loading, toggleJoin, refetch } = useRooms();
+  const { unreadCount } = useActivity();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const filteredRooms = rooms.filter((r) => {
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }, [refetch]);
+
+  const filteredRooms = (rooms || []).filter((r) => {
+    if (!r) return false;
+    const cat = r.category || '';
     const matchesCat =
       selectedCategory === 'All' ||
-      r.category.toLowerCase().includes(selectedCategory.toLowerCase());
+      cat.toLowerCase().includes(selectedCategory.toLowerCase());
 
     const cleanQuery = searchQuery.trim().toLowerCase();
+    const name = r.name || '';
+    const desc = r.description || '';
+    const slug = r.slug || '';
     const matchesQuery =
       cleanQuery === '' ||
-      r.name.toLowerCase().includes(cleanQuery) ||
-      r.description.toLowerCase().includes(cleanQuery) ||
-      r.slug.toLowerCase().includes(cleanQuery);
+      name.toLowerCase().includes(cleanQuery) ||
+      desc.toLowerCase().includes(cleanQuery) ||
+      slug.toLowerCase().includes(cleanQuery);
 
     return matchesCat && matchesQuery;
   });
@@ -56,6 +71,8 @@ export default function DiscoverRoomsScreen() {
             icon: 'notifications-none',
             onPress: () => router.push('/activity'),
             ariaLabel: 'Activity',
+            hasBadge: unreadCount > 0,
+            badgeColor: colors.coral,
           },
         ]}
       />
@@ -64,6 +81,14 @@ export default function DiscoverRoomsScreen() {
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.coral}
+            colors={[colors.coral]}
+          />
+        }
       >
         {/* Search Bar */}
         <View style={styles.searchSection}>

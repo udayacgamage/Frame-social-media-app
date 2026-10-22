@@ -19,6 +19,7 @@ import { ProcessStageEditor, ProcessStageInput } from '@/components/process/Proc
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { usePosts } from '@/hooks/usePosts';
 import { useRooms } from '@/hooks/useRooms';
+import { useDrafts } from '@/hooks/useDrafts';
 
 type CreationMode = 'Share a Moment' | 'Shared Story' | 'Challenge';
 type VisibilityMode = 'Public Room' | 'Contributors' | 'Followers';
@@ -28,6 +29,8 @@ export default function CreateScreen() {
   const { pickImage, uploadImage, uploading } = useImageUpload();
   const { createPost } = usePosts();
   const { rooms } = useRooms();
+  const { draft, saveDraft, clearDraft, hasDraft } = useDrafts();
+
   const [mode, setMode] = useState<CreationMode>('Share a Moment');
   const [caption, setCaption] = useState(
     'Exploring wheel balance and raw earthy clay forms during the early morning studio study session.'
@@ -43,6 +46,21 @@ export default function CreateScreen() {
   // ----------- Process Timeline State -----------
   const [showProcessEditor, setShowProcessEditor] = useState(false);
   const [processStages, setProcessStages] = useState<ProcessStageInput[]>([]);
+
+  // Load draft on mount if available
+  React.useEffect(() => {
+    if (draft) {
+      if (draft.caption) setCaption(draft.caption);
+      if (draft.destinationRoom) setDestinationRoom(draft.destinationRoom);
+      if (draft.imageUri) setImageUri(draft.imageUri);
+      if (draft.visibility) setVisibility(draft.visibility);
+      if (draft.quietMode !== undefined) setQuietMode(draft.quietMode);
+      if (draft.processStages?.length) {
+        setProcessStages(draft.processStages);
+        setShowProcessEditor(true);
+      }
+    }
+  }, [draft]);
 
   const handlePickImage = async () => {
     const asset = await pickImage({ aspect: [4, 5] });
@@ -107,6 +125,7 @@ export default function CreateScreen() {
     if (error) {
       Alert.alert('Error', error);
     } else {
+      await clearDraft();
       Alert.alert(
         'Creation Published',
         `Your creative work${stagesForPost.length > 0 ? ` with ${stagesForPost.length} process stages` : ''} has been shared to ${destinationRoom}.`,
@@ -120,29 +139,86 @@ export default function CreateScreen() {
     }
   };
 
+  const handleSaveDraft = async () => {
+    await saveDraft({
+      caption,
+      destinationRoom,
+      imageUri,
+      visibility,
+      quietMode,
+      processStages,
+    });
+    Alert.alert('Draft Saved', 'Your work has been saved to drafts.');
+  };
+
+  const handleCancel = () => {
+    if (caption.trim().length > 0 || processStages.length > 0) {
+      Alert.alert(
+        'Draft Options',
+        'Would you like to save your work before leaving?',
+        [
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: async () => {
+              await clearDraft();
+              router.back();
+            },
+          },
+          {
+            text: 'Save Draft',
+            onPress: async () => {
+              await saveDraft({
+                caption,
+                destinationRoom,
+                imageUri,
+                visibility,
+                quietMode,
+                processStages,
+              });
+              router.back();
+            },
+          },
+          { text: 'Keep Editing', style: 'cancel' },
+        ]
+      );
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* Top Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={handleCancel}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New creation</Text>
-        <TouchableOpacity
-          style={[styles.publishButton, (publishing || uploading) && { opacity: 0.7 }]}
-          onPress={handlePublish}
-          disabled={publishing || uploading}
-          activeOpacity={0.85}
-        >
-          {publishing || uploading ? (
-            <ActivityIndicator size="small" color={colors.surface} />
-          ) : (
-            <Text style={styles.publishButtonText}>Share</Text>
-          )}
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          <TouchableOpacity
+            style={styles.saveDraftButton}
+            onPress={handleSaveDraft}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.saveDraftText}>Draft</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.publishButton, (publishing || uploading) && { opacity: 0.7 }]}
+            onPress={handlePublish}
+            disabled={publishing || uploading}
+            activeOpacity={0.85}
+          >
+            {publishing || uploading ? (
+              <ActivityIndicator size="small" color={colors.surface} />
+            ) : (
+              <Text style={styles.publishButtonText}>Share</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView
@@ -385,6 +461,22 @@ const styles = StyleSheet.create({
   headerTitle: {
     ...typography.headlineSm,
     color: colors.ink,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  saveDraftButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: radii.md,
+    backgroundColor: colors.surfaceContainerLow,
+  },
+  saveDraftText: {
+    ...typography.labelMd,
+    color: colors.ink,
+    fontWeight: '500',
   },
   publishButton: {
     backgroundColor: colors.coral,

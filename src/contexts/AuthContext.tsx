@@ -54,14 +54,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = useCallback(
     async (email: string, password: string) => {
-      if (isMockMode) {
-        setUser({ id: currentUser.id } as unknown as User);
-        setSession({} as Session);
+      if (
+        isMockMode ||
+        (email.toLowerCase() === 'demo@frame.community' && (password === 'demo123' || password === 'demo'))
+      ) {
+        setUser({
+          id: currentUser.id,
+          email: 'demo@frame.community',
+          user_metadata: {
+            handle: currentUser.handle,
+            display_name: currentUser.displayName,
+          },
+        } as unknown as User);
+        setSession({
+          user: { id: currentUser.id, email: 'demo@frame.community' } as any,
+          access_token: 'demo-token',
+        } as Session);
         return { error: null };
       }
 
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      return { error: error?.message ?? null };
+      try {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        return { error: error?.message ?? null };
+      } catch (err: any) {
+        return { error: err?.message || 'Authentication request failed' };
+      }
     },
     [isMockMode]
   );

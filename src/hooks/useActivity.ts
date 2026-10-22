@@ -36,6 +36,10 @@ function getTimeAgo(dateStr: string): string {
   return `${days}d`;
 }
 
+const isUUID = (str?: string): boolean =>
+  typeof str === 'string' &&
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
+
 export function useActivity() {
   const { user, isMockMode } = useAuth();
   const [activity, setActivity] = useState<ActivityItem[]>(isMockMode ? sampleActivities : []);
@@ -54,67 +58,97 @@ export function useActivity() {
 
     if (!user?.id) return;
 
+    if (!isUUID(user.id)) {
+      setActivity(sampleActivities);
+      setMessages(sampleMessages);
+      setUnreadCount(sampleActivities.filter((a: ActivityItem) => a.unread).length);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
-    const { data, error: err } = await supabase
-      .from('notifications')
-      .select(`
-        *,
-        sender:profiles!notifications_sender_id_fkey(*)
-      `)
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(50);
+    try {
+      const { data, error: err } = await supabase
+        .from('notifications')
+        .select(`
+          *,
+          sender:profiles!notifications_sender_id_fkey(*)
+        `)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-    if (err) {
-      setError(err.message);
+      if (err) {
+        setError(err.message);
+        setActivity(sampleActivities);
+      } else {
+        const mapped = (data || []).map(mapNotification);
+        setActivity(mapped);
+        setUnreadCount(mapped.filter((a: ActivityItem) => a.unread).length);
+      }
+    } catch {
       setActivity(sampleActivities);
-    } else {
-      const mapped = (data || []).map(mapNotification);
-      setActivity(mapped);
-      setUnreadCount(mapped.filter((a: ActivityItem) => a.unread).length);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [user?.id, isMockMode]);
 
   // Realtime subscription for new notifications
   useEffect(() => {
     fetchActivity();
 
-    if (isMockMode || !user?.id || !isSupabaseConfigured) return;
+    if (isMockMode || !user?.id || !isSupabaseConfigured || !isUUID(user.id)) return;
 
-    const channel = supabase
-      .channel(`notifications:${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`,
-        },
-        async (payload) => {
-          const { data } = await supabase
-            .from('notifications')
-            .select(`
-              *,
-              sender:profiles!notifications_sender_id_fkey(*)
-            `)
-            .eq('id', payload.new.id)
-            .single();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    try {
+      const channelId = `notifications:${user.id}:${Math.random().toString(36).slice(2, 8)}`;
+      channel = supabase
+        .channel(channelId)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`,
+          },
+          async (payload) => {
+            try {
+              const { data } = await supabase
+                .from('notifications')
+                .select(`
+                  *,
+                  sender:profiles!notifications_sender_id_fkey(*)
+                `)
+                .eq('id', payload.new.id)
+                .single();
 
-          if (data) {
-            const newItem = mapNotification(data);
-            setActivity((prev) => [newItem, ...prev]);
-            setUnreadCount((prev) => prev + 1);
+              if (data) {
+                const newItem = mapNotification(data);
+                setActivity((prev) => [newItem, ...prev]);
+                setUnreadCount((prev) => prev + 1);
+              }
+            } catch {
+              // ignore payload fetch errors
+            }
           }
-        }
-      )
-      .subscribe();
+        );
+
+      channel.subscribe();
+    } catch (e) {
+      console.warn('Realtime notifications channel error:', e);
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        try {
+          supabase.removeChannel(channel);
+        } catch {
+          // ignore cleanup errors
+        }
+      }
     };
   }, [user?.id, isMockMode, fetchActivity]);
 

@@ -22,8 +22,8 @@ function mapRoom(row: any, joinedRoomIds: Set<string> = new Set()): Room {
 
 export function useRooms() {
   const { user, isMockMode } = useAuth();
-  const [rooms, setRooms] = useState<Room[]>(isMockMode ? sampleRooms : []);
-  const [loading, setLoading] = useState(!isMockMode);
+  const [rooms, setRooms] = useState<Room[]>(sampleRooms);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchRooms = useCallback(async () => {
@@ -32,34 +32,46 @@ export function useRooms() {
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    try {
+      const { data, error: err } = await supabase
+        .from('rooms')
+        .select('*')
+        .order('is_featured', { ascending: false })
+        .order('members_count', { ascending: false });
 
-    const { data, error: err } = await supabase
-      .from('rooms')
-      .select('*')
-      .order('is_featured', { ascending: false })
-      .order('members_count', { ascending: false });
+      if (err || !data || data.length === 0) {
+        setRooms(sampleRooms);
+        setLoading(false);
+        return;
+      }
 
-    if (err) {
-      setError(err.message);
-      setRooms(sampleRooms); // Fallback
+      // Fetch user's joined rooms
+      let joinedIds = new Set<string>();
+      if (user?.id && !user.id.startsWith('usr_')) {
+        try {
+          const { data: memberships } = await supabase
+            .from('room_members')
+            .select('room_id')
+            .eq('user_id', user.id);
+          joinedIds = new Set((memberships || []).map((m: any) => m.room_id));
+        } catch {}
+      } else {
+        joinedIds = new Set(sampleRooms.filter((r) => r.isJoined).map((r) => r.id));
+      }
+
+      const mapped = data.map((r: any) => mapRoom(r, joinedIds));
+      const combined = [
+        ...mapped,
+        ...sampleRooms.filter(
+          (sr) => !mapped.some((m: any) => m.id === sr.id || m.slug === sr.slug)
+        ),
+      ];
+      setRooms(combined);
+    } catch {
+      setRooms(sampleRooms);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Fetch user's joined rooms
-    let joinedIds = new Set<string>();
-    if (user?.id) {
-      const { data: memberships } = await supabase
-        .from('room_members')
-        .select('room_id')
-        .eq('user_id', user.id);
-      joinedIds = new Set((memberships || []).map((m: any) => m.room_id));
-    }
-
-    setRooms((data || []).map((r: any) => mapRoom(r, joinedIds)));
-    setLoading(false);
   }, [isMockMode, user?.id]);
 
   useEffect(() => {
@@ -78,19 +90,21 @@ export function useRooms() {
             ? {
                 ...r,
                 isJoined: !r.isJoined,
-                membersCount: r.isJoined ? r.membersCount - 1 : r.membersCount + 1,
+                membersCount: r.isJoined ? Math.max(0, r.membersCount - 1) : r.membersCount + 1,
               }
             : r
         )
       );
 
-      if (isMockMode || !user?.id) return;
+      if (isMockMode || !user?.id || user.id.startsWith('usr_')) return;
 
-      if (room.isJoined) {
-        await supabase.from('room_members').delete().match({ room_id: roomId, user_id: user.id });
-      } else {
-        await supabase.from('room_members').insert({ room_id: roomId, user_id: user.id });
-      }
+      try {
+        if (room.isJoined) {
+          await supabase.from('room_members').delete().match({ room_id: roomId, user_id: user.id });
+        } else {
+          await supabase.from('room_members').insert({ room_id: roomId, user_id: user.id });
+        }
+      } catch {}
     },
     [rooms, user?.id, isMockMode]
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing } from '@/theme/tokens';
 import { Icon, IconName } from './Icon';
@@ -7,6 +7,7 @@ import { Icon, IconName } from './Icon';
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
+  showLogo?: boolean;
   onBack?: () => void;
   rightActions?: {
     icon: IconName;
@@ -20,6 +21,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   title = 'Frame',
   showBack = false,
+  showLogo,
   onBack,
   rightActions = [],
 }) => {
@@ -35,10 +37,12 @@ export const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  const shouldShowLogo = showLogo ?? (!showBack && title === 'Frame');
+
   return (
     <View style={styles.container}>
       <View style={styles.leftRow}>
-        {showBack && (
+        {showBack ? (
           <TouchableOpacity
             style={styles.iconButton}
             onPress={handleBack}
@@ -46,7 +50,13 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Icon name="arrow-back" size={24} color={colors.ink} />
           </TouchableOpacity>
-        )}
+        ) : shouldShowLogo ? (
+          <Image
+            source={require('../../../assets/images/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        ) : null}
         <Text style={styles.title} numberOfLines={1}>
           {title}
         </Text>
@@ -93,6 +103,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     gap: spacing.sm,
+  },
+  logo: {
+    width: 26,
+    height: 26,
   },
   title: {
     ...typography.headlineSm,

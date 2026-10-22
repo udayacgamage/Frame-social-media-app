@@ -19,6 +19,7 @@ import { Icon } from '@/components/common/Icon';
 import { useRooms } from '@/hooks/useRooms';
 import { usePosts } from '@/hooks/usePosts';
 import { useChallenges } from '@/hooks/useChallenges';
+import { sampleRooms } from '@/data/mockData';
 import type { Post } from '@/types';
 
 type RoomTab = 'All' | 'Process' | 'Discussions';
@@ -26,14 +27,29 @@ type RoomTab = 'All' | 'Process' | 'Discussions';
 export default function RoomDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { rooms, toggleJoin } = useRooms();
-  const room = rooms.find((r) => r.id === id || r.slug === id) || rooms[0];
+  const { rooms, loading: roomsLoading, toggleJoin } = useRooms();
+  const room =
+    rooms.find((r) => r.id === id || r.slug === id) ||
+    sampleRooms.find((r) => r.id === id || r.slug === id) ||
+    rooms[0] ||
+    sampleRooms[0];
   const [activeTab, setActiveTab] = useState<RoomTab>('All');
   const [activeCommentPost, setActiveCommentPost] = useState<Post | null>(null);
   const isJoined = room?.isJoined ?? false;
   const { posts: relatedPosts, toggleLike, toggleBookmark } = usePosts({ roomId: room?.id || id });
   const { challenges } = useChallenges();
   const roomChallenge = challenges.find((c) => c.roomId === room?.id) || challenges[0];
+
+  if (!room) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <Header title="Room" showBack />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={colors.coral} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   const handleToggleJoin = async () => {
     if (room?.id) {
@@ -161,15 +177,37 @@ export default function RoomDetailScreen() {
         </View>
 
         {/* Room Feed */}
-        {relatedPosts.map((post) => (
-          <FeedCard
-            key={post.id}
-            post={post}
-            onToggleLike={() => toggleLike(post.id)}
-            onToggleBookmark={() => toggleBookmark(post.id)}
-            onCommentPress={(p) => setActiveCommentPost(p)}
-          />
-        ))}
+        {relatedPosts.length === 0 ? (
+          <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 48, paddingHorizontal: 24 }}>
+            <Icon name="photo-camera" size={36} color={colors.secondary} />
+            <Text style={{ ...typography.headlineSm, color: colors.ink, marginTop: 12 }}>No moments yet</Text>
+            <Text style={{ ...typography.labelSm, color: colors.secondary, textAlign: 'center', marginTop: 4 }}>
+              Be the first to share your craft and creative process in {room.name}!
+            </Text>
+            <TouchableOpacity
+              style={{
+                marginTop: 16,
+                backgroundColor: colors.coral,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: radii.full,
+              }}
+              onPress={() => router.push('/(tabs)/create')}
+            >
+              <Text style={{ ...typography.labelMd, color: colors.surface }}>Share a Moment</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          relatedPosts.map((post) => (
+            <FeedCard
+              key={post.id}
+              post={post}
+              onToggleLike={() => toggleLike(post.id)}
+              onToggleBookmark={() => toggleBookmark(post.id)}
+              onCommentPress={(p) => setActiveCommentPost(p)}
+            />
+          ))
+        )}
       </ScrollView>
 
       {/* Post Comments Bottom Sheet */}

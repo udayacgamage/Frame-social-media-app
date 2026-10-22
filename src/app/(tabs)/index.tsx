@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ActivityIndicator,
+  RefreshControl,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
@@ -18,20 +20,45 @@ import { Icon } from '@/components/common/Icon';
 import { usePosts } from '@/hooks/usePosts';
 import { useStories } from '@/hooks/useStories';
 import { useActivity } from '@/hooks/useActivity';
+import { useDrafts } from '@/hooks/useDrafts';
 import type { Post } from '@/types';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { posts, loading: postsLoading, toggleLike, toggleBookmark, updateCommentCount } = usePosts();
+  const { posts, loading: postsLoading, toggleLike, toggleBookmark, updateCommentCount, refetch } = usePosts();
   const { stories } = useStories();
   const { unreadCount } = useActivity();
+  const { draft, hasDraft, clearDraft, reloadDraft } = useDrafts();
   const [activeCommentPost, setActiveCommentPost] = useState<Post | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([refetch(), reloadDraft()]);
+    setRefreshing(false);
+  }, [refetch, reloadDraft]);
+
+  const handleDiscardDraft = () => {
+    Alert.alert(
+      'Discard Draft',
+      'Are you sure you want to discard your saved draft?',
+      [
+        { text: 'Discard', style: 'destructive', onPress: clearDraft },
+        { text: 'Keep Draft', style: 'cancel' },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
         title="Frame"
         rightActions={[
+          {
+            icon: 'search',
+            onPress: () => router.push('/search' as any),
+            ariaLabel: 'Search',
+          },
           {
             icon: 'notifications-none',
             onPress: () => router.push('/activity'),
@@ -51,32 +78,53 @@ export default function HomeScreen() {
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.coral}
+            colors={[colors.coral]}
+          />
+        }
       >
         {/* Shared Stories Avatar Reel */}
         <StoryAvatarStrip stories={stories} />
 
         {/* Inline Draft Banner */}
-        <View style={styles.draftBanner}>
-          <View style={styles.draftLeft}>
-            <Icon name="edit-note" size={24} color={colors.coral} />
-            <View style={styles.draftMeta}>
-              <View style={styles.draftTitleRow}>
-                <Text style={styles.draftTitle}>Continue draft</Text>
-                <Text style={styles.draftSubtitle}>in Street Photography</Text>
-              </View>
-              <View style={styles.progressBarBg}>
-                <View style={styles.progressBarFill} />
+        {hasDraft && draft && (
+          <View style={styles.draftBanner}>
+            <View style={styles.draftLeft}>
+              <Icon name="edit-note" size={24} color={colors.coral} />
+              <View style={styles.draftMeta}>
+                <View style={styles.draftTitleRow}>
+                  <Text style={styles.draftTitle}>Continue draft</Text>
+                  <Text style={styles.draftSubtitle} numberOfLines={1}>
+                    in {draft.destinationRoom || 'New Creation'}
+                  </Text>
+                </View>
+                <Text style={styles.draftSnippet} numberOfLines={1}>
+                  {draft.caption || 'Photo study in progress'}
+                </Text>
               </View>
             </View>
+            <View style={styles.draftActions}>
+              <TouchableOpacity
+                style={styles.discardButton}
+                onPress={handleDiscardDraft}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Icon name="close" size={16} color={colors.secondary} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.resumeButton}
+                onPress={() => router.push('/(tabs)/create')}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.resumeButtonText}>Resume</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <TouchableOpacity
-            style={styles.resumeButton}
-            onPress={() => router.push('/(tabs)/create')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.resumeButtonText}>Resume</Text>
-          </TouchableOpacity>
-        </View>
+        )}
 
         {/* Feed Posts */}
         {postsLoading ? (
@@ -177,18 +225,20 @@ const styles = StyleSheet.create({
     ...typography.labelSm,
     color: colors.secondary,
   },
-  progressBarBg: {
-    width: '100%',
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: colors.surfaceVariant,
-    overflow: 'hidden',
+  draftSnippet: {
+    ...typography.labelSm,
+    color: colors.secondary,
+    fontSize: 11,
   },
-  progressBarFill: {
-    width: '66%',
-    height: '100%',
-    backgroundColor: colors.coral,
-    borderRadius: 2,
+  draftActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  discardButton: {
+    padding: 6,
+    borderRadius: radii.full,
+    backgroundColor: colors.surfaceContainer,
   },
   resumeButton: {
     backgroundColor: colors.surface,

@@ -1,4 +1,4 @@
-export const colors = {
+export const colorsLight = {
   // Canvas & Surfaces
   surface: '#ffffff',
   surfaceDim: '#f8f8f8',
@@ -41,6 +41,53 @@ export const colors = {
   error: '#ba1a1a',
   success: '#2e7d32',
 } as const;
+
+export const colorsDark = {
+  // Canvas & Surfaces (Warm Atelier Onyx)
+  surface: '#141414',
+  surfaceDim: '#101010',
+  surfaceContainerLowest: '#0d0d0d',
+  surfaceContainerLow: '#1c1b1b',
+  surfaceContainer: '#232221',
+  surfaceContainerHigh: '#2b2a29',
+  surfaceContainerHighest: '#363433',
+  surfaceVariant: '#363433',
+
+  // Hairline & Borders
+  hairline: '#2c2a29',
+  outline: '#9d8783',
+  outlineVariant: '#4d3a37',
+
+  // Ink & Typography
+  ink: '#f5f2f1',
+  onSurface: '#f0eceb',
+  onSurfaceVariant: '#d6c6c3',
+  secondary: '#a39e9d',
+  muted: '#736f6e',
+
+  // Brand Accent (Vibrant Coral)
+  coral: '#ff624d',
+  coralContainer: '#d43e2d',
+  primary: '#ff7360',
+  primaryContainer: '#871a10',
+  onPrimary: '#ffffff',
+  primaryFixed: '#ffdad4',
+  primaryFixedDim: '#ffb4a8',
+
+  // Inverse & Secondary Accents
+  inverseSurface: '#f3f0ef',
+  inverseOnSurface: '#1c1b1b',
+  tertiary: '#40c8e0',
+  tertiaryContainer: '#004f5e',
+  onTertiaryContainer: '#bfeaff',
+
+  // State colors
+  error: '#ffb4ab',
+  success: '#4caf50',
+} as const;
+
+export type ColorTheme = Record<keyof typeof colorsLight, string>;
+export const colors = colorsLight;
 
 export const typography = {
   headlineLg: {

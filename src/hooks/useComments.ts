@@ -97,51 +97,68 @@ export function useComments(postId: string) {
 
     if (isMockMode || !postId || !isSupabaseConfigured) return;
 
-    const channel = supabase
-      .channel(`comments:${postId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'post_comments',
-          filter: `post_id=eq.${postId}`,
-        },
-        async (payload) => {
-          // Fetch full comment with author details joined
-          const { data } = await supabase
-            .from('post_comments')
-            .select(`
-              *,
-              author:profiles!post_comments_author_id_fkey(*)
-            `)
-            .eq('id', payload.new.id)
-            .single();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    try {
+      const channelId = `comments:${postId}:${Math.random().toString(36).slice(2, 8)}`;
+      channel = supabase
+        .channel(channelId)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'post_comments',
+            filter: `post_id=eq.${postId}`,
+          },
+          async (payload) => {
+            try {
+              // Fetch full comment with author details joined
+              const { data } = await supabase
+                .from('post_comments')
+                .select(`
+                  *,
+                  author:profiles!post_comments_author_id_fkey(*)
+                `)
+                .eq('id', payload.new.id)
+                .single();
 
-          if (data) {
-            setComments((prev) => {
-              if (prev.some((c) => c.id === data.id)) return prev;
-              return [...prev, mapComment(data)];
-            });
+              if (data) {
+                setComments((prev) => {
+                  if (prev.some((c) => c.id === data.id)) return prev;
+                  return [...prev, mapComment(data)];
+                });
+              }
+            } catch {
+              // ignore payload fetch errors
+            }
           }
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'post_comments',
-          filter: `post_id=eq.${postId}`,
-        },
-        (payload) => {
-          setComments((prev) => prev.filter((c) => c.id !== (payload.old as any).id));
-        }
-      )
-      .subscribe();
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'DELETE',
+            schema: 'public',
+            table: 'post_comments',
+            filter: `post_id=eq.${postId}`,
+          },
+          (payload) => {
+            setComments((prev) => prev.filter((c) => c.id !== (payload.old as any).id));
+          }
+        );
+
+      channel.subscribe();
+    } catch (e) {
+      console.warn('Realtime comments channel error:', e);
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        try {
+          supabase.removeChannel(channel);
+        } catch {
+          // ignore cleanup errors
+        }
+      }
     };
   }, [postId, isMockMode, fetchComments]);
 

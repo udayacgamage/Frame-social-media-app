@@ -208,31 +208,9 @@ export default function ProfileScreen() {
         title={`@${currentUser.handle || 'creator'}`}
         rightActions={[
           {
-            icon: 'tune',
+            icon: 'settings',
             onPress: () => {
-              Alert.alert(
-                'Account & Preferences',
-                'Manage your Frame profile and session.',
-                [
-                  {
-                    text: currentUser.quietModeEnabled ? 'Disable Quiet Mode' : 'Enable Quiet Mode',
-                    onPress: handleToggleQuietMode,
-                  },
-                  {
-                    text: 'Edit Profile',
-                    onPress: handleOpenEdit,
-                  },
-                  {
-                    text: 'Sign Out',
-                    style: 'destructive',
-                    onPress: async () => {
-                      await signOut();
-                      router.replace('/(auth)/login');
-                    },
-                  },
-                  { text: 'Cancel', style: 'cancel' },
-                ]
-              );
+              router.push('/settings' as any);
             },
             ariaLabel: 'Settings',
           },

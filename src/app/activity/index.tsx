@@ -147,14 +147,21 @@ export default function ActivityScreen() {
             onPress={() => setActiveTab('Activity')}
             activeOpacity={0.8}
           >
-            <Text
-              style={[
-                styles.tabButtonText,
-                activeTab === 'Activity' && styles.tabButtonTextActive,
-              ]}
-            >
-              Activity
-            </Text>
+            <View style={styles.messageTabCluster}>
+              <Text
+                style={[
+                  styles.tabButtonText,
+                  activeTab === 'Activity' && styles.tabButtonTextActive,
+                ]}
+              >
+                Activity
+              </Text>
+              {unreadCount > 0 && (
+                <View style={styles.unreadBadge}>
+                  <Text style={styles.unreadBadgeText}>{unreadCount}</Text>
+                </View>
+              )}
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity

@@ -27,49 +27,55 @@ export function subscribeToTable(
 ): RealtimeChannel | null {
   if (!isSupabaseConfigured) return null;
 
-  const channel = supabase.channel(channelName);
+  try {
+    const uniqueName = `${channelName}-${Math.random().toString(36).slice(2, 8)}`;
+    const channel = supabase.channel(uniqueName);
 
-  if (options.onInsert) {
-    channel.on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: options.table,
-        filter: options.filter,
-      },
-      (payload) => options.onInsert!(payload.new)
-    );
+    if (options.onInsert) {
+      channel.on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: options.table,
+          filter: options.filter,
+        },
+        (payload) => options.onInsert!(payload.new)
+      );
+    }
+
+    if (options.onUpdate) {
+      channel.on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: options.table,
+          filter: options.filter,
+        },
+        (payload) => options.onUpdate!(payload.new)
+      );
+    }
+
+    if (options.onDelete) {
+      channel.on(
+        'postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: options.table,
+          filter: options.filter,
+        },
+        (payload) => options.onDelete!(payload.old)
+      );
+    }
+
+    channel.subscribe();
+    return channel;
+  } catch (e) {
+    console.warn('Realtime subscription error for channel:', channelName, e);
+    return null;
   }
-
-  if (options.onUpdate) {
-    channel.on(
-      'postgres_changes',
-      {
-        event: 'UPDATE',
-        schema: 'public',
-        table: options.table,
-        filter: options.filter,
-      },
-      (payload) => options.onUpdate!(payload.new)
-    );
-  }
-
-  if (options.onDelete) {
-    channel.on(
-      'postgres_changes',
-      {
-        event: 'DELETE',
-        schema: 'public',
-        table: options.table,
-        filter: options.filter,
-      },
-      (payload) => options.onDelete!(payload.old)
-    );
-  }
-
-  channel.subscribe();
-  return channel;
 }
 
 /**

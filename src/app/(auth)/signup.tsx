@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Alert,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, radii } from '@/theme/tokens';
@@ -54,7 +55,7 @@ export default function SignupScreen() {
         [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
       );
     } else {
-      router.replace('/(tabs)');
+      router.replace('/(auth)/onboarding' as any);
     }
   };
 
@@ -80,6 +81,11 @@ export default function SignupScreen() {
 
           {/* Header */}
           <View style={styles.headerSection}>
+            <Image
+              source={require('../../../assets/images/logo.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <Text style={styles.title}>Join Frame</Text>
             <Text style={styles.subtitle}>
               Create your creative profile and start sharing your process.
@@ -222,7 +228,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   headerSection: {
-    marginBottom: 32,
+    marginBottom: 28,
+  },
+  logoImage: {
+    width: 52,
+    height: 52,
+    marginBottom: spacing.md,
   },
   title: {
     ...typography.headlineLg,
